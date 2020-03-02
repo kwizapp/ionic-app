@@ -24,6 +24,8 @@ USER 1000
 
 # inject service logic
 COPY --from=builder --chown=1000:0 /app/build /app/
+COPY --chown=1000:0 serve.sh /serve.sh
+RUN set -x && chmod u+x /serve.sh
 
 # start the webserver on a dynamic port (as required by Heroku)
-CMD ["serve", "--listen", "tcp://0.0.0.0:${PORT-3000}", "/app"]
+CMD ["/serve.sh"]

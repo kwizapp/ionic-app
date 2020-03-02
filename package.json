@@ -47,8 +47,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint:ci": "eslint \"{src,test}/**/*.{ts,tsx}\"",
     "lint": "eslint \"{src,test}/**/*.{ts,tsx}\" --fix",
-    "format": "prettier --write src/**/*.ts"
+    "format:ci": "prettier --list-different \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "type-check": "tsc --noEmit -p tsconfig.json"
   },
   "browserslist": {
     "production": [

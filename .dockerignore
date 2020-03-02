@@ -1,7 +1,9 @@
-node_modules/
-build/
+*
 
-.eslintignore
-.eslintrc.js
-.gitignore
-.prettierrc
+!public/
+!src/
+!capacitor.config.js
+!ionic.config.json
+!package-lock.json
+!package.json
+!tsconfig.json

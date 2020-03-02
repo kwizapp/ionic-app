@@ -1,0 +1,7 @@
+{
+  "name": "kwiz",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

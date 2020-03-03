@@ -1,0 +1,10 @@
+*
+
+!public/
+!src/
+!capacitor.config.js
+!ionic.config.json
+!package-lock.json
+!package.json
+!serve.sh
+!tsconfig.json

@@ -1,8 +1,8 @@
 # extend basic alpine image
-FROM node:13.8-alpine
+FROM node:13.8-alpine AS builder
 
-# install serve for static file serving
-RUN set -x && npm install -g serve
+# set node to a production environment
+ENV NODE_ENV "prod"
 
 # inject and install dependencies
 COPY package.json package-lock.json /app/
@@ -15,10 +15,18 @@ COPY . /app/
 # build the application
 RUN set -x && npm run build
 
+
+# extend basic alpine image
+FROM node:13.8-alpine
+
+# install serve for static file serving
+RUN set -x && npm install -g serve
+
 # switch to a non-root user
 USER 1000
 
-# inject startup script
+# inject service logic
+COPY --from=builder --chown=1000:0 /app/build /app/build
 COPY --chown=1000:0 serve.sh /serve.sh
 RUN set -x && chmod u+x /serve.sh
 

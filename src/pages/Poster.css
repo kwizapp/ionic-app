@@ -1,0 +1,110 @@
+#poster ion-content {
+  text-align: center;
+}
+
+#poster h1 {
+  background-color: white;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+#poster-container {
+  height: calc(100% - 6rem);
+  overflow: hidden;
+
+  position: relative;
+  margin: 0 2rem 2rem 2rem;
+}
+
+#timer {
+  background-color: white;
+  height: 3rem;
+  width: 3rem;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border: 4px orange solid;
+}
+
+#poster ion-img {
+  z-index: 1;
+  filter: blur(50px) saturate(0%);
+}
+
+#poster.remaining-10 ion-img {
+  filter: blur(45px) saturate(10%);
+}
+
+#poster.remaining-9 ion-img {
+  filter: blur(40px) saturate(20%);
+}
+
+#poster.remaining-8 ion-img {
+  filter: blur(35px) saturate(30%);
+}
+
+#poster.remaining-7 ion-img {
+  filter: blur(30px) saturate(40%);
+}
+
+#poster.remaining-6 ion-img {
+  filter: blur(25px) saturate(50%);
+}
+
+#poster.remaining-5 ion-img {
+  filter: blur(20px) saturate(60%);
+}
+
+#poster.remaining-4 ion-img {
+  filter: blur(15px) saturate(70%);
+}
+
+#poster.remaining-3 ion-img {
+  filter: blur(10px) saturate(80%);
+}
+
+#poster.remaining-2 ion-img {
+  filter: blur(5px) saturate(90%);
+}
+
+#poster.remaining-1 ion-img,
+#poster.remaining-0 ion-img {
+  filter: none;
+}
+
+#poster ion-footer {
+  height: 4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem;
+  align-items: center;
+}
+
+#points,
+#lives {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  font-size: 1.2rem;
+}
+
+#points *,
+#lives * {
+  margin-right: 0.25rem;
+}
+
+#points {
+  color: orange;
+}
+
+#lives {
+  color: red;
+}

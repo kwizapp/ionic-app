@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['@kwizapp/eslint-config/react'],
+  extends: ['@kwizapp/eslint-config-ts-react'],
 }

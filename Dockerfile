@@ -1,11 +1,13 @@
 # extend basic alpine image
 FROM node:13.8-alpine
 
+ARG NODE_AUTH_TOKEN
+
 # install serve for static file serving
 RUN set -x && npm install -g serve
 
 # inject and install dependencies
-COPY package.json package-lock.json /app/
+COPY package.json package-lock.json .npmrc /app/
 WORKDIR /app
 RUN set -x && npm ci
 

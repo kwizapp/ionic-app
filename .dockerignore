@@ -8,3 +8,5 @@
 !package.json
 !serve.sh
 !tsconfig.json
+
+!.npmrc

@@ -8,10 +8,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Replace .npmrc with the CI-ready version
+        run: rm .npmrc && mv .npmrc.ci .npmrc
       - name: Use Node.js 13.x
         uses: actions/setup-node@v1
         with:
           node-version: '13.x'
+          registry-url: https://npm.pkg.github.com/
+          scope: '@kwizapp'
       - name: Cache Node.js modules
         uses: actions/cache@v1
         with:
@@ -21,6 +25,8 @@ jobs:
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
       - run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - run: npm run lint:ci
       - run: npm run format:ci
       - run: npm run type-check

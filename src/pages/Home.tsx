@@ -1,16 +1,16 @@
-import React from 'react'
+import './Home.css'
+
 import {
   IonContent,
-  IonImg,
-  IonPage,
-  IonIcon,
   IonFab,
   IonFabButton,
+  IonIcon,
+  IonImg,
+  IonPage,
   IonText,
 } from '@ionic/react'
 import { playCircleOutline } from 'ionicons/icons'
-
-import './Home.css'
+import React from 'react'
 
 function Home(): React.ReactElement {
   return (
@@ -19,7 +19,7 @@ function Home(): React.ReactElement {
         <IonImg src="assets/kwiz_logo.png" />
         <IonText>I like to movie movie ...</IonText>
         <IonFab vertical="bottom" horizontal="center">
-          <IonFabButton color="primary" routerLink="/poster">
+          <IonFabButton color="primary" routerLink={'/poster'}>
             <IonIcon icon={playCircleOutline} />
           </IonFabButton>
         </IonFab>

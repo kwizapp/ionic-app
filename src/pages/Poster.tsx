@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import './Poster.css'
+
 import {
   IonContent,
-  IonPage,
-  IonText,
   IonFooter,
   IonIcon,
   IonImg,
+  IonPage,
+  IonText,
 } from '@ionic/react'
-import { heart, flash, heartOutline } from 'ionicons/icons'
+import { flash, heart, heartOutline } from 'ionicons/icons'
+import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
 
-import './Poster.css'
-
-function Poster({ history }: any): React.ReactElement {
+function Poster(): React.ReactElement {
   const [secondsRemaining, setSecondsRemaining] = useState(11)
+
+  const history = useHistory()
+
+  const navigateNext = () => history.push('/question')
 
   useEffect(() => {
     const trigger = setInterval(() => {
       setSecondsRemaining(prevSeconds => {
         if (prevSeconds <= 1) {
-          clearInterval(trigger)
-          history.push('/')
           return 0
         }
         return prevSeconds - 1
@@ -31,8 +34,16 @@ function Poster({ history }: any): React.ReactElement {
     }
   }, [])
 
+  useEffect(() => {
+    if (secondsRemaining === 0) navigateNext()
+  }, [secondsRemaining])
+
   return (
-    <IonPage id="poster" className={`remaining-${secondsRemaining}`}>
+    <IonPage
+      id="poster"
+      onClick={navigateNext}
+      className={`remaining-${secondsRemaining}`}
+    >
       <IonContent>
         <IonText>
           <h1>Guess the movie title</h1>

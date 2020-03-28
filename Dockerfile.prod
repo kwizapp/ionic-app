@@ -4,8 +4,10 @@ FROM node:13.8-alpine AS builder
 # set node to a production environment
 ENV NODE_ENV "prod"
 
+ARG NODE_AUTH_TOKEN
+
 # inject and install dependencies
-COPY package.json package-lock.json /app/
+COPY package.json package-lock.json .npmrc /app/
 WORKDIR /app
 RUN set -x && npm ci
 

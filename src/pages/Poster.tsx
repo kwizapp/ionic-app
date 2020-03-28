@@ -7,20 +7,26 @@ import {
   IonImg,
   IonPage,
   IonText,
+  useIonViewWillEnter,
+  useIonViewWillLeave,
 } from '@ionic/react'
 import { flash, heart, heartOutline } from 'ionicons/icons'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 
 function Poster(): React.ReactElement {
+  // ref to interval, gets cleared on page leave
+  const countDownRef = useRef<any>()
+
   const [secondsRemaining, setSecondsRemaining] = useState(11)
 
   const history = useHistory()
 
   const navigateNext = () => history.push('/question')
 
-  useEffect(() => {
-    const trigger = setInterval(() => {
+  // [enter] Ionic lifecycle hook
+  useIonViewWillEnter(() => {
+    countDownRef.current = setInterval(() => {
       setSecondsRemaining(prevSeconds => {
         if (prevSeconds <= 1) {
           return 0
@@ -28,13 +34,16 @@ function Poster(): React.ReactElement {
         return prevSeconds - 1
       })
     }, 1000)
+  })
 
-    return () => {
-      clearInterval(trigger)
-    }
-  }, [])
+  // [leave] Ionic lifecycle hook
+  useIonViewWillLeave(() => {
+    // clean up interval
+    clearInterval(countDownRef.current)
+  })
 
   useEffect(() => {
+    // go to next screen if time is up
     if (secondsRemaining === 0) navigateNext()
   }, [secondsRemaining])
 

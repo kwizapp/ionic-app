@@ -14,6 +14,8 @@ import { flash, heart, heartOutline } from 'ionicons/icons'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 
+import { QUESTION_TIME } from '../settings'
+
 function Poster(): React.ReactElement {
   // ref to interval, gets cleared on page leave
   const countDownRef = useRef<any>()
@@ -26,6 +28,7 @@ function Poster(): React.ReactElement {
 
   // [enter] Ionic lifecycle hook
   useIonViewWillEnter(() => {
+    setSecondsRemaining(QUESTION_TIME)
     countDownRef.current = setInterval(() => {
       setSecondsRemaining(prevSeconds => {
         if (prevSeconds <= 1) {

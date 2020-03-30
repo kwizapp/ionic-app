@@ -39,10 +39,10 @@ function Home(): React.ReactElement {
         >
           <div>
             <IonGrid>
-              <IonRow class="ion-align-items-center">
+              <IonRow>
                 <IonGrid>
-                  <IonRow class="ion-align-items-center">
-                    <IonCol size="7">
+                  <IonRow>
+                    <IonCol>
                       <CreateAnimation
                         ref={animationRef}
                         duration={200}
@@ -70,9 +70,17 @@ function Home(): React.ReactElement {
                           },
                         ]}
                       >
-                        <div style={{ height: '120px' }}></div>
+                        <div
+                          style={{
+                            height: '120px',
+                            width: '100px',
+                            margin: 'auto',
+                          }}
+                        ></div>
                       </CreateAnimation>
                     </IonCol>
+                  </IonRow>
+                  <IonRow>
                     <IonCol>
                       <IonImg src="assets/app_title.svg" />
                     </IonCol>

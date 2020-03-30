@@ -1,12 +1,13 @@
-import React, { useRef, useEffect } from 'react'
 import { CreateAnimation } from '@ionic/react'
+import React, { useEffect, useRef } from 'react'
 
 const KwizAnimated = () => {
-  const animationRef = useRef<React.RefObject<CreateAnimation> | any>()
+  const animationRef = useRef<any>()
 
   useEffect(() => {
-    animationRef.current?.animation.play()
+    animationRef.current.animation.play()
   }, [])
+
   return (
     <CreateAnimation
       ref={animationRef}

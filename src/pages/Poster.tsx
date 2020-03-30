@@ -1,38 +1,61 @@
-import React, { useState, useEffect } from 'react'
+import './Poster.css'
+
 import {
   IonContent,
-  IonPage,
-  IonText,
   IonFooter,
   IonIcon,
   IonImg,
+  IonPage,
+  IonText,
+  useIonViewWillEnter,
+  useIonViewWillLeave,
 } from '@ionic/react'
-import { heart, flash, heartOutline } from 'ionicons/icons'
+import { flash, heart, heartOutline } from 'ionicons/icons'
+import React, { useEffect, useRef, useState } from 'react'
+import { useHistory } from 'react-router'
 
-import './Poster.css'
+import { QUESTION_TIME } from '../settings'
 
-function Poster({ history }: any): React.ReactElement {
+function Poster(): React.ReactElement {
+  // ref to interval, gets cleared on page leave
+  const countDownRef = useRef<any>()
+
   const [secondsRemaining, setSecondsRemaining] = useState(11)
 
-  useEffect(() => {
-    const trigger = setInterval(() => {
+  const history = useHistory()
+
+  const navigateNext = () => history.push('/question')
+
+  // [enter] Ionic lifecycle hook
+  useIonViewWillEnter(() => {
+    setSecondsRemaining(QUESTION_TIME)
+    countDownRef.current = setInterval(() => {
       setSecondsRemaining(prevSeconds => {
         if (prevSeconds <= 1) {
-          clearInterval(trigger)
-          history.push('/')
           return 0
         }
         return prevSeconds - 1
       })
     }, 1000)
+  })
 
-    return () => {
-      clearInterval(trigger)
-    }
-  }, [])
+  // [leave] Ionic lifecycle hook
+  useIonViewWillLeave(() => {
+    // clean up interval
+    clearInterval(countDownRef.current)
+  })
+
+  useEffect(() => {
+    // go to next screen if time is up
+    if (secondsRemaining === 0) navigateNext()
+  }, [secondsRemaining])
 
   return (
-    <IonPage id="poster" className={`remaining-${secondsRemaining}`}>
+    <IonPage
+      id="poster"
+      onClick={navigateNext}
+      className={`remaining-${secondsRemaining}`}
+    >
       <IonContent>
         <IonText>
           <h1>Guess the movie title</h1>

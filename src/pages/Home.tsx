@@ -1,5 +1,4 @@
 import {
-  CreateAnimation,
   IonCol,
   IonContent,
   IonGrid,
@@ -8,19 +7,15 @@ import {
   IonRow,
   IonText,
 } from '@ionic/react'
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router'
 
-function Home(): React.ReactElement {
-  const animationRef = useRef<React.RefObject<CreateAnimation> | any>()
+import KwizAnimated from '../components/animations/KwizAnimated'
 
+function Home(): React.ReactElement {
   const history = useHistory()
 
   const navigateNext = () => history.push('/poster')
-
-  useEffect(() => {
-    animationRef.current?.animation.play()
-  }, [])
 
   return (
     <IonPage id="home-page">
@@ -41,45 +36,11 @@ function Home(): React.ReactElement {
                 <IonGrid>
                   <IonRow>
                     <IonCol>
-                      <CreateAnimation
-                        ref={animationRef}
-                        duration={200}
-                        iterations={Infinity}
-                        keyframes={[
-                          {
-                            offset: 0,
-                            background:
-                              'url(assets/kwiz_logo_frame_1.svg) no-repeat',
-                          },
-                          {
-                            offset: 0.25,
-                            background:
-                              'url(assets/kwiz_logo_frame_2.svg) no-repeat',
-                          },
-                          {
-                            offset: 0.5,
-                            background:
-                              'url(assets/kwiz_logo_frame_3.svg) no-repeat',
-                          },
-                          {
-                            offset: 1,
-                            background:
-                              'url(assets/kwiz_logo_frame_4.svg) no-repeat',
-                          },
-                        ]}
-                      >
-                        <div
-                          style={{
-                            height: '120px',
-                            width: '100px',
-                            margin: 'auto',
-                          }}
-                        ></div>
-                      </CreateAnimation>
+                      <KwizAnimated />
                     </IonCol>
                   </IonRow>
                   <IonRow>
-                    <IonCol>
+                    <IonCol class="ion-padding-top">
                       <IonImg src="assets/app_title.svg" />
                     </IonCol>
                   </IonRow>

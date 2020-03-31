@@ -1,5 +1,3 @@
-import './Poster.css'
-
 import { gql, useQuery } from '@apollo/client'
 import {
   IonContent,
@@ -18,6 +16,19 @@ import { useHistory } from 'react-router'
 import Loading from '../components/loading/Loading'
 import { QUESTION_TIME } from '../settings'
 
+import './Poster.css'
+
+interface Movie {
+  imdbId: string
+  title: string
+  releaseYear: number
+  posterPath: string
+}
+
+interface RandomMovieData {
+  randomMovie: Movie
+}
+
 const RANDOM_MOVIE = gql`
   {
     movie {
@@ -30,7 +41,7 @@ const RANDOM_MOVIE = gql`
 `
 
 function Poster(): React.ReactElement {
-  const { loading, error, data } = useQuery(RANDOM_MOVIE, {
+  const { loading, error, data } = useQuery<RandomMovieData>(RANDOM_MOVIE, {
     // cache-first: return data from cache if it already exists
     // network-only: always perform the query
     fetchPolicy: 'network-only',

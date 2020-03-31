@@ -26,7 +26,7 @@ interface Movie {
 }
 
 interface RandomMovieData {
-  randomMovie: Movie
+  movie: Movie
 }
 
 const RANDOM_MOVIE = gql`
@@ -92,11 +92,11 @@ function Poster(): React.ReactElement {
       <IonContent>
         <IonText>
           <h1>Guess the movie title</h1>
-          <h3>{data.movie.title}</h3>
+          <h3>{data && data.movie.title}</h3>
         </IonText>
         <div id="poster-container">
           <div id="timer">{secondsRemaining}</div>
-          <IonImg src={data.movie.posterPath} />
+          <IonImg src={data && data.movie.posterPath} />
         </div>
       </IonContent>
       <IonFooter>

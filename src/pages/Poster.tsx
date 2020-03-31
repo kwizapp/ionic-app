@@ -1,3 +1,5 @@
+import './Poster.css'
+
 import { gql, useQuery } from '@apollo/client'
 import {
   IonContent,
@@ -6,10 +8,8 @@ import {
   IonImg,
   IonPage,
   IonText,
-  useIonViewWillEnter,
-  useIonViewWillLeave,
   useIonViewDidLeave,
-  useIonViewDidEnter,
+  useIonViewWillEnter,
 } from '@ionic/react'
 import { flash, heart, heartOutline } from 'ionicons/icons'
 import React, { useEffect, useRef, useState } from 'react'
@@ -17,8 +17,6 @@ import { useHistory } from 'react-router'
 
 import Loading from '../components/loading/Loading'
 import { QUESTION_TIME } from '../settings'
-
-import './Poster.css'
 
 interface Movie {
   imdbId: string

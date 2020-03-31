@@ -23,11 +23,11 @@ import { client } from './graphql/client'
 /* Theme variables */
 function App(): React.ReactElement {
   return (
-    <IonApp>
-      <ApolloProvider client={client}>
+    <ApolloProvider client={client}>
+      <IonApp>
         <AppRouter />
-      </ApolloProvider>
-    </IonApp>
+      </IonApp>
+    </ApolloProvider>
   )
 }
 

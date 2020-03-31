@@ -30,7 +30,11 @@ const RANDOM_MOVIE = gql`
 `
 
 function Poster(): React.ReactElement {
-  const { loading, error, data } = useQuery(RANDOM_MOVIE)
+  const { loading, error, data } = useQuery(RANDOM_MOVIE, {
+    // cache-first: return data from cache if it already exists
+    // network-only: always perform the query
+    fetchPolicy: 'network-only',
+  })
 
   // ref to interval, gets cleared on page leave
   const countDownRef = useRef<any>()

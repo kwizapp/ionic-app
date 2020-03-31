@@ -8,6 +8,8 @@ import {
   IonText,
   useIonViewWillEnter,
   useIonViewWillLeave,
+  useIonViewDidLeave,
+  useIonViewDidEnter,
 } from '@ionic/react'
 import { flash, heart, heartOutline } from 'ionicons/icons'
 import React, { useEffect, useRef, useState } from 'react'
@@ -41,46 +43,75 @@ const RANDOM_MOVIE = gql`
 `
 
 function Poster(): React.ReactElement {
-  const { loading, error, data } = useQuery<RandomMovieData>(RANDOM_MOVIE, {
-    // cache-first: return data from cache if it already exists
-    // network-only: always perform the query
-    fetchPolicy: 'network-only',
-  })
-
   // ref to interval, gets cleared on page leave
-  const countDownRef = useRef<any>()
-
-  const [secondsRemaining, setSecondsRemaining] = useState(11)
-
+  const countDownRef = useRef<any>(null)
   const history = useHistory()
 
-  const navigateNext = () => history.push('/question')
+  const [isPosterExpired, setIsPosterExpired] = useState(false)
+  const [secondsRemaining, setSecondsRemaining] = useState(QUESTION_TIME)
 
-  // [enter] Ionic lifecycle hook
+  const { loading, error, data, refetch } = useQuery<RandomMovieData>(
+    RANDOM_MOVIE,
+  )
+
+  // if the current poster is expired, load a new one
+  useIonViewWillEnter(async () => {
+    console.log('useIonViewWillEnter', 'POSTER')
+
+    // ensure that we only refetch if the poster has expired
+    if (isPosterExpired) {
+      console.log('REFETCH')
+
+      await refetch()
+      setIsPosterExpired(false)
+    }
+  }, [isPosterExpired])
+
+  // setup a countdown for poster expiration
   useIonViewWillEnter(() => {
-    setSecondsRemaining(QUESTION_TIME)
-    countDownRef.current = setInterval(() => {
-      setSecondsRemaining(prevSeconds => {
-        if (prevSeconds <= 1) {
-          return 0
-        }
-        return prevSeconds - 1
-      })
-    }, 1000)
+    console.log('useIonViewWillEnter', 'COUNTDOWN')
+
+    // ensure that only one countdown can be set at a time
+    if (countDownRef.current === null) {
+      console.log('SET_COUNTDOWN')
+
+      // reset the remaining time
+      setSecondsRemaining(QUESTION_TIME)
+
+      // start a countdown
+      countDownRef.current = setInterval(() => {
+        setSecondsRemaining(prevSeconds => {
+          if (prevSeconds <= 1) {
+            return 0
+          }
+          return prevSeconds - 1
+        })
+      }, 1000)
+    }
   })
 
-  // [leave] Ionic lifecycle hook
-  useIonViewWillLeave(() => {
+  // clean up the countdown timer when the page is left
+  // and expire the current poster such that we get a new one next time
+  useIonViewDidLeave(() => {
+    console.log('useIonViewDidLeave')
+
     // clean up interval
     clearInterval(countDownRef.current)
+    countDownRef.current = null
+
+    // set the current poster to be expired
+    setIsPosterExpired(true)
   })
 
+  // create a handler for page navigation
+  const navigateNext = () => history.replace('/question')
+
+  // track the remaining seconds and redirect to the next page on 0
   useEffect(() => {
-    // go to next screen if time is up
     if (secondsRemaining === 0) navigateNext()
   }, [secondsRemaining])
 
-  if (loading) return <Loading />
+  if (loading || isPosterExpired) return <Loading />
   if (error) return <p>Error :(</p>
 
   return (

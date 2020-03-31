@@ -15,7 +15,9 @@ import React from 'react'
 
 import AppRouter from './AppRouter'
 import { ApolloProvider } from '@apollo/client'
-import { client } from './graphql/client'
+import createClient from './graphql/client'
+
+const client = createClient()
 
 /* Core CSS required for Ionic components to work properly */
 /* Basic CSS for apps built with Ionic */
@@ -23,11 +25,11 @@ import { client } from './graphql/client'
 /* Theme variables */
 function App(): React.ReactElement {
   return (
-    <ApolloProvider client={client}>
-      <IonApp>
+    <IonApp>
+      <ApolloProvider client={client}>
         <AppRouter />
-      </IonApp>
-    </ApolloProvider>
+      </ApolloProvider>
+    </IonApp>
   )
 }
 

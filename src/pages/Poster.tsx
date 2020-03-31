@@ -1,5 +1,6 @@
 import './Poster.css'
 
+import { gql, useQuery } from '@apollo/client'
 import {
   IonContent,
   IonFooter,
@@ -14,9 +15,23 @@ import { flash, heart, heartOutline } from 'ionicons/icons'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 
+import Loading from '../components/loading/Loading'
 import { QUESTION_TIME } from '../settings'
 
+const RANDOM_MOVIE = gql`
+  {
+    movie {
+      imdbId
+      title
+      releaseYear
+      posterPath
+    }
+  }
+`
+
 function Poster(): React.ReactElement {
+  const { loading, error, data } = useQuery(RANDOM_MOVIE)
+
   // ref to interval, gets cleared on page leave
   const countDownRef = useRef<any>()
 
@@ -50,6 +65,9 @@ function Poster(): React.ReactElement {
     if (secondsRemaining === 0) navigateNext()
   }, [secondsRemaining])
 
+  if (loading) return <Loading />
+  if (error) return <p>Error :(</p>
+
   return (
     <IonPage
       id="poster"
@@ -59,10 +77,11 @@ function Poster(): React.ReactElement {
       <IonContent>
         <IonText>
           <h1>Guess the movie title</h1>
+          <h3>{data.movie.title}</h3>
         </IonText>
         <div id="poster-container">
           <div id="timer">{secondsRemaining}</div>
-          <IonImg src="assets/poster_witcher.png" />
+          <IonImg src={data.movie.posterPath} />
         </div>
       </IonContent>
       <IonFooter>

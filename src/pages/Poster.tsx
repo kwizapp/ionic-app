@@ -15,6 +15,7 @@ import { flash, heart, heartOutline } from 'ionicons/icons'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 
+import BlurAnimated from '../components/animations/BlurAnimated'
 import Loading from '../components/loading/Loading'
 import { QUESTION_TIME } from '../settings'
 
@@ -121,11 +122,12 @@ function Poster(): React.ReactElement {
       <IonContent>
         <IonText>
           <h1>Guess the movie title</h1>
-          <h3>{data && data.movie.title}</h3>
         </IonText>
         <div id="poster-container">
           <div id="timer">{secondsRemaining}</div>
-          <IonImg src={data && data.movie.posterPath} />
+          <BlurAnimated>
+            <IonImg src={data && data.movie.posterPath} />
+          </BlurAnimated>
         </div>
       </IonContent>
       <IonFooter>

@@ -1,28 +1,61 @@
-import './Home.css'
-
 import {
+  IonCol,
   IonContent,
-  IonFab,
-  IonFabButton,
-  IonIcon,
+  IonGrid,
   IonImg,
   IonPage,
+  IonRow,
   IonText,
 } from '@ionic/react'
-import { playCircleOutline } from 'ionicons/icons'
 import React from 'react'
+import { useHistory } from 'react-router'
+
+import KwizAnimated from '../components/animations/KwizAnimated'
 
 function Home(): React.ReactElement {
+  const history = useHistory()
+
+  const navigateNext = () => history.push('/poster')
+
   return (
     <IonPage id="home-page">
-      <IonContent fullscreen>
-        <IonImg src="assets/kwiz_logo.png" />
-        <IonText>I like to movie movie ...</IonText>
-        <IonFab vertical="bottom" horizontal="center">
-          <IonFabButton color="primary" routerLink={'/poster'}>
-            <IonIcon icon={playCircleOutline} />
-          </IonFabButton>
-        </IonFab>
+      <IonContent fullscreen onClick={navigateNext}>
+        <div
+          style={{
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background:
+              'linear-gradient(0deg, rgba(173,220,244,1) 0%, rgba(235,250,248,1) 100%)',
+          }}
+        >
+          <div>
+            <IonGrid>
+              <IonRow>
+                <IonGrid>
+                  <IonRow>
+                    <IonCol>
+                      <KwizAnimated />
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol class="ion-padding-top">
+                      <IonImg src="assets/app_title.svg" />
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol class="ion-text-center">
+                      <IonText>
+                        <p>tap screen to start playing</p>
+                      </IonText>
+                    </IonCol>
+                  </IonRow>
+                </IonGrid>
+              </IonRow>
+            </IonGrid>
+          </div>
+        </div>
       </IonContent>
     </IonPage>
   )

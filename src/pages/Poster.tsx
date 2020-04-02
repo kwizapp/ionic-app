@@ -57,12 +57,8 @@ function Poster(): React.ReactElement {
 
   // if the current poster is expired, load a new one
   useIonViewWillEnter(async () => {
-    console.log('useIonViewWillEnter', 'POSTER')
-
     // ensure that we only refetch if the poster has expired
     if (isPosterExpired) {
-      console.log('REFETCH')
-
       await refetch()
       setIsPosterExpired(false)
     }
@@ -70,12 +66,8 @@ function Poster(): React.ReactElement {
 
   // setup a countdown for poster expiration
   useIonViewWillEnter(() => {
-    console.log('useIonViewWillEnter', 'COUNTDOWN')
-
     // ensure that only one countdown can be set at a time
     if (countDownRef.current === null) {
-      console.log('SET_COUNTDOWN')
-
       // reset the remaining time
       setSecondsRemaining(QUESTION_TIME)
 
@@ -94,8 +86,6 @@ function Poster(): React.ReactElement {
   // clean up the countdown timer when the page is left
   // and expire the current poster such that we get a new one next time
   useIonViewDidLeave(() => {
-    console.log('useIonViewDidLeave')
-
     // clean up interval
     clearInterval(countDownRef.current)
     countDownRef.current = null
@@ -109,7 +99,7 @@ function Poster(): React.ReactElement {
 
   const handleClick = () => {
     // TODO: add remaining seconds to global store for next screen
-    console.log(secondsRemaining)
+
     navigateNext()
   }
 

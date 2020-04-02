@@ -107,6 +107,12 @@ function Poster(): React.ReactElement {
   // create a handler for page navigation
   const navigateNext = () => history.replace('/question')
 
+  const handleClick = () => {
+    // TODO: add remaining seconds to global store for next screen
+    console.log(secondsRemaining)
+    navigateNext()
+  }
+
   // track the remaining seconds and redirect to the next page on 0
   useEffect(() => {
     if (secondsRemaining === 0) navigateNext()
@@ -118,7 +124,7 @@ function Poster(): React.ReactElement {
   return (
     <IonPage
       id="poster"
-      onClick={navigateNext}
+      onClick={handleClick}
       className={`remaining-${secondsRemaining}`}
     >
       <IonContent>

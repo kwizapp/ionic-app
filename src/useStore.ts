@@ -1,6 +1,7 @@
 import { Plugins } from '@capacitor/core'
 import create, { State } from 'zustand'
 import produce from 'immer'
+import { QUESTION_TIME } from './settings'
 
 const { Storage } = Plugins
 
@@ -22,19 +23,31 @@ const persist = (config: any) => (set: Function, get: Function, api: any) =>
   )
 
 // setup the zustand store hook
+const initialState = {
+  alive: true,
+  lives: 3,
+  points: 0,
+  timeRemaining: QUESTION_TIME,
+}
 const [useStore] = create(
   persist(
     immer((set: any) => ({
-      alive: true,
-      lives: 3,
-      points: 0,
-      timeRemaining: null,
+      ...initialState,
       setState(newState: any) {
         set(() => newState)
+      },
+      resetState() {
+        set(() => initialState)
       },
       setTimeRemaining(seconds: any) {
         set((state: State) => {
           state.timeRemaining = seconds
+        })
+      },
+      addPoints() {
+        set((state: State) => {
+          // TODO: use the points provided by the API instead
+          state.points += (state.timeRemaining / QUESTION_TIME) * 1000
         })
       },
       removeLife() {

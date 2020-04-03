@@ -1,6 +1,7 @@
 import React from 'react'
-import { IonPage, IonContent, IonButton } from '@ionic/react'
+import { IonButton } from '@ionic/react'
 import { useHistory } from 'react-router'
+import StatsLayout from '../components/layouts/StatsLayout'
 
 const Success = () => {
   const history = useHistory()
@@ -8,13 +9,11 @@ const Success = () => {
   const navigateNext = () => history.push('/trivia')
 
   return (
-    <IonPage>
-      <IonContent>
-        <h1>Success Screen</h1>
+    <StatsLayout>
+      <h1>Success Screen</h1>
 
-        <IonButton onClick={navigateNext}>Trivia</IonButton>
-      </IonContent>
-    </IonPage>
+      <IonButton onClick={navigateNext}>Trivia</IonButton>
+    </StatsLayout>
   )
 }
 

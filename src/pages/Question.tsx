@@ -1,32 +1,33 @@
 import React from 'react'
-import { IonPage, IonContent, IonButton } from '@ionic/react'
+import { IonButton } from '@ionic/react'
 import { useHistory } from 'react-router'
-import Stats from './Stats'
 import useStore from '../useStore'
+import StatsLayout from '../components/layouts/StatsLayout'
 
 const Question = () => {
   const history = useHistory()
 
-  const { removeLife } = useStore()
+  const { addPoints, removeLife } = useStore()
 
-  const navigateSuccess = () => history.push('/success')
-  const navigateFailure = () => history.push('/failure')
+  const navigateSuccess = () => {
+    addPoints()
+    history.push('/success')
+  }
+  const navigateFailure = () => {
+    removeLife()
+    history.push('/failure')
+  }
 
   return (
-    <IonPage>
-      <IonContent>
-        <h1>Question Screen</h1>
-        <IonButton color="primary" onClick={navigateSuccess}>
-          Success
-        </IonButton>
-        <IonButton color="primary" onClick={navigateFailure}>
-          Failure
-        </IonButton>
-        <IonButton onClick={removeLife}>LOSE</IonButton>
-      </IonContent>
-
-      <Stats />
-    </IonPage>
+    <StatsLayout>
+      <h1>Question Screen</h1>
+      <IonButton color="primary" onClick={navigateSuccess}>
+        Success
+      </IonButton>
+      <IonButton color="primary" onClick={navigateFailure}>
+        Failure
+      </IonButton>
+    </StatsLayout>
   )
 }
 

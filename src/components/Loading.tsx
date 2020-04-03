@@ -1,7 +1,7 @@
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react'
 import React from 'react'
 
-import KwizAnimated from '../animations/KwizAnimated'
+import KwizAnimated from './animations/KwizAnimated'
 
 const Loading = () => {
   return (

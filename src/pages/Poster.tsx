@@ -5,9 +5,7 @@ import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
-  IonContent,
   IonImg,
-  IonPage,
   IonText,
   useIonViewDidLeave,
   useIonViewWillEnter,
@@ -16,9 +14,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 
 import BlurAnimated from '../components/animations/BlurAnimated'
-import Loading from '../components/loading/Loading'
+import Loading from '../components/Loading'
 import { QUESTION_TIME } from '../settings'
-import Stats from './Stats'
+import StatsLayout from '../components/layouts/StatsLayout'
 import useStore from '../useStore'
 
 interface Movie {
@@ -115,32 +113,24 @@ const Poster = () => {
   if (error) return <p>Error :(</p>
 
   return (
-    <IonPage
-      id="poster"
-      onClick={handleClick}
-      className={`remaining-${secondsRemaining}`}
-    >
-      <IonContent>
-        <div id="timer">{secondsRemaining}</div>
+    <StatsLayout id="poster" onClick={handleClick}>
+      <div id="timer">{secondsRemaining}</div>
 
+      <IonCard style={{ margin: 4 }}>
+        <IonCardHeader style={{ padding: 8 }}>
+          <IonCardTitle>Guess The Movie</IonCardTitle>
+          <IonText>tap screen to submit answer</IonText>
+        </IonCardHeader>
+      </IonCard>
+
+      <div style={{ maxWidth: 500 }}>
         <IonCard style={{ margin: 4 }}>
-          <IonCardHeader style={{ padding: 8 }}>
-            <IonCardTitle>Guess The Movie</IonCardTitle>
-            <IonText>tap screen to submit answer</IonText>
-          </IonCardHeader>
+          <BlurAnimated>
+            <IonImg src={data && data.movie.posterPath} />
+          </BlurAnimated>
         </IonCard>
-
-        <div style={{ maxWidth: 500 }}>
-          <IonCard style={{ margin: 4 }}>
-            <BlurAnimated>
-              <IonImg src={data && data.movie.posterPath} />
-            </BlurAnimated>
-          </IonCard>
-        </div>
-      </IonContent>
-
-      <Stats />
-    </IonPage>
+      </div>
+    </StatsLayout>
   )
 }
 

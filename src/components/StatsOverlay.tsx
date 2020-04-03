@@ -1,4 +1,4 @@
-import './Stats.css'
+import './StatsOverlay.css'
 
 import React from 'react'
 import { flash, heart, heartOutline } from 'ionicons/icons'
@@ -18,7 +18,7 @@ function generateLiveDisplay(livesTotal: number, livesRemaining: number) {
   return [...usedLives, ...remainingLives]
 }
 
-const Stats = () => {
+const StatsOverlay = () => {
   const lives = useStore(state => state.lives)
   const points = useStore(state => state.points)
 
@@ -39,4 +39,4 @@ const Stats = () => {
   )
 }
 
-export default Stats
+export default StatsOverlay

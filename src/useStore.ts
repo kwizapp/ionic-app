@@ -25,11 +25,23 @@ const persist = (config: any) => (set: Function, get: Function, api: any) =>
 const [useStore] = create(
   persist(
     immer((set: any) => ({
+      alive: true,
       lives: 3,
       points: 0,
+      timeRemaining: null,
+      setTimeRemaining(seconds: any) {
+        set((state: State) => {
+          state.timeRemaining = seconds
+        })
+      },
       removeLife() {
         set((state: State) => {
-          state.lives -= 1
+          if (state.lives > 1) {
+            state.lives -= 1
+          } else {
+            state.lives = 0
+            state.alive = false
+          }
         })
       },
     })),

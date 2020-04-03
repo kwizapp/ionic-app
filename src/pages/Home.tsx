@@ -26,7 +26,7 @@ const Home = () => {
     const initializeGameState = async () => {
       const gameState = await Storage.get({ key: 'GameState ' })
       if (gameState.value) {
-        setState(JSON.parse(gameState as any))
+        setState(JSON.parse(gameState.value))
       }
     }
     initializeGameState()

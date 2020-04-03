@@ -19,6 +19,7 @@ import BlurAnimated from '../components/animations/BlurAnimated'
 import Loading from '../components/loading/Loading'
 import { QUESTION_TIME } from '../settings'
 import Stats from './Stats'
+import useStore from '../useStore'
 
 interface Movie {
   imdbId: string
@@ -53,6 +54,8 @@ const Poster = () => {
   const { loading, error, data, refetch } = useQuery<RandomMovieData>(
     RANDOM_MOVIE,
   )
+
+  const { setTimeRemaining } = useStore()
 
   // if the current poster is expired, load a new one
   useIonViewWillEnter(async () => {
@@ -96,8 +99,9 @@ const Poster = () => {
   // create a handler for page navigation
   const navigateNext = () => history.replace('/question')
 
-  const handleClick = () => {
-    // TODO: add remaining seconds to global store for next screen
+  const handleClick = async () => {
+    // add remaining seconds to global store for next screen
+    await setTimeRemaining(secondsRemaining)
 
     navigateNext()
   }

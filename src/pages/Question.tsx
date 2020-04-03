@@ -2,9 +2,12 @@ import React from 'react'
 import { IonPage, IonContent, IonButton } from '@ionic/react'
 import { useHistory } from 'react-router'
 import Stats from './Stats'
+import useStore from '../useStore'
 
 const Question = () => {
   const history = useHistory()
+
+  const { removeLife } = useStore()
 
   const navigateSuccess = () => history.push('/success')
   const navigateFailure = () => history.push('/failure')
@@ -19,6 +22,7 @@ const Question = () => {
         <IonButton color="primary" onClick={navigateFailure}>
           Failure
         </IonButton>
+        <IonButton onClick={removeLife}>LOSE</IonButton>
       </IonContent>
 
       <Stats />

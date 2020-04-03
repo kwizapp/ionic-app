@@ -12,7 +12,7 @@ import { useHistory } from 'react-router'
 
 import KwizAnimated from '../components/animations/KwizAnimated'
 
-function Home(): React.ReactElement {
+const Home = () => {
   const history = useHistory()
 
   const navigateNext = () => history.push('/poster')

@@ -6,20 +6,19 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonContent,
-  IonIcon,
   IonImg,
   IonPage,
   IonText,
   useIonViewDidLeave,
   useIonViewWillEnter,
 } from '@ionic/react'
-import { flash, heart, heartOutline } from 'ionicons/icons'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 
 import BlurAnimated from '../components/animations/BlurAnimated'
 import Loading from '../components/loading/Loading'
 import { QUESTION_TIME } from '../settings'
+import Stats from './Stats'
 
 interface Movie {
   imdbId: string
@@ -43,7 +42,7 @@ const RANDOM_MOVIE = gql`
   }
 `
 
-function Poster(): React.ReactElement {
+const Poster = () => {
   // ref to interval, gets cleared on page leave
   const countDownRef = useRef<any>(null)
   const history = useHistory()
@@ -136,21 +135,7 @@ function Poster(): React.ReactElement {
         </div>
       </IonContent>
 
-      <div id="stats">
-        <div className="paper">
-          <div id="points">
-            <IonIcon icon={flash} />
-            12&apos;489
-          </div>
-        </div>
-        <div className="paper">
-          <div id="lives">
-            <IonIcon icon={heartOutline} />
-            <IonIcon icon={heart} />
-            <IonIcon icon={heart} />
-          </div>
-        </div>
-      </div>
+      <Stats />
     </IonPage>
   )
 }

@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import {
   IonCol,
   IonContent,
@@ -7,13 +8,29 @@ import {
   IonRow,
   IonText,
 } from '@ionic/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router'
 
 import KwizAnimated from '../components/animations/KwizAnimated'
+import useStore from '../useStore'
+
+const { Storage } = Plugins
 
 const Home = () => {
   const history = useHistory()
+
+  const { setState } = useStore()
+
+  useEffect(() => {
+    // initialize the game state using the capacitor storage api
+    const initializeGameState = async () => {
+      const gameState = await Storage.get({ key: 'GameState ' })
+      if (gameState.value) {
+        setState(JSON.parse(gameState as any))
+      }
+    }
+    initializeGameState()
+  }, [setState])
 
   const navigateNext = () => history.push('/poster')
 

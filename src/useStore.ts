@@ -29,6 +29,9 @@ const [useStore] = create(
       lives: 3,
       points: 0,
       timeRemaining: null,
+      setState(newState: any) {
+        set(() => newState)
+      },
       setTimeRemaining(seconds: any) {
         set((state: State) => {
           state.timeRemaining = seconds

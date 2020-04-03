@@ -7,8 +7,9 @@ import {
   IonPage,
   IonRow,
   IonText,
+  useIonViewWillEnter,
 } from '@ionic/react'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router'
 
 import KwizAnimated from '../components/animations/KwizAnimated'
@@ -21,15 +22,11 @@ const Home = () => {
 
   const { setState } = useStore()
 
-  useEffect(() => {
-    // initialize the game state using the capacitor storage api
-    const initializeGameState = async () => {
-      const gameState = await Storage.get({ key: 'GameState ' })
-      if (gameState.value) {
-        setState(JSON.parse(gameState.value))
-      }
+  useIonViewWillEnter(async () => {
+    const gameState = await Storage.get({ key: 'GameState' })
+    if (gameState.value) {
+      setState(JSON.parse(gameState.value))
     }
-    initializeGameState()
   }, [setState])
 
   const navigateNext = () => history.push('/poster')

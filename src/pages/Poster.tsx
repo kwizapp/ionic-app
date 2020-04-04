@@ -1,5 +1,3 @@
-import './Poster.css'
-
 import { gql, useQuery } from '@apollo/client'
 import {
   IonCard,
@@ -18,6 +16,7 @@ import Loading from '../components/Loading'
 import { QUESTION_TIME } from '../settings'
 import StatsLayout from '../components/layouts/StatsLayout'
 import useStore from '../useStore'
+import Timer from '../components/Timer'
 
 interface Movie {
   imdbId: string
@@ -115,18 +114,20 @@ const Poster = () => {
   if (error) return <p>Error :(</p>
 
   return (
-    <StatsLayout id="poster" onClick={handleClick}>
-      <div id="timer">{secondsRemaining}</div>
+    <StatsLayout className="text-center" onClick={handleClick}>
+      <div className="absolute top-24 left-6">
+        <Timer secondsRemaining={secondsRemaining} />
+      </div>
 
-      <IonCard style={{ margin: 4 }}>
-        <IonCardHeader style={{ padding: 8 }}>
+      <IonCard className="m-2">
+        <IonCardHeader className="p-2">
           <IonCardTitle>Guess The Movie</IonCardTitle>
           <IonText>tap screen to submit answer</IonText>
         </IonCardHeader>
       </IonCard>
 
-      <div style={{ maxWidth: 500 }}>
-        <IonCard style={{ margin: 4 }}>
+      <div className="max-w-md">
+        <IonCard className="m-2">
           <BlurAnimated>
             <IonImg src={data && data.movie.posterPath} />
           </BlurAnimated>

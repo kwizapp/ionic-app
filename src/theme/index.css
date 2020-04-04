@@ -1,10 +1,14 @@
 /* purgecss start ignore */
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
+@tailwind base;
+@tailwind components;
 /* purgecss end ignore */
 
 /* own component declarations start */
 
+.paper {
+  @apply p-2 bg-white rounded-sm shadow;
+}
+
 /* own component declarations end */
 
-@import 'tailwindcss/utilities';
+@tailwind utilities;

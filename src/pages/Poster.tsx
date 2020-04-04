@@ -95,12 +95,14 @@ const Poster = () => {
   })
 
   // create a handler for page navigation
-  const navigateNext = () => history.replace('/question')
-
-  const handleClick = async () => {
+  const navigateNext = async () => {
     // add remaining seconds to global store for next screen
     await setTimeRemaining(secondsRemaining)
 
+    history.replace('/question')
+  }
+
+  const handleClick = () => {
     navigateNext()
   }
 

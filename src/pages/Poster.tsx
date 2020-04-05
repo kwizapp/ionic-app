@@ -14,9 +14,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 
 import BlurAnimated from '../components/animations/BlurAnimated'
+import StatsLayout from '../components/layouts/StatsLayout'
 import Loading from '../components/Loading'
 import { QUESTION_TIME } from '../settings'
-import StatsLayout from '../components/layouts/StatsLayout'
+import { useStorage } from '../useStorage'
 import useStore from '../useStore'
 
 interface Movie {
@@ -45,6 +46,8 @@ const Poster = () => {
   // ref to interval, gets cleared on page leave
   const countDownRef = useRef<any>(null)
   const history = useHistory()
+
+  useStorage()
 
   const [isPosterExpired, setIsPosterExpired] = useState(false)
   const [secondsRemaining, setSecondsRemaining] = useState(QUESTION_TIME)

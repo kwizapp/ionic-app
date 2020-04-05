@@ -1,11 +1,15 @@
-import React from 'react'
 import { IonButton } from '@ionic/react'
+import React from 'react'
 import { useHistory } from 'react-router'
-import useStore from '../useStore'
+
 import StatsLayout from '../components/layouts/StatsLayout'
+import { useStorage } from '../useStorage'
+import useStore from '../useStore'
 
 const Question = () => {
   const history = useHistory()
+
+  useStorage()
 
   const { addPoints, removeLife } = useStore()
 

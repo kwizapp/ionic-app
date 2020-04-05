@@ -5,21 +5,20 @@ import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
-  IonContent,
-  IonIcon,
   IonImg,
-  IonPage,
   IonText,
   useIonViewDidLeave,
   useIonViewWillEnter,
 } from '@ionic/react'
-import { flash, heart, heartOutline } from 'ionicons/icons'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 
 import BlurAnimated from '../components/animations/BlurAnimated'
-import Loading from '../components/loading/Loading'
+import StatsLayout from '../components/layouts/StatsLayout'
+import Loading from '../components/Loading'
 import { QUESTION_TIME } from '../settings'
+import { useStorage } from '../useStorage'
+import useStore from '../useStore'
 
 interface Movie {
   imdbId: string
@@ -43,10 +42,12 @@ const RANDOM_MOVIE = gql`
   }
 `
 
-function Poster(): React.ReactElement {
+const Poster = () => {
   // ref to interval, gets cleared on page leave
   const countDownRef = useRef<any>(null)
   const history = useHistory()
+
+  useStorage()
 
   const [isPosterExpired, setIsPosterExpired] = useState(false)
   const [secondsRemaining, setSecondsRemaining] = useState(QUESTION_TIME)
@@ -54,6 +55,8 @@ function Poster(): React.ReactElement {
   const { loading, error, data, refetch } = useQuery<RandomMovieData>(
     RANDOM_MOVIE,
   )
+
+  const { setTimeRemaining } = useStore()
 
   // if the current poster is expired, load a new one
   useIonViewWillEnter(async () => {
@@ -97,8 +100,9 @@ function Poster(): React.ReactElement {
   // create a handler for page navigation
   const navigateNext = () => history.replace('/question')
 
-  const handleClick = () => {
-    // TODO: add remaining seconds to global store for next screen
+  const handleClick = async () => {
+    // add remaining seconds to global store for next screen
+    await setTimeRemaining(secondsRemaining)
 
     navigateNext()
   }
@@ -112,46 +116,24 @@ function Poster(): React.ReactElement {
   if (error) return <p>Error :(</p>
 
   return (
-    <IonPage
-      id="poster"
-      onClick={handleClick}
-      className={`remaining-${secondsRemaining}`}
-    >
-      <IonContent>
-        <div id="timer">{secondsRemaining}</div>
+    <StatsLayout id="poster" onClick={handleClick}>
+      <div id="timer">{secondsRemaining}</div>
 
+      <IonCard style={{ margin: 4 }}>
+        <IonCardHeader style={{ padding: 8 }}>
+          <IonCardTitle>Guess The Movie</IonCardTitle>
+          <IonText>tap screen to submit answer</IonText>
+        </IonCardHeader>
+      </IonCard>
+
+      <div style={{ maxWidth: 500 }}>
         <IonCard style={{ margin: 4 }}>
-          <IonCardHeader style={{ padding: 8 }}>
-            <IonCardTitle>Guess The Movie</IonCardTitle>
-            <IonText>tap screen to submit answer</IonText>
-          </IonCardHeader>
+          <BlurAnimated>
+            <IonImg src={data && data.movie.posterPath} />
+          </BlurAnimated>
         </IonCard>
-
-        <div style={{ maxWidth: 500 }}>
-          <IonCard style={{ margin: 4 }}>
-            <BlurAnimated>
-              <IonImg src={data && data.movie.posterPath} />
-            </BlurAnimated>
-          </IonCard>
-        </div>
-      </IonContent>
-
-      <div id="stats">
-        <div className="paper">
-          <div id="points">
-            <IonIcon icon={flash} />
-            12&apos;489
-          </div>
-        </div>
-        <div className="paper">
-          <div id="lives">
-            <IonIcon icon={heartOutline} />
-            <IonIcon icon={heart} />
-            <IonIcon icon={heart} />
-          </div>
-        </div>
       </div>
-    </IonPage>
+    </StatsLayout>
   )
 }
 

@@ -21,14 +21,11 @@ const Home = () => {
   const navigateNext = () => history.push('/poster')
 
   return (
-    <IonPage id="home-page">
+    <IonPage>
       <IonContent fullscreen onClick={navigateNext}>
         <div
+          className="flex items-center justify-center h-full"
           style={{
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             background:
               'linear-gradient(0deg, rgba(173,220,244,1) 0%, rgba(235,250,248,1) 100%)',
           }}

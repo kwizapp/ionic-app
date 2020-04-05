@@ -1,5 +1,3 @@
-import './StatsOverlay.css'
-
 import React from 'react'
 import { flash, heart, heartOutline } from 'ionicons/icons'
 import { IonIcon } from '@ionic/react'
@@ -25,15 +23,17 @@ const StatsOverlay = () => {
   const liveDisplay = generateLiveDisplay(3, lives)
 
   return (
-    <div id="stats">
+    <div className="fixed bottom-0 flex items-center justify-between w-full p-4">
       <div className="paper">
-        <div id="points">
+        <div className="flex items-center px-1 text-xl font-extrabold">
           <IonIcon icon={flash} />
           {points}
         </div>
       </div>
       <div className="paper">
-        <div id="lives">{liveDisplay}</div>
+        <div className="flex items-center px-1 text-xl text-red-600">
+          {liveDisplay}
+        </div>
       </div>
     </div>
   )

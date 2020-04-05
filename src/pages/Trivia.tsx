@@ -1,20 +1,23 @@
+import { IonButton } from '@ionic/react'
 import React from 'react'
-import { IonPage, IonContent, IonButton } from '@ionic/react'
 import { useHistory } from 'react-router'
+
+import StatsLayout from '../components/layouts/StatsLayout'
+import { useStorage } from '../useStorage'
 
 const Trivia = () => {
   const history = useHistory()
 
+  useStorage()
+
   const navigateNext = () => history.push('/poster')
 
   return (
-    <IonPage>
-      <IonContent>
-        <h1>Trivia Screen</h1>
+    <StatsLayout>
+      <h1>Trivia Screen</h1>
 
-        <IonButton onClick={navigateNext}>Next Question</IonButton>
-      </IonContent>
-    </IonPage>
+      <IonButton onClick={navigateNext}>Next Question</IonButton>
+    </StatsLayout>
   )
 }
 

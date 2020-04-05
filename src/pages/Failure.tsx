@@ -1,11 +1,15 @@
-import React from 'react'
 import { IonButton } from '@ionic/react'
+import React from 'react'
 import { useHistory } from 'react-router'
+
 import StatsLayout from '../components/layouts/StatsLayout'
+import { useStorage } from '../useStorage'
 import useStore from '../useStore'
 
 const Failure = () => {
   const history = useHistory()
+
+  useStorage()
 
   const lives = useStore(state => state.lives)
 

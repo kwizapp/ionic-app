@@ -1,4 +1,3 @@
-import { Plugins } from '@capacitor/core'
 import {
   IonCol,
   IonContent,
@@ -7,27 +6,17 @@ import {
   IonPage,
   IonRow,
   IonText,
-  useIonViewWillEnter,
 } from '@ionic/react'
 import React from 'react'
 import { useHistory } from 'react-router'
 
 import KwizAnimated from '../components/animations/KwizAnimated'
-import useStore from '../useStore'
-
-const { Storage } = Plugins
+import { useStorage } from '../useStorage'
 
 const Home = () => {
   const history = useHistory()
 
-  const { setState } = useStore()
-
-  useIonViewWillEnter(async () => {
-    const gameState = await Storage.get({ key: 'GameState' })
-    if (gameState.value) {
-      setState(JSON.parse(gameState.value))
-    }
-  }, [setState])
+  useStorage()
 
   const navigateNext = () => history.push('/poster')
 

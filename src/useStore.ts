@@ -11,10 +11,12 @@ interface Store {
   lives: number
   points: number
   timeRemaining: number
+  currentImdbId: string
   setState: (state: Partial<Store>) => void
   resetState: () => void
   setTimeRemaining: (seconds: number) => void
-  addPoints: () => void
+  setCurrentImdbId: (id: string) => void
+  addPoints: (points: number) => void
   removeLife: () => void
 }
 
@@ -43,11 +45,12 @@ const persist = (config: any) => (
   )
 
 // setup the zustand store hook
-const initialState = {
+const initialState: Partial<Store> = {
   alive: true,
   lives: 3,
   points: 0,
   timeRemaining: QUESTION_TIME,
+  currentImdbId: '',
 }
 
 const [useStore] = create<Store>(
@@ -69,10 +72,15 @@ const [useStore] = create<Store>(
         })
       },
 
-      addPoints() {
+      setCurrentImdbId(id: string) {
         set((state: Store) => {
-          // TODO: use the points provided by the API instead
-          state.points += (state.timeRemaining / QUESTION_TIME) * 1000
+          state.currentImdbId = id
+        })
+      },
+
+      addPoints(points: number) {
+        set((state: Store) => {
+          state.points += points
         })
       },
 

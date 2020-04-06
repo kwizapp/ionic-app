@@ -40,7 +40,7 @@ export const movieService = {
 
       return score
     } catch (error) {
-      console.log(error)
+      console.warn(error)
     }
   },
 }

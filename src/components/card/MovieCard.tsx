@@ -14,7 +14,7 @@ const MovieCard = ({ title, posterPath, onClick }: Props) => {
     >
       <img className="rounded-md w-20" src={posterPath} />
       <div className="p-4 flex items-center">
-        <h2 className="font-sans text-md tracking-wide">{title}</h2>
+        <h2 className="font-sans font-medium text-md tracking-wide">{title}</h2>
       </div>
     </div>
   )

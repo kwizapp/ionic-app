@@ -55,7 +55,7 @@ const Poster = () => {
     RANDOM_MOVIE,
   )
 
-  const { setTimeRemaining } = useStore()
+  const { setTimeRemaining, setCurrentImdbId } = useStore()
 
   // if the current poster is expired, load a new one
   useIonViewWillEnter(async () => {
@@ -97,7 +97,17 @@ const Poster = () => {
   })
 
   // create a handler for page navigation
-  const navigateNext = () => history.replace('/question')
+  const navigateNext = () => {
+    // store imdbid in global store
+    if (data) {
+      const imdbId = data?.movie.imdbId
+      if (imdbId) {
+        setCurrentImdbId(imdbId)
+      }
+    }
+
+    history.replace('/question')
+  }
 
   const handleClick = async () => {
     // add remaining seconds to global store for next screen

@@ -42,7 +42,7 @@ const RANDOM_MOVIE = gql`
 `
 
 const Poster = () => {
-  useStorage()
+  // useStorage()
 
   // ref to interval, gets cleared on page leave
   const countDownRef = useRef<any>(null)
@@ -113,6 +113,11 @@ const Poster = () => {
   const handleClick = async () => {
     // add remaining seconds to global store for next screen
     await setTimeRemaining(secondsRemaining)
+
+    // const imdbId = data?.movie.imdbId
+    // if (imdbId) {
+    //   await setCurrentImdbId(imdbId)
+    // }
 
     navigateNext()
   }

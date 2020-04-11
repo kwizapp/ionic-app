@@ -6,9 +6,9 @@ import StatsLayout from '../components/layouts/StatsLayout'
 import { useStorage } from '../useStorage'
 
 const Success = () => {
-  const history = useHistory()
+  // useStorage()
 
-  useStorage()
+  const history = useHistory()
 
   const navigateNext = () => history.push('/trivia')
 

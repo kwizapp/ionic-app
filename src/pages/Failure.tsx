@@ -7,9 +7,9 @@ import { useStorage } from '../useStorage'
 import useStore from '../useStore'
 
 const Failure = () => {
-  const history = useHistory()
+  // useStorage()
 
-  useStorage()
+  const history = useHistory()
 
   const lives = useStore(state => state.lives)
 

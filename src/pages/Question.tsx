@@ -49,7 +49,7 @@ const GET_SCORE = gql`
 `
 
 const Question = () => {
-  useStorage()
+  // useStorage()
 
   const history = useHistory()
 
@@ -71,7 +71,7 @@ const Question = () => {
   // create an effect that is executed on changes to scoreResponse in out lazy query
   // => will be called once on first render and once when a scoring response is received
   useEffect(() => {
-    if (scoreResponse?.data?.scoreTitleResponse) {
+    if (Number.isFinite(scoreResponse?.data?.scoreTitleResponse)) {
       const { scoreTitleResponse } = scoreResponse.data
 
       if (scoreTitleResponse === 0) {
@@ -82,7 +82,7 @@ const Question = () => {
         history.replace('/success')
       }
     }
-  }, [scoreResponse])
+  }, [scoreResponse.data])
 
   if (loading) return <Loading />
   if (error) return <p>Error :(</p>

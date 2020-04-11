@@ -14,9 +14,9 @@ import KwizAnimated from '../components/animations/KwizAnimated'
 import { useStorage } from '../useStorage'
 
 const Home = () => {
-  const history = useHistory()
-
   useStorage()
+
+  const history = useHistory()
 
   const navigateNext = () => history.push('/poster')
 

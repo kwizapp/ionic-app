@@ -42,11 +42,11 @@ const RANDOM_MOVIE = gql`
 `
 
 const Poster = () => {
+  useStorage()
+
   // ref to interval, gets cleared on page leave
   const countDownRef = useRef<any>(null)
   const history = useHistory()
-
-  useStorage()
 
   const [isPosterExpired, setIsPosterExpired] = useState(false)
   const [secondsRemaining, setSecondsRemaining] = useState(QUESTION_TIME)
@@ -56,6 +56,15 @@ const Poster = () => {
   )
 
   const { setTimeRemaining, setCurrentImdbId } = useStore()
+
+  // setup an effect that updates the currentImdbId in the global store
+  // as soon as the random movie poster has been returned by the api
+  useEffect(() => {
+    const imdbId = data?.movie.imdbId
+    if (imdbId) {
+      setCurrentImdbId(imdbId)
+    }
+  }, [data])
 
   // if the current poster is expired, load a new one
   useIonViewWillEnter(async () => {
@@ -104,12 +113,6 @@ const Poster = () => {
   const handleClick = async () => {
     // add remaining seconds to global store for next screen
     await setTimeRemaining(secondsRemaining)
-
-    // store imdbid in global store
-    const imdbId = data?.movie.imdbId
-    if (imdbId) {
-      await setCurrentImdbId(imdbId)
-    }
 
     navigateNext()
   }

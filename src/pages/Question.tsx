@@ -18,12 +18,12 @@ interface Movie {
 }
 
 interface MovieData {
-  movie: Movie
+  questionMovie: Movie
 }
 
 const MOVIES = gql`
   query($imdbId: String!) {
-    movie(imdbId: $imdbId) {
+    questionMovie: movie(imdbId: $imdbId) {
       imdbId
       title
       releaseYear
@@ -64,7 +64,10 @@ const Question = () => {
   // create a list of all movies that should be shuffled (but only once)
   const allMovies = useMemo(
     () =>
-      randomArrayShuffle([...(data?.movie?.randomMovies || []), data?.movie]),
+      randomArrayShuffle([
+        ...(data?.questionMovie?.randomMovies || []),
+        data?.questionMovie,
+      ]),
     [data],
   )
 

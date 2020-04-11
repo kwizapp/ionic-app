@@ -27,12 +27,12 @@ interface Movie {
 }
 
 interface RandomMovieData {
-  movie: Movie
+  posterMovie: Movie
 }
 
 const RANDOM_MOVIE = gql`
   {
-    movie {
+    posterMovie: movie {
       imdbId
       title
       releaseYear
@@ -48,19 +48,18 @@ const Poster = () => {
   const countDownRef = useRef<any>(null)
   const history = useHistory()
 
-  const [isPosterExpired, setIsPosterExpired] = useState(false)
-  const [secondsRemaining, setSecondsRemaining] = useState(QUESTION_TIME)
-
   const { loading, error, data, refetch } = useQuery<RandomMovieData>(
     RANDOM_MOVIE,
   )
 
-  const { setTimeRemaining, setCurrentImdbId } = useStore()
+  const { timeRemaining, setTimeRemaining, setCurrentImdbId } = useStore()
+
+  const [isPosterExpired, setIsPosterExpired] = useState(false)
 
   // setup an effect that updates the currentImdbId in the global store
   // as soon as the random movie poster has been returned by the api
   useEffect(() => {
-    const imdbId = data?.movie.imdbId
+    const imdbId = data?.posterMovie.imdbId
     if (imdbId) {
       setCurrentImdbId(imdbId)
     }
@@ -80,11 +79,11 @@ const Poster = () => {
     // ensure that only one countdown can be set at a time
     if (countDownRef.current === null) {
       // reset the remaining time
-      setSecondsRemaining(QUESTION_TIME)
+      setTimeRemaining(() => QUESTION_TIME)
 
       // start a countdown
       countDownRef.current = setInterval(() => {
-        setSecondsRemaining(prevSeconds => {
+        setTimeRemaining(prevSeconds => {
           if (prevSeconds <= 1) {
             return 0
           }
@@ -111,21 +110,15 @@ const Poster = () => {
   }
 
   const handleClick = async () => {
-    // add remaining seconds to global store for next screen
-    await setTimeRemaining(secondsRemaining)
-
-    // const imdbId = data?.movie.imdbId
-    // if (imdbId) {
-    //   await setCurrentImdbId(imdbId)
-    // }
-
     navigateNext()
   }
 
   // track the remaining seconds and redirect to the next page on 0
   useEffect(() => {
-    if (secondsRemaining === 0) navigateNext()
-  }, [secondsRemaining])
+    if (timeRemaining === 0) {
+      navigateNext()
+    }
+  }, [timeRemaining])
 
   if (loading || isPosterExpired) return <Loading />
   if (error) return <p>Error :(</p>
@@ -133,7 +126,7 @@ const Poster = () => {
   return (
     <StatsLayout className="text-center" onClick={handleClick}>
       <div className="absolute top-24 left-6">
-        <Timer secondsRemaining={secondsRemaining} />
+        <Timer secondsRemaining={timeRemaining} />
       </div>
 
       <IonCard className="m-2">
@@ -146,7 +139,7 @@ const Poster = () => {
       <div className="max-w-md">
         <IonCard className="m-2">
           <BlurAnimated>
-            <IonImg src={data && data.movie.posterPath} />
+            <IonImg src={data?.posterMovie.posterPath} />
           </BlurAnimated>
         </IonCard>
       </div>

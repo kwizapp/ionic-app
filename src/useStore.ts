@@ -14,7 +14,7 @@ interface Store {
   currentImdbId: string
   setState: (state: Partial<Store>) => void
   resetState: () => void
-  setTimeRemaining: (seconds: number) => void
+  setTimeRemaining: (fun: (currentTime: number) => number) => void
   setCurrentImdbId: (id: string) => void
   addPoints: (points: number) => void
   removeLife: () => void
@@ -66,9 +66,9 @@ const [useStore] = create<Store>(
         set(() => initialState)
       },
 
-      setTimeRemaining(seconds: number) {
+      setTimeRemaining(fun: (currentTime: number) => number) {
         set((state: Store) => {
-          state.timeRemaining = seconds
+          state.timeRemaining = fun(state.timeRemaining)
         })
       },
 

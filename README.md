@@ -2,17 +2,45 @@
 
 ## How to Run
 
-Install the Ionic CLI
+1. Install the Ionic CLI
 
-```bash
-npm install -g @ionic/cli
-```
+    ```bash
+    npm install -g @ionic/cli
+    ```
 
-Start developing with
+2. Build tailwind styles
 
-```bash
-ionic serve
-```
+    ```bash
+    # once
+    npm run build:style
+
+    # watch mode
+    npm run dev:style
+    ```
+
+3. Start Poster API (see corresponding README):
+
+    ```bash
+    npm run dev
+    ```
+
+4. Start Metadata API (see corresponding README):
+
+    ```bash
+    npm run dev
+    ```
+
+5. Start Nest API (see corresponding README):
+
+    ```bash
+    npm run dev
+    ```
+
+6. Start developing with
+
+    ```bash
+    ionic serve
+    ```
 
 This will open up the app in your browser on port 8100. For a mobile preview, use the browser's built-in features for that.
 

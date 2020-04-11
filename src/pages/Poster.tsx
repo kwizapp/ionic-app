@@ -119,7 +119,6 @@ const Poster = () => {
   // track the remaining seconds and redirect to the next page on 0
   useEffect(() => {
     if (timeRemaining === 0) {
-      setTimeRemaining(() => QUESTION_TIME)
       navigateNext()
     }
   }, [timeRemaining])

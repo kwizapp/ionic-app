@@ -7,6 +7,7 @@ import StatsLayout from '../components/layouts/StatsLayout'
 import Loading from '../components/Loading'
 import useStore from '../useStore'
 import { randomArrayShuffle } from '../utils'
+import { QUESTION_TIME } from '../settings'
 
 interface Movie {
   imdbId: string
@@ -50,7 +51,13 @@ const GET_SCORE = gql`
 const Question = () => {
   const history = useHistory()
 
-  const { addPoints, removeLife, currentImdbId, timeRemaining } = useStore()
+  const {
+    addPoints,
+    removeLife,
+    currentImdbId,
+    timeRemaining,
+    setTimeRemaining,
+  } = useStore()
 
   const { loading, error, data } = useQuery<MovieData>(MOVIES, {
     fetchPolicy: 'cache-only',
@@ -70,6 +77,9 @@ const Question = () => {
   useEffect(() => {
     if (Number.isFinite(scoreResponse?.data?.scoreTitleResponse)) {
       const { scoreTitleResponse } = scoreResponse.data
+
+      // after a score has been received successfully, reset the question time to default
+      setTimeRemaining(() => QUESTION_TIME)
 
       if (scoreTitleResponse === 0) {
         removeLife()

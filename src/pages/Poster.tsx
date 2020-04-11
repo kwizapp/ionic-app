@@ -16,7 +16,6 @@ import StatsLayout from '../components/layouts/StatsLayout'
 import Loading from '../components/Loading'
 import Timer from '../components/Timer'
 import { QUESTION_TIME } from '../settings'
-import { useStorage } from '../useStorage'
 import useStore from '../useStore'
 
 interface Movie {
@@ -27,23 +26,27 @@ interface Movie {
 }
 
 interface RandomMovieData {
-  posterMovie: Movie
+  movie: Movie
 }
 
 const RANDOM_MOVIE = gql`
   {
-    posterMovie: movie {
+    movie {
       imdbId
       title
       releaseYear
       posterPath
+      randomMovies(num: 3, differentReleaseYear: true) {
+        imdbId
+        title
+        releaseYear
+        posterPath
+      }
     }
   }
 `
 
 const Poster = () => {
-  // useStorage()
-
   // ref to interval, gets cleared on page leave
   const countDownRef = useRef<any>(null)
   const history = useHistory()
@@ -59,7 +62,7 @@ const Poster = () => {
   // setup an effect that updates the currentImdbId in the global store
   // as soon as the random movie poster has been returned by the api
   useEffect(() => {
-    const imdbId = data?.posterMovie.imdbId
+    const imdbId = data?.movie.imdbId
     if (imdbId) {
       setCurrentImdbId(imdbId)
     }
@@ -116,6 +119,7 @@ const Poster = () => {
   // track the remaining seconds and redirect to the next page on 0
   useEffect(() => {
     if (timeRemaining === 0) {
+      setTimeRemaining(() => QUESTION_TIME)
       navigateNext()
     }
   }, [timeRemaining])
@@ -139,7 +143,7 @@ const Poster = () => {
       <div className="max-w-md">
         <IonCard className="m-2">
           <BlurAnimated>
-            <IonImg src={data?.posterMovie.posterPath} />
+            <IonImg src={data?.movie.posterPath} />
           </BlurAnimated>
         </IonCard>
       </div>

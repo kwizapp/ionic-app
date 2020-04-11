@@ -5,7 +5,6 @@ import { useHistory } from 'react-router'
 import MovieCard from '../components/card/MovieCard'
 import StatsLayout from '../components/layouts/StatsLayout'
 import Loading from '../components/Loading'
-import { useStorage } from '../useStorage'
 import useStore from '../useStore'
 import { randomArrayShuffle } from '../utils'
 
@@ -18,12 +17,12 @@ interface Movie {
 }
 
 interface MovieData {
-  questionMovie: Movie
+  movie: Movie
 }
 
 const MOVIES = gql`
-  query($imdbId: String!) {
-    questionMovie: movie(imdbId: $imdbId) {
+  {
+    movie {
       imdbId
       title
       releaseYear
@@ -49,14 +48,12 @@ const GET_SCORE = gql`
 `
 
 const Question = () => {
-  // useStorage()
-
   const history = useHistory()
 
   const { addPoints, removeLife, currentImdbId, timeRemaining } = useStore()
 
   const { loading, error, data } = useQuery<MovieData>(MOVIES, {
-    variables: { imdbId: currentImdbId },
+    fetchPolicy: 'cache-only',
   })
 
   const [submitResponse, scoreResponse] = useLazyQuery(GET_SCORE)
@@ -64,10 +61,7 @@ const Question = () => {
   // create a list of all movies that should be shuffled (but only once)
   const allMovies = useMemo(
     () =>
-      randomArrayShuffle([
-        ...(data?.questionMovie?.randomMovies || []),
-        data?.questionMovie,
-      ]),
+      randomArrayShuffle([...(data?.movie?.randomMovies || []), data?.movie]),
     [data],
   )
 

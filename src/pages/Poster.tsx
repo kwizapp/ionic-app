@@ -98,20 +98,18 @@ const Poster = () => {
 
   // create a handler for page navigation
   const navigateNext = () => {
-    // store imdbid in global store
-    if (data) {
-      const imdbId = data?.movie.imdbId
-      if (imdbId) {
-        setCurrentImdbId(imdbId)
-      }
-    }
-
     history.replace('/question')
   }
 
   const handleClick = async () => {
     // add remaining seconds to global store for next screen
     await setTimeRemaining(secondsRemaining)
+
+    // store imdbid in global store
+    const imdbId = data?.movie.imdbId
+    if (imdbId) {
+      await setCurrentImdbId(imdbId)
+    }
 
     navigateNext()
   }

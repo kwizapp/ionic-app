@@ -1,12 +1,10 @@
-import { gql, useQuery } from '@apollo/client'
-import { useIonViewWillEnter } from '@ionic/react'
-import React, { useState } from 'react'
+import { gql, useQuery, useLazyQuery } from '@apollo/client'
+import React, { useMemo, useEffect } from 'react'
 import { useHistory } from 'react-router'
 
 import MovieCard from '../components/card/MovieCard'
 import StatsLayout from '../components/layouts/StatsLayout'
 import Loading from '../components/Loading'
-import { movieService } from '../services/movieService'
 import { useStorage } from '../useStorage'
 import useStore from '../useStore'
 import { randomArrayShuffle } from '../utils'
@@ -40,10 +38,20 @@ const MOVIES = gql`
   }
 `
 
-const Question = () => {
-  const history = useHistory()
+const GET_SCORE = gql`
+  query($imdbId: String!, $selectedTitle: String!, $remainingSeconds: Int!) {
+    scoreTitleResponse(
+      imdbId: $imdbId
+      selectedTitle: $selectedTitle
+      remainingSeconds: $remainingSeconds
+    )
+  }
+`
 
+const Question = () => {
   useStorage()
+
+  const history = useHistory()
 
   const { addPoints, removeLife, currentImdbId, timeRemaining } = useStore()
 
@@ -51,52 +59,30 @@ const Question = () => {
     variables: { imdbId: currentImdbId },
   })
 
-  const [movies, setMovies] = useState<Movie[]>([])
+  const [submitResponse, scoreResponse] = useLazyQuery(GET_SCORE)
 
-  useIonViewWillEnter(() => {
-    if (data) {
-      const movie: Movie = {
-        imdbId: data.movie.imdbId,
-        title: data.movie.title,
-        releaseYear: data.movie.releaseYear,
-        posterPath: data.movie.posterPath,
-        randomMovies: [],
+  // create a list of all movies that should be shuffled (but only once)
+  const allMovies = useMemo(
+    () =>
+      randomArrayShuffle([...(data?.movie?.randomMovies || []), data?.movie]),
+    [data],
+  )
+
+  // create an effect that is executed on changes to scoreResponse in out lazy query
+  // => will be called once on first render and once when a scoring response is received
+  useEffect(() => {
+    if (scoreResponse?.data?.scoreTitleResponse) {
+      const { scoreTitleResponse } = scoreResponse.data
+
+      if (scoreTitleResponse === 0) {
+        removeLife()
+        history.replace('/failure')
+      } else if (scoreTitleResponse > 0) {
+        addPoints(scoreResponse.data.scoreTitleResponse)
+        history.replace('/success')
       }
-
-      const randomMovies: Movie[] = [...data.movie.randomMovies]
-
-      // combine all movie object into one array
-      const _movies = [movie, ...randomMovies]
-
-      setMovies(randomArrayShuffle(_movies))
     }
-  }, [data])
-
-  const navigateSuccess = () => {
-    history.replace('/success')
-  }
-
-  const navigateFailure = () => {
-    removeLife()
-    history.replace('/failure')
-  }
-
-  const handleMovieSelect = async (movieTitle: string) => {
-    const score = await movieService.validateAnswer(
-      movieTitle,
-      currentImdbId,
-      timeRemaining,
-    )
-
-    if (score === 0) {
-      navigateFailure()
-    }
-
-    if (score && score > 0) {
-      addPoints(score)
-      navigateSuccess()
-    }
-  }
+  }, [scoreResponse])
 
   if (loading) return <Loading />
   if (error) return <p>Error :(</p>
@@ -104,15 +90,22 @@ const Question = () => {
   return (
     <StatsLayout>
       <div>
-        {movies &&
-          movies.map((movie, index) => (
-            <MovieCard
-              key={index}
-              title={movie.title}
-              posterPath={movie.posterPath}
-              onClick={handleMovieSelect}
-            />
-          ))}
+        {allMovies.map((movie: any, index: any) => (
+          <MovieCard
+            key={index}
+            title={movie.title}
+            posterPath={movie.posterPath}
+            onClick={() =>
+              submitResponse({
+                variables: {
+                  imdbId: currentImdbId,
+                  selectedTitle: movie.title,
+                  remainingSeconds: timeRemaining,
+                },
+              })
+            }
+          />
+        ))}
       </div>
     </StatsLayout>
   )

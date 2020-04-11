@@ -8,6 +8,18 @@ Install the Ionic CLI
 npm install -g @ionic/cli
 ```
 
+Build tailwind styles
+
+```bash
+# once
+npm run build:style
+
+# watch mode
+npm run dev:style
+```
+
+Start Nest API (see README to create `.env`)
+
 Start developing with
 
 ```bash

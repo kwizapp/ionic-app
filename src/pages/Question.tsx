@@ -1,13 +1,13 @@
-import { gql, useQuery, useLazyQuery } from '@apollo/client'
-import React, { useMemo, useEffect } from 'react'
+import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import React, { useEffect, useMemo } from 'react'
 import { useHistory } from 'react-router'
 
 import MovieCard from '../components/card/MovieCard'
 import StatsLayout from '../components/layouts/StatsLayout'
 import Loading from '../components/Loading'
+import { QUESTION_TIME } from '../settings'
 import useStore from '../useStore'
 import { randomArrayShuffle } from '../utils'
-import { QUESTION_TIME } from '../settings'
 
 interface Movie {
   imdbId: string
@@ -72,7 +72,7 @@ const Question = () => {
     [data],
   )
 
-  // create an effect that is executed on changes to scoreResponse in out lazy query
+  // create an effect that is executed on changes to scoreResponse in our lazy query
   // => will be called once on first render and once when a scoring response is received
   useEffect(() => {
     if (Number.isFinite(scoreResponse?.data?.scoreTitleResponse)) {
@@ -96,6 +96,9 @@ const Question = () => {
 
   return (
     <StatsLayout>
+      <div className="p-1 text-center text-gray-600 text-sm">
+        Which movie was shown?
+      </div>
       <div>
         {allMovies.map((movie: any, index: any) => (
           <MovieCard

@@ -16,7 +16,6 @@ import StatsLayout from '../components/layouts/StatsLayout'
 import Loading from '../components/Loading'
 import Timer from '../components/Timer'
 import { QUESTION_TIME } from '../settings'
-import { useStorage } from '../useStorage'
 import useStore from '../useStore'
 
 interface Movie {
@@ -37,6 +36,12 @@ const RANDOM_MOVIE = gql`
       title
       releaseYear
       posterPath
+      randomMovies(num: 3, differentReleaseYear: true) {
+        imdbId
+        title
+        releaseYear
+        posterPath
+      }
     }
   }
 `
@@ -46,16 +51,22 @@ const Poster = () => {
   const countDownRef = useRef<any>(null)
   const history = useHistory()
 
-  useStorage()
-
-  const [isPosterExpired, setIsPosterExpired] = useState(false)
-  const [secondsRemaining, setSecondsRemaining] = useState(QUESTION_TIME)
-
   const { loading, error, data, refetch } = useQuery<RandomMovieData>(
     RANDOM_MOVIE,
   )
 
-  const { setTimeRemaining } = useStore()
+  const { timeRemaining, setTimeRemaining, setCurrentImdbId } = useStore()
+
+  const [isPosterExpired, setIsPosterExpired] = useState(false)
+
+  // setup an effect that updates the currentImdbId in the global store
+  // as soon as the random movie poster has been returned by the api
+  useEffect(() => {
+    const imdbId = data?.movie.imdbId
+    if (imdbId) {
+      setCurrentImdbId(imdbId)
+    }
+  }, [data])
 
   // if the current poster is expired, load a new one
   useIonViewWillEnter(async () => {
@@ -71,11 +82,11 @@ const Poster = () => {
     // ensure that only one countdown can be set at a time
     if (countDownRef.current === null) {
       // reset the remaining time
-      setSecondsRemaining(QUESTION_TIME)
+      setTimeRemaining(() => QUESTION_TIME)
 
       // start a countdown
       countDownRef.current = setInterval(() => {
-        setSecondsRemaining(prevSeconds => {
+        setTimeRemaining(prevSeconds => {
           if (prevSeconds <= 1) {
             return 0
           }
@@ -97,19 +108,20 @@ const Poster = () => {
   })
 
   // create a handler for page navigation
-  const navigateNext = () => history.replace('/question')
+  const navigateNext = () => {
+    history.replace('/question')
+  }
 
   const handleClick = async () => {
-    // add remaining seconds to global store for next screen
-    await setTimeRemaining(secondsRemaining)
-
     navigateNext()
   }
 
   // track the remaining seconds and redirect to the next page on 0
   useEffect(() => {
-    if (secondsRemaining === 0) navigateNext()
-  }, [secondsRemaining])
+    if (timeRemaining === 0) {
+      navigateNext()
+    }
+  }, [timeRemaining])
 
   if (loading || isPosterExpired) return <Loading />
   if (error) return <p>Error :(</p>
@@ -117,7 +129,7 @@ const Poster = () => {
   return (
     <StatsLayout className="text-center" onClick={handleClick}>
       <div className="absolute top-24 left-6">
-        <Timer secondsRemaining={secondsRemaining} />
+        <Timer secondsRemaining={timeRemaining} />
       </div>
 
       <IonCard className="m-2">
@@ -130,7 +142,7 @@ const Poster = () => {
       <div className="max-w-md">
         <IonCard className="m-2">
           <BlurAnimated>
-            <IonImg src={data && data.movie.posterPath} />
+            <IonImg src={data?.movie.posterPath} />
           </BlurAnimated>
         </IonCard>
       </div>

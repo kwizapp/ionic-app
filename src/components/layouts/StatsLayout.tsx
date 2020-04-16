@@ -5,7 +5,7 @@ import StatsOverlay from '../StatsOverlay'
 interface Props {
   id?: string
   className?: string
-  children: React.ReactChild[]
+  children: React.ReactNode
   onClick?: () => void
 }
 

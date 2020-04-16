@@ -1,18 +1,40 @@
 import { Plugins } from '@capacitor/core'
-import create, { State } from 'zustand'
 import produce from 'immer'
+import create, { GetState, SetState, StoreApi } from 'zustand'
+
 import { QUESTION_TIME } from './settings'
 
 const { Storage } = Plugins
 
+interface Store {
+  alive: boolean
+  lives: number
+  points: number
+  timeRemaining: number
+  currentImdbId: string
+  setState: (state: Partial<Store>) => void
+  resetState: () => void
+  setTimeRemaining: (fun: (currentTime: number) => number) => void
+  setCurrentImdbId: (id: string) => void
+  addPoints: (points: number) => void
+  removeLife: () => void
+}
+
 // setup immer to ensure data is changed immutably
 // this will allows us to "mutate" state without actually changing existing values
 // as immer always produces new objects when we mutate old ones
-const immer = (config: any) => (set: Function, get: Function, api: any) =>
-  config((fn: any) => set(produce(fn)), get, api)
+const immer = (config: any) => (
+  set: SetState<Store>,
+  get: GetState<Store>,
+  api: StoreApi<Store>,
+) => config((fn: any) => set(produce(fn)), get, api)
 
 // setup a persistence enhancer
-const persist = (config: any) => (set: Function, get: Function, api: any) =>
+const persist = (config: any) => (
+  set: SetState<Store>,
+  get: GetState<Store>,
+  api: StoreApi<Store>,
+) =>
   config(
     (args: any) => {
       set(args)
@@ -23,35 +45,47 @@ const persist = (config: any) => (set: Function, get: Function, api: any) =>
   )
 
 // setup the zustand store hook
-const initialState = {
+const initialState: Partial<Store> = {
   alive: true,
   lives: 3,
   points: 0,
   timeRemaining: QUESTION_TIME,
+  currentImdbId: '',
 }
-const [useStore] = create(
+
+const [useStore] = create<Store>(
   persist(
     immer((set: any) => ({
       ...initialState,
-      setState(newState: any) {
+
+      setState(newState: Partial<Store>) {
         set(() => newState)
       },
+
       resetState() {
         set(() => initialState)
       },
-      setTimeRemaining(seconds: any) {
-        set((state: State) => {
-          state.timeRemaining = seconds
+
+      setTimeRemaining(fun: (currentTime: number) => number) {
+        set((state: Store) => {
+          state.timeRemaining = fun(state.timeRemaining)
         })
       },
-      addPoints() {
-        set((state: State) => {
-          // TODO: use the points provided by the API instead
-          state.points += (state.timeRemaining / QUESTION_TIME) * 1000
+
+      setCurrentImdbId(id: string) {
+        set((state: Store) => {
+          state.currentImdbId = id
         })
       },
+
+      addPoints(points: number) {
+        set((state: Store) => {
+          state.points += points
+        })
+      },
+
       removeLife() {
-        set((state: State) => {
+        set((state: Store) => {
           if (state.lives > 1) {
             state.lives -= 1
           } else {

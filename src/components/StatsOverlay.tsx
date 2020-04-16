@@ -1,17 +1,17 @@
-import React from 'react'
-import { flash, heart, heartOutline } from 'ionicons/icons'
 import { IonIcon } from '@ionic/react'
+import { flash, heart, heartOutline } from 'ionicons/icons'
+import React from 'react'
 
 import useStore from '../useStore'
 
 function generateLiveDisplay(livesTotal: number, livesRemaining: number) {
   const usedLives = Array(livesTotal - livesRemaining)
     .fill(0)
-    .map((_, ix) => <IonIcon key={ix} icon={heartOutline} />)
+    .map((_, ix) => <IonIcon key={ix + 'used-lives'} icon={heartOutline} />)
 
   const remainingLives = Array(livesRemaining)
     .fill(0)
-    .map((_, ix) => <IonIcon key={ix} icon={heart} />)
+    .map((_, ix) => <IonIcon key={ix + 'remaining-lives'} icon={heart} />)
 
   return [...usedLives, ...remainingLives]
 }

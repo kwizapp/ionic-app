@@ -3,17 +3,18 @@ import {
   IonPage,
   IonContent,
   IonButton,
-  useIonViewWillEnter,
+  useIonViewWillLeave,
 } from '@ionic/react'
 import { useHistory } from 'react-router'
 import useStore from '../useStore'
 
+import emoji from 'node-emoji'
+
 const GameOver = () => {
   const history = useHistory()
+  const { points, resetState } = useStore()
 
-  const { resetState } = useStore()
-
-  useIonViewWillEnter(() => {
+  useIonViewWillLeave(() => {
     resetState()
   })
 
@@ -21,10 +22,22 @@ const GameOver = () => {
 
   return (
     <IonPage>
-      <IonContent>
-        <h1>GameOver Screen</h1>
+      <IonContent className="text-center">
+        <h1 className="text-2xl font-extrabold mt-20">Game Over</h1>
+        <p
+          style={{ fontFamily: 'Twitter Color Emoji' }}
+          className="text-10xl mt-3"
+        >
+          {emoji.get('disappointed_relieved')}
+        </p>
 
-        <IonButton onClick={navigateNext}>Back to Menu</IonButton>
+        <p className="mt-5">You scored</p>
+        <p className="text-2xl font-bold">{points}</p>
+        <p>Points</p>
+
+        <IonButton className="mt-16" onClick={navigateNext}>
+          Start again
+        </IonButton>
       </IonContent>
     </IonPage>
   )

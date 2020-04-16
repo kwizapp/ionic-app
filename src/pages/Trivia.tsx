@@ -41,7 +41,7 @@ const Trivia = () => {
 
   const navigateNext = () => history.push('/poster')
 
-  const overlayMargin = '5%';
+  const overlayMargin = '5%'
 
   if (loading) return <Loading />
   if (error) return <p>Error :(</p>

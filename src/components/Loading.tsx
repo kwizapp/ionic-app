@@ -21,8 +21,8 @@ const Loading = () => {
               </IonCol>
             </IonRow>
             <IonRow>
-              <IonCol class="ion-padding-top">
-                <IonText class="ion-text-center">
+              <IonCol className="pt-5">
+                <IonText className="text-center">
                   <p>Loading...</p>
                 </IonText>
               </IonCol>

@@ -71,7 +71,7 @@ const Success = () => {
 
   const updateScores = () => {
     // set the points here, as we wanted to animate the difference
-    addPoints(points + pointDifference)
+    addPoints(pointDifference)
     // reset point difference for next round
     setPointDifference(0)
   }

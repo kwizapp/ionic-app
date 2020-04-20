@@ -7,6 +7,7 @@ import LifeDisplay from './LifeDisplay'
 
 const StatsOverlay = () => {
   const lives = useStore(state => state.lives)
+  const livesTotal = useStore(state => state.livesTotal)
   const points = useStore(state => state.points)
 
   return (
@@ -19,7 +20,7 @@ const StatsOverlay = () => {
       </div>
       <div className="paper">
         <div className="flex items-center px-1 text-xl text-red-600">
-          <LifeDisplay livesTotal={3} livesRemaining={lives} />
+          <LifeDisplay livesTotal={livesTotal} livesRemaining={lives} />
         </div>
       </div>
     </div>

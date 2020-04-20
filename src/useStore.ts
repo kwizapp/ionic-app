@@ -9,6 +9,7 @@ const { Storage } = Plugins
 interface Store {
   alive: boolean
   lives: number
+  livesTotal: number
   points: number
   pointDifference: number
   timeRemaining: number
@@ -49,6 +50,7 @@ const persist = (config: any) => (
 // setup the zustand store hook
 const initialState: Partial<Store> = {
   alive: true,
+  livesTotal: 3,
   lives: 3,
   points: 0,
   pointDifference: 0, // the points gained or lost since the last question

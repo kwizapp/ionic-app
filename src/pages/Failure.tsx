@@ -9,26 +9,21 @@ import React, { useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import { animated, config, useChain, useSpring } from 'react-spring'
 
-import LifeDisplay from '../components/LifeDisplay'
+import Hearts from '../components/Hearts'
 import useStore from '../useStore'
-
-const movie = {
-  imdbId: 'tt0097165',
-  title: 'Dead Poets Society',
-  posterUrl:
-    'https://m.media-amazon.com/images/M/MV5BOGYwYWNjMzgtNGU4ZC00NWQ2LWEwZjUtMzE1Zjc3NjY3YTU1XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg',
-}
-const guess = {
-  imdbId: 'tt0076759',
-  title: 'Star Wars',
-  posterUrl:
-    'https://m.media-amazon.com/images/M/MV5BNzVlY2MwMjktM2E4OS00Y2Y3LWE3ZjctYzhkZGM3YzA1ZWM2XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg',
-}
 
 const Failure = () => {
   const history = useHistory()
 
-  const { lives, livesTotal } = useStore()
+  const {
+    lives,
+    livesTotal,
+    removeLife,
+    pointDifference,
+    points,
+    movie,
+    guess,
+  } = useStore()
 
   const [animReady, setAnimReady] = useState(false)
 
@@ -41,7 +36,6 @@ const Failure = () => {
   })
 
   const navigateNext = () => {
-    // TODO: redirect on timer...
     history.push(lives === 0 ? '/gameover' : '/trivia')
   }
 
@@ -65,24 +59,24 @@ const Failure = () => {
     ref: appearAnimRef,
     transform: 'translate(0,0)',
     opacity: !animReady ? 0 : 1,
+    onRest: () => removeLife(), // TODO: fix removing life, will remove one additional one if animReady is set to false again
   })
 
-  useChain([cardAnimRef, fadeAnimRef, appearAnimRef])
+  const pointsAnimRef = useRef<any>()
+  const pointsAnimProps = useSpring({
+    ref: pointsAnimRef,
+    number: !animReady ? points : points + pointDifference,
+    opacity: 1,
+    config: config.default,
+  })
+
+  useChain([cardAnimRef, fadeAnimRef, appearAnimRef, pointsAnimRef])
 
   return (
     <IonPage>
-      <IonContent className="text-center">
-        <h1 className="text-2xl font-extrabold mt-12">Wrong Choice</h1>
+      <IonContent className="text-center" onClick={navigateNext}>
+        <h1 className="text-2xl font-extrabold mt-8">Wrong Choice</h1>
         <div className="relative h-32">
-          <animated.div
-            className="absolute inset-y-0 inset-x-0"
-            style={appearAnimProps}
-          >
-            <div className="mt-4 text-7xl text-red-600">
-              <LifeDisplay livesTotal={livesTotal} livesRemaining={lives} />
-            </div>
-          </animated.div>
-
           <animated.div
             className="absolute inset-y-0 inset-x-0"
             style={fadeAnimProps}
@@ -94,11 +88,25 @@ const Failure = () => {
               {emoji.get('no_entry_sign')}
             </p>
           </animated.div>
+
+          <animated.div
+            className="absolute inset-y-0 inset-x-0"
+            style={appearAnimProps}
+          >
+            <div className="mt-4 text-7xl text-red-600">
+              <Hearts livesTotal={livesTotal} livesRemaining={lives} />
+            </div>
+          </animated.div>
         </div>
+
+        <div className="text-sm text-gray-500">Your Score</div>
+        <animated.p style={pointsAnimProps} className="text-4xl font-bold">
+          {pointsAnimProps.number.interpolate((x: number) => x.toFixed(0))}
+        </animated.p>
 
         <animated.div
           style={cardAnimProps}
-          className="pb-8 pt-4 m-8 shadow-2xl max-w-sm rounded-lg overflow-hidden relative"
+          className="p-4 m-8 shadow-2xl max-w-sm rounded-lg overflow-hidden relative"
         >
           <div className="text-sm text-gray-500 ">You guessed</div>
           <span className="text-sm text-gray-800">{guess.title}</span>
@@ -108,7 +116,7 @@ const Failure = () => {
           <div className="px-6">
             <div className="font-light text-2xl mb-2">{movie.title}</div>
           </div>
-          <div className="w-40 mx-auto">
+          <div className="w-32 mx-auto">
             <img className="rounded" src={movie.posterUrl} alt={movie.title} />
           </div>
         </animated.div>

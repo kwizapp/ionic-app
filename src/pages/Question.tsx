@@ -53,7 +53,6 @@ const Question = () => {
 
   const {
     setPointDifference,
-    removeLife,
     timeRemaining,
     setTimeRemaining,
     movie,
@@ -84,7 +83,6 @@ const Question = () => {
 
       // guess was wrong
       if (scoreTitleResponse === 0) {
-        removeLife()
         history.replace('/failure')
       } else if (scoreTitleResponse > 0) {
         const gainedPoints = scoreResponse.data.scoreTitleResponse

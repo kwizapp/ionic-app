@@ -6,53 +6,68 @@ import {
   useIonViewWillLeave,
 } from '@ionic/react'
 import emoji from 'node-emoji'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useHistory } from 'react-router'
-import { animated, useSpring } from 'react-spring'
+import { animated, config, useChain, useSpring } from 'react-spring'
 
+import LifeDisplay from '../components/LifeDisplay'
 import useStore from '../useStore'
 
 const Success = () => {
   const router = useHistory()
-  const { pointDifference, points, addPoints, setPointDifference } = useStore()
+  const {
+    pointDifference,
+    points,
+    addPoints,
+    setPointDifference,
+    lives,
+    livesTotal,
+  } = useStore()
 
-  const [pageLoaded, setPageLoaded] = useState(false)
-
-  const [ready, setReady] = useState(false)
-  const [textShouldAppear, setTextShouldAppear] = useState(false)
+  const [animReady, setAnimReady] = useState(false)
 
   // these two lifecycle hooks make sure the animations run everytime the page is loaded
-  useIonViewDidEnter(() => setPageLoaded(true))
-  useIonViewWillLeave(() => setPageLoaded(false))
+  useIonViewDidEnter(() => {
+    setAnimReady(true)
+  })
+  useIonViewWillLeave(() => {
+    setAnimReady(false)
+  })
 
+  const emojiAnimRef = useRef<any>()
   const emojiAnimProps = useSpring({
-    transform: pageLoaded ? 'scale(1.1)' : 'scale(0)',
-    opacity: pageLoaded ? 1 : 0,
-    onRest: () => {
-      setTextShouldAppear(true)
-    },
+    ref: emojiAnimRef,
+    transform: !animReady ? 'scale(0)' : 'scale(1.1)',
+    opacity: !animReady ? 0 : 1,
+    config: config.wobbly,
   })
 
+  const appearAnimRef = useRef<any>()
   const appearAnimProps = useSpring({
-    opacity: textShouldAppear && pageLoaded ? 1 : 0,
-    from: { opacity: 0 },
-    onRest: () => {
-      setReady(true)
-    },
+    ref: appearAnimRef,
+    opacity: !animReady ? 0 : 1,
   })
 
+  const pointsAnimRef = useRef<any>()
   const pointsAnimProps = useSpring({
-    number:
-      ready && textShouldAppear && pageLoaded
-        ? points + pointDifference
-        : points,
-    opacity: ready && textShouldAppear && pageLoaded ? 1 : 0,
-    from: { number: points, opacity: 0 },
-    config: { duration: 2000 },
+    ref: pointsAnimRef,
+    number: !animReady ? points : points + pointDifference,
+    opacity: !animReady ? 0 : 1,
+    config: config.molasses,
   })
+
+  const panelAnimRef = useRef<any>()
+  const panelAnimProps = useSpring({
+    ref: panelAnimRef,
+    opacity: !animReady ? 0 : 1,
+  })
+
+  // specify order of animations, will be animated one after the other
+  useChain([emojiAnimRef, appearAnimRef, pointsAnimRef, panelAnimRef])
 
   const goToTriviaScreen = () => {
     addPoints(points + pointDifference)
+    // reset point difference for next round
     setPointDifference(0)
     router.push('/trivia')
   }
@@ -84,16 +99,16 @@ const Success = () => {
           >
             + {pointDifference}
           </animated.div>
-
-          <animated.p style={appearAnimProps}>Points</animated.p>
         </div>
-
-        <IonButton className="mt-16" onClick={goToTriviaScreen}>
-          Continue
-        </IonButton>
-        <IonButton className="mt-16" onClick={() => console.log('next')}>
-          Gamble
-        </IonButton>
+        <animated.div style={panelAnimProps}>
+          <div className="mt-4 text-5xl text-red-600">
+            <LifeDisplay livesTotal={livesTotal} livesRemaining={lives} />
+          </div>
+          <IonButton onClick={goToTriviaScreen}>Continue</IonButton>
+          <IonButton onClick={() => console.log('go to bonus question')}>
+            Gamble
+          </IonButton>
+        </animated.div>
       </IonContent>
     </IonPage>
   )

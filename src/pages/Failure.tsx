@@ -59,7 +59,7 @@ const Failure = () => {
     ref: appearAnimRef,
     transform: 'translate(0,0)',
     opacity: !animReady ? 0 : 1,
-    onRest: () => removeLife(), // TODO: fix removing life, will remove one additional one if animReady is set to false again
+    onRest: () => animReady && removeLife(),
   })
 
   const pointsAnimRef = useRef<any>()

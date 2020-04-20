@@ -9,7 +9,9 @@ const { Storage } = Plugins
 interface Store {
   alive: boolean
   lives: number
+  livesTotal: number
   points: number
+  pointDifference: number
   timeRemaining: number
   currentImdbId: string
   setState: (state: Partial<Store>) => void
@@ -17,6 +19,7 @@ interface Store {
   setTimeRemaining: (fun: (currentTime: number) => number) => void
   setCurrentImdbId: (id: string) => void
   addPoints: (points: number) => void
+  setPointDifference: (pointDifference: number) => void
   removeLife: () => void
 }
 
@@ -47,8 +50,10 @@ const persist = (config: any) => (
 // setup the zustand store hook
 const initialState: Partial<Store> = {
   alive: true,
+  livesTotal: 3,
   lives: 3,
   points: 0,
+  pointDifference: 0, // the points gained or lost since the last question
   timeRemaining: QUESTION_TIME,
   currentImdbId: '',
 }
@@ -81,6 +86,12 @@ const [useStore] = create<Store>(
       addPoints(points: number) {
         set((state: Store) => {
           state.points += points
+        })
+      },
+
+      setPointDifference(pointDifference: number) {
+        set((state: Store) => {
+          state.pointDifference = pointDifference
         })
       },
 

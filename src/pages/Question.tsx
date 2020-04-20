@@ -52,7 +52,7 @@ const Question = () => {
   const history = useHistory()
 
   const {
-    addPoints,
+    setPointDifference,
     removeLife,
     currentImdbId,
     timeRemaining,
@@ -85,7 +85,8 @@ const Question = () => {
         removeLife()
         history.replace('/failure')
       } else if (scoreTitleResponse > 0) {
-        addPoints(scoreResponse.data.scoreTitleResponse)
+        const gainedPoints = scoreResponse.data.scoreTitleResponse
+        setPointDifference(gainedPoints)
         history.replace('/success')
       }
     }

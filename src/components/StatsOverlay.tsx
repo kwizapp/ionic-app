@@ -1,26 +1,13 @@
 import { IonIcon } from '@ionic/react'
-import { flash, heart, heartOutline } from 'ionicons/icons'
+import { flash } from 'ionicons/icons'
 import React from 'react'
 
 import useStore from '../useStore'
-
-function generateLiveDisplay(livesTotal: number, livesRemaining: number) {
-  const usedLives = Array(livesTotal - livesRemaining)
-    .fill(0)
-    .map((_, ix) => <IonIcon key={ix + 'used-lives'} icon={heartOutline} />)
-
-  const remainingLives = Array(livesRemaining)
-    .fill(0)
-    .map((_, ix) => <IonIcon key={ix + 'remaining-lives'} icon={heart} />)
-
-  return [...usedLives, ...remainingLives]
-}
+import LifeDisplay from './LifeDisplay'
 
 const StatsOverlay = () => {
   const lives = useStore(state => state.lives)
   const points = useStore(state => state.points)
-
-  const liveDisplay = generateLiveDisplay(3, lives)
 
   return (
     <div className="fixed bottom-0 flex items-center justify-between w-full p-4">
@@ -32,7 +19,7 @@ const StatsOverlay = () => {
       </div>
       <div className="paper">
         <div className="flex items-center px-1 text-xl text-red-600">
-          {liveDisplay}
+          <LifeDisplay livesTotal={3} livesRemaining={lives} />
         </div>
       </div>
     </div>

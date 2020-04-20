@@ -8,6 +8,7 @@ import {
 import emoji from 'node-emoji'
 import React, { useRef, useState } from 'react'
 import { useHistory } from 'react-router'
+import { useLastLocation } from 'react-router-last-location'
 import { animated, config, useChain, useSpring } from 'react-spring'
 
 import LifeDisplay from '../components/LifeDisplay'
@@ -15,6 +16,8 @@ import useStore from '../useStore'
 
 const Success = () => {
   const router = useHistory()
+  const lastLocation = useLastLocation()
+
   const {
     pointDifference,
     points,
@@ -53,7 +56,7 @@ const Success = () => {
     ref: pointsAnimRef,
     number: !animReady ? points : points + pointDifference,
     opacity: !animReady ? 0 : 1,
-    config: config.molasses,
+    config: config.default,
   })
 
   const panelAnimRef = useRef<any>()
@@ -66,12 +69,29 @@ const Success = () => {
   // specify order of animations, will be animated one after the other
   useChain([emojiAnimRef, appearAnimRef, pointsAnimRef, panelAnimRef])
 
-  const goToTriviaScreen = () => {
+  const updateScores = () => {
     // set the points here, as we wanted to animate the difference
     addPoints(points + pointDifference)
     // reset point difference for next round
     setPointDifference(0)
+  }
+
+  const goToTriviaScreen = () => {
+    updateScores()
     router.push('/trivia')
+  }
+
+  const gotToBonusQuestion = () => {
+    updateScores()
+    router.push('/bonus-question')
+  }
+
+  const shouldDisplayGameButton = () => {
+    return (
+      lastLocation &&
+      lastLocation !== null &&
+      lastLocation?.pathname === '/question'
+    )
   }
 
   return (
@@ -109,12 +129,11 @@ const Success = () => {
           <IonButton className="w-32" onClick={goToTriviaScreen}>
             Continue
           </IonButton>
-          <IonButton
-            className="w-32"
-            onClick={() => console.log('go to bonus question')}
-          >
-            Gamble
-          </IonButton>
+          {shouldDisplayGameButton() ? (
+            <IonButton className="w-32" onClick={gotToBonusQuestion}>
+              Gamble
+            </IonButton>
+          ) : null}
         </animated.div>
       </IonContent>
     </IonPage>

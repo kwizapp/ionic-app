@@ -60,12 +60,14 @@ const Success = () => {
   const panelAnimProps = useSpring({
     ref: panelAnimRef,
     opacity: !animReady ? 0 : 1,
+    transform: !animReady ? 'scale(0)' : 'scale(1.0)',
   })
 
   // specify order of animations, will be animated one after the other
   useChain([emojiAnimRef, appearAnimRef, pointsAnimRef, panelAnimRef])
 
   const goToTriviaScreen = () => {
+    // set the points here, as we wanted to animate the difference
     addPoints(points + pointDifference)
     // reset point difference for next round
     setPointDifference(0)
@@ -75,7 +77,7 @@ const Success = () => {
   return (
     <IonPage>
       <IonContent className="text-center">
-        <h1 className="text-2xl font-extrabold mt-20">Correct Guess</h1>
+        <h1 className="text-2xl font-extrabold mt-16">Correct Guess</h1>
         <animated.div style={emojiAnimProps}>
           <p
             style={{ fontFamily: 'Twitter Color Emoji' }}
@@ -104,8 +106,13 @@ const Success = () => {
           <div className="mt-4 text-5xl text-red-600">
             <LifeDisplay livesTotal={livesTotal} livesRemaining={lives} />
           </div>
-          <IonButton onClick={goToTriviaScreen}>Continue</IonButton>
-          <IonButton onClick={() => console.log('go to bonus question')}>
+          <IonButton className="w-32" onClick={goToTriviaScreen}>
+            Continue
+          </IonButton>
+          <IonButton
+            className="w-32"
+            onClick={() => console.log('go to bonus question')}
+          >
             Gamble
           </IonButton>
         </animated.div>

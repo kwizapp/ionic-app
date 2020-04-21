@@ -105,7 +105,6 @@ const Question = () => {
           <MovieCard
             key={index}
             title={movie.title}
-            posterPath={movie.posterPath}
             onClick={() =>
               submitResponse({
                 variables: {

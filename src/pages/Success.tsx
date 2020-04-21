@@ -72,12 +72,12 @@ const Success = () => {
   const updateScores = () => {
     // set the points here, as we wanted to animate the difference
     addPoints(points + pointDifference)
-    // reset point difference for next round
-    setPointDifference(0)
   }
 
   const goToTriviaScreen = () => {
     updateScores()
+    // reset point difference for next round
+    setPointDifference(0)
     router.push('/trivia')
   }
 
@@ -97,11 +97,11 @@ const Success = () => {
   return (
     <IonPage>
       <IonContent className="text-center">
-        <h1 className="text-2xl font-extrabold mt-16">Correct Guess</h1>
+        <h1 className="mt-16 text-2xl font-extrabold">Correct Guess</h1>
         <animated.div style={emojiAnimProps}>
           <p
             style={{ fontFamily: 'Twitter Color Emoji' }}
-            className="text-10xl mt-3"
+            className="mt-3 text-10xl"
           >
             {emoji.get('tada')}
           </p>
@@ -117,7 +117,7 @@ const Success = () => {
 
           <animated.div
             style={emojiAnimProps}
-            className="text-green-600 text-2xl font-bold "
+            className="text-2xl font-bold text-green-600 "
           >
             + {pointDifference}
           </animated.div>

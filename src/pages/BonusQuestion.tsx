@@ -1,52 +1,73 @@
 import { IonButton } from '@ionic/react'
-import React, { useMemo } from 'react'
-import { zip, sortBy } from 'ramda'
+import React, { useMemo, useEffect } from 'react'
+import { insert, sortBy } from 'ramda'
 import { useHistory } from 'react-router'
 
 import StatsLayout from '../components/layouts/StatsLayout'
-import { useQuery } from '@apollo/client'
+import { useQuery, gql, useLazyQuery } from '@apollo/client'
 import { MovieData, MOVIES } from './Question'
 import MovieCard from '../components/card/MovieCard'
+import useStore from '../useStore'
+
+const GET_BONUS_SCORE = gql`
+  query($imdbIds: [String!]!, $titleQuestionScores: Int!) {
+    scoreBonusResponse(
+      imdbIds: $imdbIds
+      titleQuestionScores: $titleQuestionScores
+    )
+  }
+`
 
 const BonusQuestion = () => {
   const history = useHistory()
+
+  const { setPointDifference, pointDifference } = useStore()
 
   const { loading, data } = useQuery<MovieData>(MOVIES, {
     fetchPolicy: 'network-only',
   })
 
-  const moviePairs = useMemo(() => {
-    // sort the movies with a decreasing release year
-    const sortedMovies = sortBy(
-      m => -m.releaseYear,
-      data?.movie.randomMovies ?? [],
-    )
+  const [submitResponse, scoreResponse] = useLazyQuery(GET_BONUS_SCORE)
 
-    // zip the sorted movies with themselves to get pairs of movies
-    // this will allow us to map over the pairs and get year ranges
-    // e.g., [[null, movie1], [movie1, movie2], [movie2, null]]
-    return zip([null, ...sortedMovies], [...sortedMovies, null])
+  const sortedMovies = useMemo(() => {
+    return sortBy(m => -m.releaseYear, data?.movie.randomMovies ?? [])
   }, [data])
+
+  // create an effect that is executed on changes to scoreResponse in our lazy query
+  // => will be called once on first render and once when a scoring response is received
+  useEffect(() => {
+    if (Number.isFinite(scoreResponse?.data?.scoreBonusResponse)) {
+      const { scoreBonusResponse } = scoreResponse.data
+
+      if (scoreBonusResponse === 0) {
+        history.replace('/failure')
+        // if we fail at the bonus question, lose the points won before
+        setPointDifference(-pointDifference)
+      } else if (scoreBonusResponse > 0) {
+        // if we win the bonus question, get the additional points
+        setPointDifference(scoreBonusResponse)
+        history.replace('/success')
+      }
+    }
+  }, [scoreResponse.data])
 
   if (loading || !data) {
     return null
   }
 
-  const navigateOnSuccess = () => history.push('/success')
-  const navigateOnFailure = () => history.push('/failure')
+  const scoreQuestion = async (responseIndex: number) => {
+    // TODO: change backend to expect the list in descending order
+    // const sortedMovieReleases = sortBy(m => m.releaseYear, sortedMovies)
 
-  const scoreQuestion = (from?: number, until?: number) => {
-    // TODO: do actual scoring by sending the chosen range to the backend?
+    const allMovieReleases = insert(responseIndex, data.movie, sortedMovies)
 
-    if (typeof from !== 'undefined' && data.movie.releaseYear <= from) {
-      navigateOnFailure()
-    }
+    console.log(allMovieReleases)
 
-    if (typeof until !== 'undefined' && data.movie.releaseYear >= until) {
-      navigateOnFailure()
-    }
+    const imdbIds = allMovieReleases.map(m => m.imdbId)
 
-    navigateOnSuccess()
+    submitResponse({
+      variables: { imdbIds, titleQuestionScores: pointDifference },
+    })
   }
 
   return (
@@ -57,22 +78,16 @@ const BonusQuestion = () => {
         When was the movie released?
       </div>
 
-      {moviePairs.map(([movie1, movie2]) => (
-        <div key={movie2?.imdbId}>
-          <IonButton
-            color="primary"
-            onClick={() =>
-              scoreQuestion(movie1?.releaseYear, movie2?.releaseYear)
-            }
-          >
-            HERE
-          </IonButton>
-
-          {movie2 && (
-            <MovieCard title={movie2.title} posterPath={movie2.posterPath} />
-          )}
+      {sortedMovies.map((movie, ix) => (
+        <div key={movie.imdbId}>
+          <IonButton onClick={() => scoreQuestion(ix)}>HERE</IonButton>
+          <MovieCard title={movie.title} posterPath={movie.posterPath} />
         </div>
       ))}
+
+      <IonButton onClick={() => scoreQuestion(sortedMovies.length)}>
+        HERE
+      </IonButton>
     </StatsLayout>
   )
 }

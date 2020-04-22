@@ -56,14 +56,12 @@ const BonusQuestion = () => {
   }
 
   const scoreQuestion = async (responseIndex: number) => {
-    // TODO: change backend to expect the list in descending order
-    // const sortedMovieReleases = sortBy(m => m.releaseYear, sortedMovies)
-
+    // insert the movie at the specified index
     const allMovieReleases = insert(responseIndex, data.movie, sortedMovies)
 
-    console.log(allMovieReleases)
-
-    const imdbIds = allMovieReleases.map(m => m.imdbId)
+    // extract the imdbIds in reverse order
+    // as the backend expects release years in increasing order
+    const imdbIds = allMovieReleases.reverse().map(m => m.imdbId)
 
     submitResponse({
       variables: { imdbIds, titleQuestionScores: pointDifference },

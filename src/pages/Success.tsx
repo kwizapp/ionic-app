@@ -69,20 +69,17 @@ const Success = () => {
   // specify order of animations, will be animated one after the other
   useChain([emojiAnimRef, appearAnimRef, pointsAnimRef, panelAnimRef])
 
-  const updateScores = () => {
-    // set the points here, as we wanted to animate the difference
-    addPoints(points + pointDifference)
-  }
-
   const goToTriviaScreen = () => {
-    updateScores()
-    // reset point difference for next round
+    // set the points here, as we wanted to animate the difference
+    addPoints(pointDifference)
+    // reset point difference for next round. we only do that when we go to the trivia screen
+    // as the bonus question needs the difference of the preceding question
     setPointDifference(0)
     router.push('/trivia')
   }
 
   const gotToBonusQuestion = () => {
-    updateScores()
+    addPoints(pointDifference)
     router.push('/bonus-question')
   }
 

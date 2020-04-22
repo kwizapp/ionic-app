@@ -3,12 +3,21 @@ import React from 'react'
 import { useHistory } from 'react-router'
 
 import StatsLayout from '../components/layouts/StatsLayout'
+import useStore from '../useStore'
 
 const BonusQuestion = () => {
   const history = useHistory()
 
-  const navigateOnSuccess = () => history.push('/success')
-  const navigateOnFailure = () => history.push('/failure')
+  const { setPointDifference } = useStore()
+
+  const navigateOnSuccess = () => {
+    setPointDifference(150) // TODO: replace with computed values
+    history.push('/success')
+  }
+  const navigateOnFailure = () => {
+    setPointDifference(-150) // TODO: replace with computed values
+    history.push('/failure')
+  }
 
   return (
     <StatsLayout>

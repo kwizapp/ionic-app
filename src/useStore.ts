@@ -6,6 +6,12 @@ import { QUESTION_TIME } from './settings'
 
 const { Storage } = Plugins
 
+interface Guess {
+  imdbId: string
+  title: string
+  posterUrl: string
+}
+
 interface Store {
   alive: boolean
   lives: number
@@ -13,11 +19,13 @@ interface Store {
   points: number
   pointDifference: number
   timeRemaining: number
-  currentImdbId: string
+  movie: Guess
+  guess: Guess
   setState: (state: Partial<Store>) => void
   resetState: () => void
   setTimeRemaining: (fun: (currentTime: number) => number) => void
-  setCurrentImdbId: (id: string) => void
+  setMovie: (data: Guess) => void
+  setGuess: (data: Guess) => void
   addPoints: (points: number) => void
   setPointDifference: (pointDifference: number) => void
   removeLife: () => void
@@ -55,7 +63,16 @@ const initialState: Partial<Store> = {
   points: 0,
   pointDifference: 0, // the points gained or lost since the last question
   timeRemaining: QUESTION_TIME,
-  currentImdbId: '',
+  movie: {
+    imdbId: '',
+    title: '',
+    posterUrl: '',
+  },
+  guess: {
+    imdbId: '',
+    title: '',
+    posterUrl: '',
+  },
 }
 
 const [useStore] = create<Store>(
@@ -77,9 +94,15 @@ const [useStore] = create<Store>(
         })
       },
 
-      setCurrentImdbId(id: string) {
+      setMovie(data: Guess) {
         set((state: Store) => {
-          state.currentImdbId = id
+          state.movie = data
+        })
+      },
+
+      setGuess(data: Guess) {
+        set((state: Store) => {
+          state.guess = data
         })
       },
 

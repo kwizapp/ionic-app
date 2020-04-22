@@ -53,10 +53,10 @@ const Question = () => {
 
   const {
     setPointDifference,
-    removeLife,
-    currentImdbId,
     timeRemaining,
     setTimeRemaining,
+    movie,
+    setGuess,
   } = useStore()
 
   const { loading, error, data } = useQuery<MovieData>(MOVIES, {
@@ -81,8 +81,8 @@ const Question = () => {
       // after a score has been received successfully, reset the question time to default
       setTimeRemaining(() => QUESTION_TIME)
 
+      // guess was wrong
       if (scoreTitleResponse === 0) {
-        removeLife()
         history.replace('/failure')
       } else if (scoreTitleResponse > 0) {
         const gainedPoints = scoreResponse.data.scoreTitleResponse
@@ -91,6 +91,30 @@ const Question = () => {
       }
     }
   }, [scoreResponse.data])
+
+  const makeGuess = (
+    guessedTitle: string,
+    imdbId: string,
+    posterUrl: string,
+  ) => {
+    // store guess details in global store
+    if (imdbId && guessedTitle && posterUrl) {
+      setGuess({
+        imdbId: imdbId,
+        title: guessedTitle,
+        posterUrl: posterUrl,
+      })
+    }
+
+    // make the guess
+    submitResponse({
+      variables: {
+        imdbId: movie.imdbId,
+        selectedTitle: guessedTitle,
+        remainingSeconds: timeRemaining,
+      },
+    })
+  }
 
   if (loading) return <Loading />
   if (error) return <p>Error :(</p>
@@ -107,13 +131,7 @@ const Question = () => {
             title={movie.title}
             posterPath={movie.posterPath}
             onClick={() =>
-              submitResponse({
-                variables: {
-                  imdbId: currentImdbId,
-                  selectedTitle: movie.title,
-                  remainingSeconds: timeRemaining,
-                },
-              })
+              makeGuess(movie.title, movie.imdbId, movie.posterPath)
             }
           />
         ))}

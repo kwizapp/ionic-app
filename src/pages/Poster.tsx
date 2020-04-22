@@ -55,7 +55,7 @@ const Poster = () => {
     RANDOM_MOVIE,
   )
 
-  const { timeRemaining, setTimeRemaining, setCurrentImdbId } = useStore()
+  const { timeRemaining, setTimeRemaining, setMovie } = useStore()
 
   const [isPosterExpired, setIsPosterExpired] = useState(false)
 
@@ -63,8 +63,14 @@ const Poster = () => {
   // as soon as the random movie poster has been returned by the api
   useEffect(() => {
     const imdbId = data?.movie.imdbId
-    if (imdbId) {
-      setCurrentImdbId(imdbId)
+    const title = data?.movie.title
+    const posterUrl = data?.movie.posterPath
+    if (imdbId && title && posterUrl) {
+      setMovie({
+        imdbId,
+        title,
+        posterUrl,
+      })
     }
   }, [data])
 

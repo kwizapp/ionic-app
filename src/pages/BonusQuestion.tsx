@@ -24,7 +24,7 @@ const BonusQuestion = () => {
   const { setPointDifference, pointDifference } = useStore()
 
   const { loading, data } = useQuery<MovieData>(MOVIES, {
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-only',
   })
 
   const [submitResponse, scoreResponse] = useLazyQuery(GET_BONUS_SCORE)

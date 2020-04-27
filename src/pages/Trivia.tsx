@@ -1,51 +1,24 @@
 import { gql, useQuery } from '@apollo/client'
 import { IonButton, IonImg } from '@ionic/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router'
 
 import Loading from '../components/Loading'
 import TriviaOverlay from '../components/TriviaOverlay'
-import useStore from '../useStore'
-
-interface Movie {
-  imdbId: string
-  title: string
-  releaseYear: number
-  posterPath: string
-}
-
-interface MovieData {
-  movie: Movie
-}
-
-const MOVIE = gql`
-  query($imdbId: String!) {
-    movie(imdbId: $imdbId) {
-      imdbId
-      title
-      releaseYear
-      posterPath
-    }
-  }
-`
+import { MovieData, MOVIES } from './Question'
 
 const Trivia = () => {
   const history = useHistory()
 
-  const { currentImdbId } = useStore()
-
-  // FIX ME: I'm returning random movies instead of the specified one!
-  // `currentImdbId` is always empty
-  const { loading, error, data } = useQuery<MovieData>(MOVIE, {
-    variables: { imdbId: currentImdbId },
+  const { loading, data } = useQuery<MovieData>(MOVIES, {
+    fetchPolicy: 'cache-only',
   })
 
   const navigateNext = () => history.push('/poster')
 
   const overlayMargin = '5%'
 
-  if (loading) return <Loading />
-  if (error) return <p>Error :(</p>
+  if (loading || !data) return <Loading />
 
   return (
     <div className="m-3 flex flex-col items-center">

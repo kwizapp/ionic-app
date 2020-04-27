@@ -4,6 +4,7 @@ import React from 'react'
 import { useHistory } from 'react-router'
 
 import Loading from '../components/Loading'
+import TriviaOverlay from '../components/TriviaOverlay'
 import useStore from '../useStore'
 
 interface Movie {
@@ -51,38 +52,32 @@ const Trivia = () => {
       <div className="w-full relative">
         <IonImg src={data?.movie?.posterPath} className="w-full h-full" />
 
-        <div
-          className="absolute flex items-center justify-center font-bold text-black text-2xl rounded-md"
+        <TriviaOverlay
+          className="items-center justify-center font-bold text-black text-2xl"
+          margin={overlayMargin}
           style={{
             top: overlayMargin,
-            left: overlayMargin,
-            width: `calc(100% - 2 * ${overlayMargin})`,
             height: '50px',
-            background: 'rgba(196, 196, 196, 0.75)',
-            border: '1px solid #B7B7B7',
-            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
           }}
         >
           <span>Did you know that?</span>
-        </div>
+        </TriviaOverlay>
 
-        <div
-          className="absolute flex flex-col text-lg rounded-md"
+        <TriviaOverlay
+          className="flex-col text-lg"
+          margin={overlayMargin}
           style={{
             top: `calc(${overlayMargin} + 20%)`,
-            left: overlayMargin,
-            width: `calc(100% - 2 * ${overlayMargin})`,
-            background: 'rgba(196, 196, 196, 0.75)',
-            border: '1px solid #B7B7B7',
-            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
             color: 'black',
             fontWeight: 'bold',
             padding: '10px',
           }}
         >
-          <p>Title: {data?.movie?.title}</p>
-          <p>Release Year: {data?.movie?.releaseYear}</p>
-        </div>
+          <div>
+            <p>Title: {data?.movie?.title}</p>
+            <p>Release Year: {data?.movie?.releaseYear}</p>
+          </div>
+        </TriviaOverlay>
       </div>
 
       <div className="mt-5 w-11/12 text-center">

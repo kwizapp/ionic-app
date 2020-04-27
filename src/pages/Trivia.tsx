@@ -1,6 +1,6 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { IonButton, IonImg } from '@ionic/react'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router'
 
 import Loading from '../components/Loading'

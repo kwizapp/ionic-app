@@ -12,7 +12,7 @@ interface Props {
 const StatsLayout = ({ id, className, onClick, children }: Props) => {
   return (
     <IonPage id={id} className={className} onClick={onClick}>
-      <IonContent>{children}</IonContent>
+      <IonContent className="text-center">{children}</IonContent>
 
       <StatsOverlay />
     </IonPage>

@@ -17,11 +17,11 @@ interface Movie {
   randomMovies: Movie[]
 }
 
-interface MovieData {
+export interface MovieData {
   movie: Movie
 }
 
-const MOVIES = gql`
+export const MOVIES = gql`
   {
     movie {
       imdbId
@@ -121,7 +121,7 @@ const Question = () => {
 
   return (
     <StatsLayout>
-      <div className="p-1 text-center text-gray-600 text-sm">
+      <div className="p-1 text-sm text-center text-gray-600">
         Which movie was shown?
       </div>
       <div>
@@ -129,7 +129,6 @@ const Question = () => {
           <MovieCard
             key={index}
             title={movie.title}
-            posterPath={movie.posterPath}
             onClick={() =>
               makeGuess(movie.title, movie.imdbId, movie.posterPath)
             }

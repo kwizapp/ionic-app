@@ -37,6 +37,13 @@ const GameOver = () => {
     config: config.wobbly,
   })
 
+  // animate text
+  const textAnimRef = useRef<any>()
+  const textAnimProps = useSpring({
+    ref: textAnimRef,
+    opacity: !animReady ? 0 : 1,
+  })
+
   // animate the number of scored points
   const pointsAnimRef = useRef<any>()
   const pointsAnimProps = useSpring({
@@ -54,7 +61,7 @@ const GameOver = () => {
     transform: !animReady ? 'scale(0)' : 'scale(1.0)',
   })
 
-  useChain([emojiAnimRef, pointsAnimRef, buttonAnimRef])
+  useChain([emojiAnimRef, textAnimRef, pointsAnimRef, buttonAnimRef])
 
   const navigateNext = () => history.push('/')
 
@@ -62,6 +69,7 @@ const GameOver = () => {
     <IonPage>
       <IonContent className="text-center">
         <h1 className="text-2xl font-extrabold mt-20">Game Over</h1>
+
         <animated.div style={emojiAnimProps}>
           <p
             style={{ fontFamily: 'Twitter Color Emoji' }}
@@ -71,11 +79,17 @@ const GameOver = () => {
           </p>
         </animated.div>
 
-        <p className="mt-5">You scored</p>
+        <animated.div style={textAnimProps}>
+          <p className="mt-5">You scored</p>
+        </animated.div>
+
         <animated.p style={pointsAnimProps} className="text-2xl font-bold">
           {pointsAnimProps.number.interpolate((x: number) => x.toFixed(0))}
         </animated.p>
-        <p>Points</p>
+
+        <animated.div style={textAnimProps}>
+          <p>Points</p>
+        </animated.div>
 
         <animated.div style={buttonAnimProps}>
           <IonButton className="mt-16" onClick={navigateNext}>

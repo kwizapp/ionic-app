@@ -30,6 +30,7 @@ interface Store {
   timeRemaining: number
   movie: Movie
   streak: number
+  bestStreak: number
   guess: Guess
   setState: (state: Partial<Store>) => void
   resetState: () => void
@@ -76,6 +77,7 @@ const initialState: Partial<Store> = {
   pointDifference: 0, // the points gained or lost since the last question
   timeRemaining: QUESTION_TIME,
   streak: 0,
+  bestStreak: 0,
   movie: {
     imdbId: '',
     title: '',
@@ -148,6 +150,9 @@ const [useStore] = create<Store>(
       increaseStreak() {
         set((state: Store) => {
           state.streak++
+          if (state.streak > state.bestStreak) {
+            state.bestStreak = state.streak
+          }
         })
       },
 

@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import {
   IonPage,
   IonContent,
   IonButton,
+  useIonViewDidEnter,
   useIonViewWillLeave,
 } from '@ionic/react'
+import { animated, config, useChain, useSpring } from 'react-spring'
 import { useHistory } from 'react-router'
 import useStore from '../useStore'
 
@@ -14,9 +16,28 @@ const GameOver = () => {
   const history = useHistory()
   const { points, resetState } = useStore()
 
+  const [animReady, setAnimReady] = useState(false)
+
+  // setAnimReady: make sure the animations run everytime the page is loaded
+  useIonViewDidEnter(() => {
+    setAnimReady(true)
+  })
+
   useIonViewWillLeave(() => {
+    setAnimReady(false)
     resetState()
   })
+
+  // animate the number of scored points
+  const pointsAnimRef = useRef<any>()
+  const pointsAnimProps = useSpring({
+    ref: pointsAnimRef,
+    number: !animReady ? 0 : points,
+    opacity: !animReady ? 0 : 1,
+    config: config.default,
+  })
+
+  useChain([pointsAnimRef])
 
   const navigateNext = () => history.push('/')
 
@@ -32,7 +53,9 @@ const GameOver = () => {
         </p>
 
         <p className="mt-5">You scored</p>
-        <p className="text-2xl font-bold">{points}</p>
+        <animated.p style={pointsAnimProps} className="text-2xl font-bold">
+          {pointsAnimProps.number.interpolate((x: number) => x.toFixed(0))}
+        </animated.p>
         <p>Points</p>
 
         <IonButton className="mt-16" onClick={navigateNext}>

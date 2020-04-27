@@ -1,20 +1,20 @@
-import React, { useRef, useState } from 'react'
 import {
-  IonPage,
-  IonContent,
   IonButton,
+  IonContent,
+  IonPage,
   useIonViewDidEnter,
   useIonViewWillLeave,
 } from '@ionic/react'
-import { animated, config, useChain, useSpring } from 'react-spring'
-import { useHistory } from 'react-router'
-import useStore from '../useStore'
-
 import emoji from 'node-emoji'
+import React, { useRef, useState } from 'react'
+import { useHistory } from 'react-router'
+import { animated, config, useChain, useSpring } from 'react-spring'
+
+import useStore from '../useStore'
 
 const GameOver = () => {
   const history = useHistory()
-  const { points, resetState } = useStore()
+  const { points, resetState, bestStreak } = useStore()
 
   const [animReady, setAnimReady] = useState(false)
 
@@ -89,10 +89,13 @@ const GameOver = () => {
 
         <animated.div style={textAnimProps}>
           <p>Points</p>
+          <div className="text-gray-500 mt-4 text-xl font-bold">
+            best streak: {bestStreak}
+          </div>
         </animated.div>
 
         <animated.div style={buttonAnimProps}>
-          <IonButton className="mt-16" onClick={navigateNext}>
+          <IonButton className="mt-12" onClick={navigateNext}>
             Start again
           </IonButton>
         </animated.div>

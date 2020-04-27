@@ -25,12 +25,16 @@ const Success = () => {
     setPointDifference,
     lives,
     livesTotal,
+    increaseStreak,
+    streak,
   } = useStore()
 
   const [animReady, setAnimReady] = useState(false)
 
   // these two lifecycle hooks make sure the animations run everytime the page is loaded
   useIonViewDidEnter(() => {
+    // increase streak by 1
+    increaseStreak()
     setAnimReady(true)
   })
   useIonViewWillLeave(() => {
@@ -94,7 +98,8 @@ const Success = () => {
   return (
     <IonPage>
       <IonContent className="text-center">
-        <h1 className="mt-16 text-2xl font-extrabold">Correct Guess</h1>
+        <h1 className="mt-12 text-2xl font-extrabold">Correct Guess</h1>
+        <div>{streak} in a row</div>
         <animated.div style={emojiAnimProps}>
           <p
             style={{ fontFamily: 'Twitter Color Emoji' }}

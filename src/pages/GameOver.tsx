@@ -46,7 +46,15 @@ const GameOver = () => {
     config: config.default,
   })
 
-  useChain([emojiAnimRef, pointsAnimRef])
+  // animate continue button
+  const buttonAnimRef = useRef<any>()
+  const buttonAnimProps = useSpring({
+    ref: buttonAnimRef,
+    opacity: !animReady ? 0 : 1,
+    transform: !animReady ? 'scale(0)' : 'scale(1.0)',
+  })
+
+  useChain([emojiAnimRef, pointsAnimRef, buttonAnimRef])
 
   const navigateNext = () => history.push('/')
 
@@ -59,7 +67,7 @@ const GameOver = () => {
             style={{ fontFamily: 'Twitter Color Emoji' }}
             className="mt-3 text-10xl"
           >
-          {emoji.get('disappointed_relieved')}
+            {emoji.get('disappointed_relieved')}
           </p>
         </animated.div>
 
@@ -69,9 +77,11 @@ const GameOver = () => {
         </animated.p>
         <p>Points</p>
 
-        <IonButton className="mt-16" onClick={navigateNext}>
-          Start again
-        </IonButton>
+        <animated.div style={buttonAnimProps}>
+          <IonButton className="mt-16" onClick={navigateNext}>
+            Start again
+          </IonButton>
+        </animated.div>
       </IonContent>
     </IonPage>
   )

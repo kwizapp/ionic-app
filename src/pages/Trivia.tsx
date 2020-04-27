@@ -15,7 +15,6 @@ import { animated, useChain, useSpring } from 'react-spring'
 
 import Loading from '../components/Loading'
 import TriviaOverlay from '../components/TriviaOverlay'
-import useStore from '../useStore'
 import { MovieData } from './Question'
 
 export const MOVIES = gql`

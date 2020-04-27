@@ -14,6 +14,9 @@ interface Movie {
   title: string
   releaseYear: number
   posterPath: string
+  budget?: number
+  revenue?: number
+  popularity?: number
   randomMovies: Movie[]
 }
 

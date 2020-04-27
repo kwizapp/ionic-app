@@ -1,5 +1,10 @@
 import { gql, useLazyQuery, useQuery } from '@apollo/client'
-import { IonButton, IonContent, IonPage } from '@ionic/react'
+import {
+  IonButton,
+  IonContent,
+  IonPage,
+  useIonViewWillEnter,
+} from '@ionic/react'
 import { insert, sortBy } from 'ramda'
 import React, { useEffect, useMemo } from 'react'
 import { useHistory } from 'react-router'
@@ -20,7 +25,11 @@ const GET_BONUS_SCORE = gql`
 const BonusQuestion = () => {
   const history = useHistory()
 
-  const { setPointDifference, pointDifference } = useStore()
+  const { setPointDifference, pointDifference, addPoints } = useStore()
+
+  useIonViewWillEnter(() => {
+    addPoints(pointDifference)
+  })
 
   const { loading, data } = useQuery<MovieData>(MOVIES, {
     fetchPolicy: 'cache-only',

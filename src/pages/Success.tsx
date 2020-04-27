@@ -69,20 +69,17 @@ const Success = () => {
   // specify order of animations, will be animated one after the other
   useChain([emojiAnimRef, appearAnimRef, pointsAnimRef, panelAnimRef])
 
-  const updateScores = () => {
+  const goToTriviaScreen = () => {
     // set the points here, as we wanted to animate the difference
     addPoints(pointDifference)
-    // reset point difference for next round
+    // reset point difference for next round. we only do that when we go to the trivia screen
+    // as the bonus question needs the difference of the preceding question
     setPointDifference(0)
-  }
-
-  const goToTriviaScreen = () => {
-    updateScores()
     router.push('/trivia')
   }
 
   const gotToBonusQuestion = () => {
-    updateScores()
+    addPoints(pointDifference)
     router.push('/bonus-question')
   }
 
@@ -97,11 +94,11 @@ const Success = () => {
   return (
     <IonPage>
       <IonContent className="text-center">
-        <h1 className="text-2xl font-extrabold mt-16">Correct Guess</h1>
+        <h1 className="mt-16 text-2xl font-extrabold">Correct Guess</h1>
         <animated.div style={emojiAnimProps}>
           <p
             style={{ fontFamily: 'Twitter Color Emoji' }}
-            className="text-10xl mt-3"
+            className="mt-3 text-10xl"
           >
             {emoji.get('tada')}
           </p>
@@ -117,7 +114,7 @@ const Success = () => {
 
           <animated.div
             style={emojiAnimProps}
-            className="text-green-600 text-2xl font-bold "
+            className="text-2xl font-bold text-green-600 "
           >
             + {pointDifference}
           </animated.div>

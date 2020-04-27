@@ -28,6 +28,15 @@ const GameOver = () => {
     resetState()
   })
 
+  // animate the emoji
+  const emojiAnimRef = useRef<any>()
+  const emojiAnimProps = useSpring({
+    ref: emojiAnimRef,
+    transform: !animReady ? 'scale(0)' : 'scale(1.1)',
+    opacity: !animReady ? 0 : 1,
+    config: config.wobbly,
+  })
+
   // animate the number of scored points
   const pointsAnimRef = useRef<any>()
   const pointsAnimProps = useSpring({
@@ -37,7 +46,7 @@ const GameOver = () => {
     config: config.default,
   })
 
-  useChain([pointsAnimRef])
+  useChain([emojiAnimRef, pointsAnimRef])
 
   const navigateNext = () => history.push('/')
 
@@ -45,12 +54,14 @@ const GameOver = () => {
     <IonPage>
       <IonContent className="text-center">
         <h1 className="text-2xl font-extrabold mt-20">Game Over</h1>
-        <p
-          style={{ fontFamily: 'Twitter Color Emoji' }}
-          className="text-10xl mt-3"
-        >
+        <animated.div style={emojiAnimProps}>
+          <p
+            style={{ fontFamily: 'Twitter Color Emoji' }}
+            className="mt-3 text-10xl"
+          >
           {emoji.get('disappointed_relieved')}
-        </p>
+          </p>
+        </animated.div>
 
         <p className="mt-5">You scored</p>
         <animated.p style={pointsAnimProps} className="text-2xl font-bold">

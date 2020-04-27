@@ -6,10 +6,19 @@ import { QUESTION_TIME } from './settings'
 
 const { Storage } = Plugins
 
-interface Guess {
+export interface Guess {
   imdbId: string
   title: string
-  posterUrl: string
+  posterPath: string
+}
+
+export interface Movie {
+  imdbId: string
+  title: string
+  posterPath: string
+  budget: number
+  revenue: number
+  popularity: number
 }
 
 interface Store {
@@ -19,12 +28,12 @@ interface Store {
   points: number
   pointDifference: number
   timeRemaining: number
-  movie: Guess
+  movie: Movie
   guess: Guess
   setState: (state: Partial<Store>) => void
   resetState: () => void
   setTimeRemaining: (fun: (currentTime: number) => number) => void
-  setMovie: (data: Guess) => void
+  setMovie: (data: Movie) => void
   setGuess: (data: Guess) => void
   addPoints: (points: number) => void
   setPointDifference: (pointDifference: number) => void
@@ -66,12 +75,15 @@ const initialState: Partial<Store> = {
   movie: {
     imdbId: '',
     title: '',
-    posterUrl: '',
+    posterPath: '',
+    budget: 0,
+    popularity: 0.0,
+    revenue: 0,
   },
   guess: {
     imdbId: '',
     title: '',
-    posterUrl: '',
+    posterPath: '',
   },
 }
 
@@ -94,7 +106,7 @@ const [useStore] = create<Store>(
         })
       },
 
-      setMovie(data: Guess) {
+      setMovie(data: Movie) {
         set((state: Store) => {
           state.movie = data
         })

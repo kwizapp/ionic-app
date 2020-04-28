@@ -29,6 +29,8 @@ interface Store {
   pointDifference: number
   timeRemaining: number
   movie: Movie
+  streak: number
+  bestStreak: number
   guess: Guess
   setState: (state: Partial<Store>) => void
   resetState: () => void
@@ -38,6 +40,8 @@ interface Store {
   addPoints: (points: number) => void
   setPointDifference: (pointDifference: number) => void
   removeLife: () => void
+  increaseStreak: () => void
+  resetStreak: () => void
 }
 
 // setup immer to ensure data is changed immutably
@@ -72,6 +76,8 @@ const initialState: Partial<Store> = {
   points: 0,
   pointDifference: 0, // the points gained or lost since the last question
   timeRemaining: QUESTION_TIME,
+  streak: 0,
+  bestStreak: 0,
   movie: {
     imdbId: '',
     title: '',
@@ -138,6 +144,21 @@ const [useStore] = create<Store>(
             state.lives = 0
             state.alive = false
           }
+        })
+      },
+
+      increaseStreak() {
+        set((state: Store) => {
+          state.streak++
+          if (state.streak > state.bestStreak) {
+            state.bestStreak = state.streak
+          }
+        })
+      },
+
+      resetStreak() {
+        set((state: Store) => {
+          state.streak = 0
         })
       },
     })),

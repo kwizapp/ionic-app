@@ -25,6 +25,7 @@ const Failure = () => {
     guess,
     addPoints,
     setPointDifference,
+    resetStreak,
   } = useStore()
 
   const [animReady, setAnimReady] = useState(false)
@@ -45,6 +46,7 @@ const Failure = () => {
   const updateScores = () => {
     // set the points here, as we wanted to animate the difference
     addPoints(pointDifference)
+    resetStreak()
     // reset point difference for next round
     setPointDifference(0)
   }

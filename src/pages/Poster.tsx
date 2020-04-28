@@ -64,14 +64,6 @@ const Poster = () => {
     const budget = data?.movie.budget
     const popularity = data?.movie.popularity
     const revenue = data?.movie.revenue
-    console.log({
-      imdbId,
-      title,
-      posterPath,
-      budget,
-      popularity,
-      revenue,
-    })
     if (imdbId && title && posterPath && budget && popularity && revenue) {
       setMovie({
         imdbId,

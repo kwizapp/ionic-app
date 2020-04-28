@@ -14,6 +14,9 @@ interface Movie {
   title: string
   releaseYear: number
   posterPath: string
+  budget?: number
+  revenue?: number
+  popularity?: number
   randomMovies: Movie[]
 }
 
@@ -95,14 +98,14 @@ const Question = () => {
   const makeGuess = (
     guessedTitle: string,
     imdbId: string,
-    posterUrl: string,
+    posterPath: string,
   ) => {
     // store guess details in global store
-    if (imdbId && guessedTitle && posterUrl) {
+    if (imdbId && guessedTitle && posterPath) {
       setGuess({
         imdbId: imdbId,
         title: guessedTitle,
-        posterUrl: posterUrl,
+        posterPath: posterPath,
       })
     }
 

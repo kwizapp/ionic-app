@@ -10,6 +10,7 @@ export default () =>
       },
     }),
     link: new HttpLink({
+      // TODO: needs to be refactored for ENV injection
       uri: 'http://localhost:3001/graphql',
     }),
   })

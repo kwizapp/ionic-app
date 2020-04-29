@@ -1,21 +1,31 @@
-# extend basic alpine image
-FROM node:14-alpine
+# --- DEPENDENCIES ---
+FROM node:14-alpine AS deps
 
 ARG NODE_AUTH_TOKEN
+
+# inject and install dependencies
+COPY package.json package-lock.json /app/
+COPY .npmrc.ci /app/.npmrc
+WORKDIR /app
+RUN set -x && npm ci
+
+# --- RUNTIME ---
+FROM node:14-alpine
+
+ENV API_URL=
+ENV PORT=3000
 
 # install serve for static file serving
 RUN set -x && npm install -g serve
 
-# inject and install dependencies
-COPY package.json package-lock.json /app/
-WORKDIR /app
-COPY .npmrc.ci .npmrc
-RUN set -x && npm ci
+# inject dependencies
+COPY --from=deps /app/node_modules /app/node_modules
 
 # inject service logic
 COPY . /app/
 
 # build the application
+WORKDIR /app
 RUN set -x && npm run build
 
 # inject startup script
@@ -27,3 +37,5 @@ USER 1000
 
 # start the webserver on a dynamic port (as required by Heroku)
 CMD ["/serve.sh"]
+
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "curl", '-f', 'http://localhost:${PORT}' ]

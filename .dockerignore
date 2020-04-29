@@ -9,4 +9,4 @@
 !serve.sh
 !tsconfig.json
 
-!.npmrc
+!.npmrc.ci

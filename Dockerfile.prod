@@ -1,13 +1,14 @@
 # extend basic alpine image
-FROM node:13.8-alpine AS builder
+FROM node:14-alpine AS builder
+
+ARG NODE_AUTH_TOKEN
 
 # set node to a production environment
 ENV NODE_ENV "prod"
 
-ARG NODE_AUTH_TOKEN
-
 # inject and install dependencies
-COPY package.json package-lock.json .npmrc /app/
+COPY package.json package-lock.json /app/
+COPY .npmrc.ci /app/.npmrc
 WORKDIR /app
 RUN set -x && npm ci
 
@@ -19,7 +20,7 @@ RUN set -x && npm run build
 
 
 # extend basic alpine image
-FROM node:13.8-alpine
+FROM node:14-alpine
 
 # install serve for static file serving
 RUN set -x && npm install -g serve

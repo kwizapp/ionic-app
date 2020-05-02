@@ -12,7 +12,7 @@ RUN set -x && npm ci
 # --- RUNTIME ---
 FROM node:14-alpine
 
-ARG API_URL=http://localhost:3001/graphql
+ARG REACT_APP_API_URL=http://localhost:3001/graphql
 ENV PORT=3000
 
 # install serve for static file serving

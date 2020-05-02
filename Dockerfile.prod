@@ -2,7 +2,7 @@
 FROM node:14-alpine AS builder
 
 ARG NODE_AUTH_TOKEN
-ARG API_URL=http://localhost:3001/graphql
+ARG REACT_APP_API_URL=http://localhost:3001/graphql
 
 # inject and install dependencies
 COPY package.json package-lock.json /app/

@@ -2,10 +2,11 @@
 
 !public/
 !src/
-!capacitor.config.js
+!capacitor.config.json
 !ionic.config.json
 !package-lock.json
 !package.json
+!postcss.config.js
 !serve.sh
 !tsconfig.json
 

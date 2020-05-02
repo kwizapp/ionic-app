@@ -30,7 +30,7 @@ const BonusQuestion = () => {
   const [submitResponse, scoreResponse] = useLazyQuery(GET_BONUS_SCORE)
 
   const sortedMovies = useMemo(() => {
-    return sortBy(m => -m.releaseYear, data?.movie.randomMovies ?? [])
+    return sortBy((m) => -m.releaseYear, data?.movie.randomMovies ?? [])
   }, [data])
 
   // create an effect that is executed on changes to scoreResponse in our lazy query
@@ -61,7 +61,7 @@ const BonusQuestion = () => {
 
     // extract the imdbIds in reverse order
     // as the backend expects release years in increasing order
-    const imdbIds = allMovieReleases.reverse().map(m => m.imdbId)
+    const imdbIds = allMovieReleases.reverse().map((m) => m.imdbId)
 
     submitResponse({
       variables: { imdbIds, titleQuestionScores: pointDifference },

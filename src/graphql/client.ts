@@ -10,6 +10,6 @@ export default () =>
       },
     }),
     link: new HttpLink({
-      uri: process.env.API_URL,
+      uri: process.env.REACT_APP_API_URL,
     }),
   })

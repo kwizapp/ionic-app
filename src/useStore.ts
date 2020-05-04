@@ -6,10 +6,19 @@ import { QUESTION_TIME } from './settings'
 
 const { Storage } = Plugins
 
-interface Guess {
+export interface Guess {
   imdbId: string
   title: string
-  posterUrl: string
+  posterPath: string
+}
+
+export interface Movie {
+  imdbId: string
+  title: string
+  posterPath: string
+  budget: number
+  revenue: number
+  popularity: number
 }
 
 interface Store {
@@ -19,16 +28,20 @@ interface Store {
   points: number
   pointDifference: number
   timeRemaining: number
-  movie: Guess
+  movie: Movie
+  streak: number
+  bestStreak: number
   guess: Guess
   setState: (state: Partial<Store>) => void
   resetState: () => void
   setTimeRemaining: (fun: (currentTime: number) => number) => void
-  setMovie: (data: Guess) => void
+  setMovie: (data: Movie) => void
   setGuess: (data: Guess) => void
   addPoints: (points: number) => void
   setPointDifference: (pointDifference: number) => void
   removeLife: () => void
+  increaseStreak: () => void
+  resetStreak: () => void
 }
 
 // setup immer to ensure data is changed immutably
@@ -63,15 +76,20 @@ const initialState: Partial<Store> = {
   points: 0,
   pointDifference: 0, // the points gained or lost since the last question
   timeRemaining: QUESTION_TIME,
+  streak: 0,
+  bestStreak: 0,
   movie: {
     imdbId: '',
     title: '',
-    posterUrl: '',
+    posterPath: '',
+    budget: 0,
+    popularity: 0.0,
+    revenue: 0,
   },
   guess: {
     imdbId: '',
     title: '',
-    posterUrl: '',
+    posterPath: '',
   },
 }
 
@@ -94,7 +112,7 @@ const [useStore] = create<Store>(
         })
       },
 
-      setMovie(data: Guess) {
+      setMovie(data: Movie) {
         set((state: Store) => {
           state.movie = data
         })
@@ -126,6 +144,21 @@ const [useStore] = create<Store>(
             state.lives = 0
             state.alive = false
           }
+        })
+      },
+
+      increaseStreak() {
+        set((state: Store) => {
+          state.streak++
+          if (state.streak > state.bestStreak) {
+            state.bestStreak = state.streak
+          }
+        })
+      },
+
+      resetStreak() {
+        set((state: Store) => {
+          state.streak = 0
         })
       },
     })),

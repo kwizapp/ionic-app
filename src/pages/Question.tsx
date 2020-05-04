@@ -2,7 +2,7 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import React, { useEffect, useMemo } from 'react'
 import { useHistory } from 'react-router'
 
-import MovieCard from '../components/card/MovieCard'
+import AnswerCard from '../components/card/AnswerCard'
 import StatsLayout from '../components/layouts/StatsLayout'
 import Loading from '../components/Loading'
 import { QUESTION_TIME } from '../settings'
@@ -14,6 +14,9 @@ interface Movie {
   title: string
   releaseYear: number
   posterPath: string
+  budget?: number
+  revenue?: number
+  popularity?: number
   randomMovies: Movie[]
 }
 
@@ -95,14 +98,14 @@ const Question = () => {
   const makeGuess = (
     guessedTitle: string,
     imdbId: string,
-    posterUrl: string,
+    posterPath: string,
   ) => {
     // store guess details in global store
-    if (imdbId && guessedTitle && posterUrl) {
+    if (imdbId && guessedTitle && posterPath) {
       setGuess({
         imdbId: imdbId,
         title: guessedTitle,
-        posterUrl: posterUrl,
+        posterPath: posterPath,
       })
     }
 
@@ -121,12 +124,12 @@ const Question = () => {
 
   return (
     <StatsLayout>
-      <div className="p-1 text-sm text-center text-gray-600">
-        Which movie was shown?
+      <div className="p-2  text-center text-black font-bold border border-gray-100 rounded-md shadow-lg m-2 ">
+        Make you guess!
       </div>
       <div>
         {allMovies.map((movie: any, index: any) => (
-          <MovieCard
+          <AnswerCard
             key={index}
             title={movie.title}
             onClick={() =>

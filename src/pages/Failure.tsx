@@ -25,6 +25,7 @@ const Failure = () => {
     guess,
     addPoints,
     setPointDifference,
+    resetStreak,
   } = useStore()
 
   const [animReady, setAnimReady] = useState(false)
@@ -45,6 +46,7 @@ const Failure = () => {
   const updateScores = () => {
     // set the points here, as we wanted to animate the difference
     addPoints(pointDifference)
+    resetStreak()
     // reset point difference for next round
     setPointDifference(0)
   }
@@ -150,7 +152,7 @@ const Failure = () => {
             <div className="font-light text-2xl mb-2">{movie.title}</div>
           </div>
           <div className="w-32 mx-auto">
-            <img className="rounded" src={movie.posterUrl} alt={movie.title} />
+            <img className="rounded" src={movie.posterPath} alt={movie.title} />
           </div>
         </animated.div>
       </IonContent>

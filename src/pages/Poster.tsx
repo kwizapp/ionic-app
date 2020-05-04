@@ -16,14 +16,7 @@ import StatsLayout from '../components/layouts/StatsLayout'
 import Loading from '../components/Loading'
 import Timer from '../components/Timer'
 import { QUESTION_TIME } from '../settings'
-import useStore from '../useStore'
-
-interface Movie {
-  imdbId: string
-  title: string
-  releaseYear: number
-  posterPath: string
-}
+import useStore, { Movie } from '../useStore'
 
 interface RandomMovieData {
   movie: Movie
@@ -36,6 +29,9 @@ const RANDOM_MOVIE = gql`
       title
       releaseYear
       posterPath
+      budget
+      popularity
+      revenue
       randomMovies(num: 3, differentReleaseYear: true) {
         imdbId
         title
@@ -64,12 +60,18 @@ const Poster = () => {
   useEffect(() => {
     const imdbId = data?.movie.imdbId
     const title = data?.movie.title
-    const posterUrl = data?.movie.posterPath
-    if (imdbId && title && posterUrl) {
+    const posterPath = data?.movie.posterPath
+    const budget = data?.movie.budget
+    const popularity = data?.movie.popularity
+    const revenue = data?.movie.revenue
+    if (imdbId && title && posterPath && budget && popularity && revenue) {
       setMovie({
         imdbId,
         title,
-        posterUrl,
+        posterPath,
+        budget,
+        popularity,
+        revenue,
       })
     }
   }, [data])
@@ -92,7 +94,7 @@ const Poster = () => {
 
       // start a countdown
       countDownRef.current = setInterval(() => {
-        setTimeRemaining(prevSeconds => {
+        setTimeRemaining((prevSeconds) => {
           if (prevSeconds <= 1) {
             return 0
           }

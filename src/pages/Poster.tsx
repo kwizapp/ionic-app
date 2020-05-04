@@ -94,7 +94,7 @@ const Poster = () => {
 
       // start a countdown
       countDownRef.current = setInterval(() => {
-        setTimeRemaining(prevSeconds => {
+        setTimeRemaining((prevSeconds) => {
           if (prevSeconds <= 1) {
             return 0
           }

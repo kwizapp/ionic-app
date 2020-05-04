@@ -6,9 +6,9 @@ import useStore from '../useStore'
 import LifeDisplay from './LifeDisplay'
 
 const StatsOverlay = () => {
-  const lives = useStore(state => state.lives)
-  const livesTotal = useStore(state => state.livesTotal)
-  const points = useStore(state => state.points)
+  const lives = useStore((state) => state.lives)
+  const livesTotal = useStore((state) => state.livesTotal)
+  const points = useStore((state) => state.points)
 
   return (
     <div className="fixed bottom-0 flex items-center justify-between w-full p-4">

@@ -10,6 +10,6 @@ export default () =>
       },
     }),
     link: new HttpLink({
-      uri: 'http://localhost:3001/graphql',
+      uri: process.env.REACT_APP_API_URL,
     }),
   })

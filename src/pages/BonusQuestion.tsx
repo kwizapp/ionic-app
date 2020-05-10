@@ -1,13 +1,17 @@
-import { IonButton } from '@ionic/react'
-import React, { useMemo, useEffect } from 'react'
+import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import {
+  IonButton,
+  IonContent,
+  IonPage,
+  useIonViewWillEnter,
+} from '@ionic/react'
 import { insert, sortBy } from 'ramda'
+import React, { useEffect, useMemo } from 'react'
 import { useHistory } from 'react-router'
 
-import StatsLayout from '../components/layouts/StatsLayout'
-import { useQuery, gql, useLazyQuery } from '@apollo/client'
-import { MovieData, MOVIES } from './Question'
 import MovieCard from '../components/card/MovieCard'
 import useStore from '../useStore'
+import { MovieData, MOVIES } from './Question'
 
 const GET_BONUS_SCORE = gql`
   query($imdbIds: [String!]!, $titleQuestionScores: Int!) {
@@ -21,7 +25,11 @@ const GET_BONUS_SCORE = gql`
 const BonusQuestion = () => {
   const history = useHistory()
 
-  const { setPointDifference, pointDifference } = useStore()
+  const { setPointDifference, pointDifference, addPoints } = useStore()
+
+  useIonViewWillEnter(() => {
+    addPoints(pointDifference)
+  })
 
   const { loading, data } = useQuery<MovieData>(MOVIES, {
     fetchPolicy: 'cache-only',
@@ -45,7 +53,8 @@ const BonusQuestion = () => {
         setPointDifference(-pointDifference)
       } else if (scoreBonusResponse > 0) {
         // if we win the bonus question, get the additional points
-        setPointDifference(scoreBonusResponse)
+        // here we need to only store the difference again
+        setPointDifference(scoreBonusResponse - pointDifference)
         history.replace('/success')
       }
     }
@@ -69,24 +78,29 @@ const BonusQuestion = () => {
   }
 
   return (
-    <StatsLayout>
-      <MovieCard title={data.movie.title} posterPath={data.movie.posterPath} />
+    <IonPage>
+      <IonContent>
+        <MovieCard
+          title={data.movie.title}
+          posterPath={data.movie.posterPath}
+        />
 
-      <div className="p-1 text-sm text-center text-gray-600">
-        When was the movie released?
-      </div>
-
-      {sortedMovies.map((movie, ix) => (
-        <div key={movie.imdbId}>
-          <IonButton onClick={() => scoreQuestion(ix)}>HERE</IonButton>
-          <MovieCard title={movie.title} posterPath={movie.posterPath} />
+        <div className="p-1 text-sm text-center text-gray-600">
+          When was the movie released?
         </div>
-      ))}
 
-      <IonButton onClick={() => scoreQuestion(sortedMovies.length)}>
-        HERE
-      </IonButton>
-    </StatsLayout>
+        {sortedMovies.map((movie, ix) => (
+          <div key={movie.imdbId}>
+            <IonButton onClick={() => scoreQuestion(ix)}>HERE</IonButton>
+            <MovieCard title={movie.title} posterPath={movie.posterPath} />
+          </div>
+        ))}
+
+        <IonButton onClick={() => scoreQuestion(sortedMovies.length)}>
+          HERE
+        </IonButton>
+      </IonContent>
+    </IonPage>
   )
 }
 

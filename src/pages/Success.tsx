@@ -83,7 +83,6 @@ const Success = () => {
   }
 
   const gotToBonusQuestion = () => {
-    addPoints(pointDifference)
     router.push('/bonus-question')
   }
 

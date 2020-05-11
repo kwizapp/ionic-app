@@ -60,6 +60,14 @@ The folder `styleguide` contains automatically generated documentation of all ou
 
 Open the file `styleguide/index.html` in a browser to access the documentation. There are two sections: **Pages** and **UI Components**. The first sections describes the main components that are structured in terms of pages, whereas the second section documents the smaller UI components used in our application.
 
+**Build Documentation Files**
+
+Run the following command to update the component documentation in `styleguide/`.
+
+```bash
+npm run styleguide:build
+``
+
 ### Mobile Preview
 
 For a mobile preview, use the browser's built-in features for that.
@@ -69,3 +77,4 @@ For a mobile preview, use the browser's built-in features for that.
 This is the general flow of the Kwizz game. The game ends once the user has no more lives left.
 
 ![User Experience](public/assets/user-flow.png)
+```

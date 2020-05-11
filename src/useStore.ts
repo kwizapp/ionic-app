@@ -93,6 +93,11 @@ const initialState: Partial<Store> = {
   },
 }
 
+/**
+ * Global State Management Store
+ *
+ * Can be imported by any component as hook
+ */
 const [useStore] = create<Store>(
   persist(
     immer((set: any) => ({

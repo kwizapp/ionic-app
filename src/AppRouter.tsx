@@ -13,6 +13,9 @@ import Question from './pages/Question'
 import Success from './pages/Success'
 import Trivia from './pages/Trivia'
 
+/**
+ * Main Router of the Application
+ */
 const AppRouter = () => {
   return (
     <IonReactRouter>

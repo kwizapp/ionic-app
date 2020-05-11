@@ -1,53 +1,80 @@
-# kwiz Ionic
+# Kwizapp Ionic React Frontend
 
-## How to Run
+<p align="center">
+  <a href="https://kwizapp.github.io" target="blank"><img src="public/assets/kwiz_logo.png" width="150" alt="Kwizapp Logo" /></a>
+</p>
 
-1. Install the Ionic CLI
+## Development
 
-    ```bash
-    npm install -g @ionic/cli
-    ```
+install npm packages
 
-2. Build tailwind styles
+```bash
+npm i
+```
 
-    ```bash
-    # once
-    npm run build:style
+### Styles
 
-    # watch mode
-    npm run dev:style
-    ```
+Build [tailwind](https://tailwindcss.com/) styles
 
-3. Start Poster API (see corresponding README):
+```bash
+# once
+npm run build:style
 
-    ```bash
-    npm run dev
-    ```
+# watch mode
+npm run dev:style
+```
 
-4. Start Metadata API (see corresponding README):
+### Start Application
 
-    ```bash
-    npm run dev
-    ```
+:warning: You need to set the `REACT_APP_API_URL` environment variable. Either add the following to an `.env` file:
 
-5. Start Nest API (see corresponding README):
+```bash
+# .env
 
-    ```bash
-    npm run dev
-    ```
+REACT_APP_API_URL=http://localhost:3001/graphql
+```
 
-6. Start developing with
+or adjust the `scripts` in the `package.json`:
 
-    ```bash
-    ionic serve
-    ```
+```json
+"scripts": {
+    "dev:app": "REACT_APP_API_URL=http://localhost:3001/graphql react-scripts start",
+}
+```
 
-This will open up the app in your browser on port 8100. For a mobile preview, use the browser's built-in features for that.
+This is the frontend of the `kwizapp`. It depends on a few services (APIs) in order to work properly:
 
-## Code Quality
+- [`poster-service`](https://github.com/kwizapp/poster-service): provides movie poster image urls for IMDb ids
+- [`metadata-service`](https://github.com/kwizapp/metadata-service): provides movie metadata for IMDb ids
+- [`nest-api`](https://github.com/kwizapp/nest-api): main graphql API (get queried by the frontend)
 
-We use `eslint` and `prettier` to define consistent code formatting and code quality.
+1. Start Poster API (see corresponding [README](https://github.com/kwizapp/poster-service))
+2. Start Metadata API (see corresponding [README](https://github.com/kwizapp/metadata-service))
+3. Start Nest API (see corresponding [README](https://github.com/kwizapp/nest-api))
+4. Start Ionic React Frontend with `npm run dev`
+5. Open app on PORT **3000** - http://localhost:3000/
 
-To ensure this consistency, we have a central [repository](https://github.com/kwizapp/kwiz-dotfiles) that contains the configuration for the whole organization.
+### Component Documentation
 
-See these [packages](https://github.com/kwizapp/kwiz-dotfiles/packages) for more information.
+The folder `styleguide` contains automatically generated documentation of all our react components.
+
+Open the file `styleguide/index.html` in a browser to access the documentation. There are two sections: **Pages** and **UI Components**. The first sections describes the main components that are structured in terms of pages, whereas the second section documents the smaller UI components used in our application.
+
+**Build Documentation Files**
+
+Run the following command to update the component documentation in `styleguide/`.
+
+```bash
+npm run styleguide:build
+``
+
+### Mobile Preview
+
+For a mobile preview, use the browser's built-in features for that.
+
+### User Flow
+
+This is the general flow of the Kwizz game. The game ends once the user has no more lives left.
+
+![User Experience](public/assets/user-flow.png)
+```

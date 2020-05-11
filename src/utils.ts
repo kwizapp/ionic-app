@@ -1,3 +1,9 @@
+/**
+ * Shuffle an array
+ *
+ * @param array - The array to shuffle
+ * @returns a shuffled array consisting of the same array elements
+ */
 export const randomArrayShuffle = (array: any[]) => {
   let currentIndex: number = array.length
   let temporaryValue

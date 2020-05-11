@@ -15,10 +15,15 @@ function generateLiveDisplay(livesTotal: number, livesRemaining: number) {
 }
 
 interface Props {
+  /** The number of lives total */
   livesTotal: number
+  /** The number of lives remaining */
   livesRemaining: number
 }
 
+/**
+ * The lives component in the `<StatsOverlay />` component. Is displayed in the bottom right corner.
+ */
 const LifeDisplay = ({ livesTotal, livesRemaining }: Props) => {
   return <div>{generateLiveDisplay(livesTotal, livesRemaining)}</div>
 }

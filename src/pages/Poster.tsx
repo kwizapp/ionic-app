@@ -41,7 +41,15 @@ const RANDOM_MOVIE = gql`
     }
   }
 `
-
+/**
+ * ### The Main Game Screen
+ *
+ * Displays a blurred movie poster that unblurs over the span of 10 seconds.
+ *
+ * Shown if...
+ * * user clicks on splash screen
+ * * user is on the Trivia Screen and continues the game
+ */
 const Poster = () => {
   // ref to interval, gets cleared on page leave
   const countDownRef = useRef<any>(null)

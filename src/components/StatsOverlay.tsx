@@ -5,6 +5,9 @@ import React from 'react'
 import useStore from '../useStore'
 import LifeDisplay from './LifeDisplay'
 
+/**
+ * Displays an overlay containing the users points and lives. The lives are displayed in `<LifeDisplay />`.
+ */
 const StatsOverlay = () => {
   const lives = useStore((state) => state.lives)
   const livesTotal = useStore((state) => state.livesTotal)

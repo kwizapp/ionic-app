@@ -1,10 +1,15 @@
 import React from 'react'
 
 interface Props {
+  /** The movie title */
   title: string
+  /** The onClick handler function */
   onClick: (title: string) => void
 }
 
+/**
+ * Card Component displayed on the Question Screen
+ */
 const AnswerCard = ({ title, onClick }: Props) => {
   return (
     <div

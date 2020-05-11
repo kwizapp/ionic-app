@@ -30,7 +30,14 @@ export const MOVIES = gql`
     }
   }
 `
-
+/**
+ * ### The Movie Metadata Screen
+ *
+ * Displays interesting trivia about the active movie in the game.
+ *
+ * Shown if...
+ * * user comes from the Success or Failure Screen.
+ */
 const Trivia = () => {
   const history = useHistory()
   const [animReady, setAnimReady] = useState(false)

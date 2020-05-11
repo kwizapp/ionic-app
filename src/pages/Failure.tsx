@@ -12,6 +12,14 @@ import { animated, config, useChain, useSpring } from 'react-spring'
 import Hearts from '../components/Hearts'
 import useStore from '../useStore'
 
+/**
+ * ### The Failure Screen
+ *
+ * One life of the user is removed.
+ *
+ * Shown if...
+ * * user answered a question wrong
+ */
 const Failure = () => {
   const history = useHistory()
 

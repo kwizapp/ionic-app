@@ -14,6 +14,14 @@ import { animated, config, useChain, useSpring } from 'react-spring'
 import LifeDisplay from '../components/LifeDisplay'
 import useStore from '../useStore'
 
+/**
+ * ### The Success Screen
+ *
+ * Displays a winning animation and animated how points are added.
+ *
+ * Shown if...
+ * * user guesses the correct movie on the Question Screen
+ */
 const Success = () => {
   const router = useHistory()
   const lastLocation = useLastLocation()

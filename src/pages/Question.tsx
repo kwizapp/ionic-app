@@ -50,7 +50,14 @@ const GET_SCORE = gql`
     )
   }
 `
-
+/**
+ * ### The Question-Answering Screen
+ *
+ * Displays four possible movie titles that the user must choose from.
+ *
+ * Shown if...
+ * * user clicks on unblurring movie poster
+ */
 const Question = () => {
   const history = useHistory()
 

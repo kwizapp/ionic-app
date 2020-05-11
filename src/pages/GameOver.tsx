@@ -12,6 +12,16 @@ import { animated, config, useChain, useSpring } from 'react-spring'
 
 import useStore from '../useStore'
 
+/**
+ * ### The Game Over Screen
+ *
+ * Displays a summary of the game including:
+ * * number of correctly answered questions in a row
+ * * total number of points achieved
+ *
+ * Shown if...
+ * * the user has no remaining lives left
+ */
 const GameOver = () => {
   const history = useHistory()
   const { points, resetState, bestStreak } = useStore()

@@ -13,6 +13,14 @@ import { useHistory } from 'react-router'
 import KwizAnimated from '../components/animations/KwizAnimated'
 import { useStorage } from '../useStorage'
 
+/**
+ * ### The Start Screen
+ *
+ * Displays a splash screen with a simple animation.
+ *
+ * Shown if...
+ * * game is started
+ */
 const Home = () => {
   useStorage()
 

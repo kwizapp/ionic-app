@@ -21,7 +21,13 @@ const GET_BONUS_SCORE = gql`
     )
   }
 `
-
+/**
+ * ### The screen where the user can double his/her points.
+ *
+ * Shown if...
+ * * user guessed initial movie poster correctly
+ * * previous question was not a Bonus Question
+ */
 const BonusQuestion = () => {
   const history = useHistory()
 

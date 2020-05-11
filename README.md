@@ -26,6 +26,22 @@ npm run dev:style
 
 ### Start Application
 
+:warning: You need to set the `REACT_APP_API_URL` environment variable. Either add the following to an `.env` file:
+
+```bash
+# .env
+
+REACT_APP_API_URL=http://localhost:3001/graphql
+```
+
+or adjust the `scripts` in the `package.json`:
+
+```json
+"scripts": {
+    "dev:app": "REACT_APP_API_URL=http://localhost:3001/graphql react-scripts start",
+}
+```
+
 This is the frontend of the `kwizapp`. It depends on a few services (APIs) in order to work properly:
 
 - [`poster-service`](https://github.com/kwizapp/poster-service): provides movie poster image urls for IMDb ids

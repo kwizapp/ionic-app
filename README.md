@@ -66,7 +66,7 @@ Run the following command to update the component documentation in `styleguide/`
 
 ```bash
 npm run styleguide:build
-``
+```
 
 ### Mobile Preview
 
@@ -77,4 +77,3 @@ For a mobile preview, use the browser's built-in features for that.
 This is the general flow of the Kwizz game. The game ends once the user has no more lives left.
 
 ![User Experience](public/assets/user-flow.png)
-```

@@ -48,7 +48,7 @@
     "@ionic/react-router": "5.1.0",
     "@kwizapp/eslint-config-ts-react": "0.0.10",
     "@kwizapp/prettier-config": "0.0.10",
-    "@testing-library/jest-dom": "5.5.0",
+    "@testing-library/jest-dom": "5.7.0",
     "@testing-library/react": "10.0.4",
     "@testing-library/user-event": "10.1.0",
     "@types/classnames": "2.2.10",

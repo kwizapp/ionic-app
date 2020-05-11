@@ -1,53 +1,43 @@
-# kwiz Ionic
+# Kwizapp Ionic React Frontend
 
-## How to Run
+<p align="center">
+  <a href="https://kwizapp.github.io" target="blank"><img src="public/assets/kwiz_logo.png" width="250" alt="Kwizapp Logo" /></a>
+</p>
 
-1. Install the Ionic CLI
+## Development
 
-    ```bash
-    npm install -g @ionic/cli
-    ```
+install npm packages
 
-2. Build tailwind styles
+```bash
+npm i
+```
 
-    ```bash
-    # once
-    npm run build:style
+### Styles
+Build [tailwind](https://tailwindcss.com/) styles
 
-    # watch mode
-    npm run dev:style
-    ```
+```bash
+# once
+npm run build:style
 
-3. Start Poster API (see corresponding README):
+# watch mode
+npm run dev:style
+```
 
-    ```bash
-    npm run dev
-    ```
+### Start Application
 
-4. Start Metadata API (see corresponding README):
+This is the frontend of the `kwizapp`. It depends on a few services (APIs) in order to work properly:
 
-    ```bash
-    npm run dev
-    ```
+* [`poster-service`](https://github.com/kwizapp/poster-service): provides movie poster image urls for IMDb ids
+* [`metadata-service`](https://github.com/kwizapp/metadata-service): provides movie metadata for IMDb ids
+* [`nest-api`](https://github.com/kwizapp/nest-api): main graphql API (get queried by the frontend)
 
-5. Start Nest API (see corresponding README):
 
-    ```bash
-    npm run dev
-    ```
+1. Start Poster API (see corresponding [README](https://github.com/kwizapp/poster-service))
+2. Start Metadata API (see corresponding [README](https://github.com/kwizapp/metadata-service))
+3. Start Nest API (see corresponding [README](https://github.com/kwizapp/nest-api))
+4. Start Ionic React Frontend with `npm run dev`
+5. Open app on PORT **3000** - http://localhost:3000/
 
-6. Start developing with
+### Mobile Preview
 
-    ```bash
-    ionic serve
-    ```
-
-This will open up the app in your browser on port 8100. For a mobile preview, use the browser's built-in features for that.
-
-## Code Quality
-
-We use `eslint` and `prettier` to define consistent code formatting and code quality.
-
-To ensure this consistency, we have a central [repository](https://github.com/kwizapp/kwiz-dotfiles) that contains the configuration for the whole organization.
-
-See these [packages](https://github.com/kwizapp/kwiz-dotfiles/packages) for more information.
+For a mobile preview, use the browser's built-in features for that.

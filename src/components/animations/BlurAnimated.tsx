@@ -19,7 +19,7 @@ const BlurAnimated = ({ duration, children }: Props) => {
       duration={duration || 9000}
       fromTo={{
         property: 'filter',
-        fromValue: 'blur(30px)',
+        fromValue: 'blur(15px)',
         toValue: 'blur(0px)',
       }}
     >

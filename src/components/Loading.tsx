@@ -3,6 +3,9 @@ import React from 'react'
 
 import KwizAnimated from './animations/KwizAnimated'
 
+/**
+ * Fullscreen loading animation used for when data is still in flight and not completely loaded
+ */
 const Loading = () => {
   return (
     <div

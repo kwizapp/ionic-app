@@ -1,6 +1,11 @@
 import { CreateAnimation } from '@ionic/react'
 import React, { useEffect, useRef } from 'react'
 
+/**
+ * Kwizzapp Logo Animation
+ *
+ * Uses 4 keyframe svgs to render a moving movie-clip animation
+ */
 const KwizAnimated = () => {
   const animationRef = useRef<any>()
 

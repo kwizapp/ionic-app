@@ -2,11 +2,17 @@ import React from 'react'
 import classNames from 'classnames'
 
 interface Props {
+  /** The movie title */
   title: string
+  /** The url to the movie poster */
   posterPath?: string
+  /** The onClick handler function */
   onClick?: (title: string) => void
 }
 
+/**
+ * Card Component displayed on the Bonus Question Screen
+ */
 const MovieCard = ({ title, posterPath, onClick }: Props) => {
   return (
     <div

@@ -25,7 +25,9 @@
     "lint": "eslint \"{src,test}/**/*.{ts,tsx}\" --fix",
     "format:ci": "prettier --list-different \"src/**/*.{ts,tsx}\"",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "type-check": "tsc --noEmit -p tsconfig.json"
+    "type-check": "tsc --noEmit -p tsconfig.json",
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build"
   },
   "browserslist": {
     "production": [
@@ -90,6 +92,7 @@
     "react-router-last-location": "2.0.1",
     "react-scripts": "3.4.1",
     "react-spring": "9.0.0-beta.34",
+    "react-styleguidist": "11.0.6",
     "tailwindcss": "1.4.4",
     "typescript": "3.8.3",
     "zustand": "2.2.3"

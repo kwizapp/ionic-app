@@ -1,92 +1,98 @@
-import niceColors from 'nice-color-palettes'
 import React, { useMemo, useRef } from 'react'
-import { useFrame, useThree } from 'react-three-fiber'
+import { useFrame, useLoader, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
 
+/**
+ * Displays floating movies on the canvas
+ */
 export const SplashContent = () => {
-  const NUMBER_OF_CUBES = 20
-  const { viewport, clock } = useThree()
+  const NUMBER_OF_MOVIES = 65
 
-  const colors = useMemo(() => {
-    const array = new Float32Array(NUMBER_OF_CUBES * 3)
-    const color = new THREE.Color()
-    for (let i = 0; i < NUMBER_OF_CUBES; i++)
-      color
-        .set(niceColors[17][Math.floor(Math.random() * 5)])
-        .convertSRGBToLinear()
-        .toArray(array, i * 3)
-    return array
-  }, [NUMBER_OF_CUBES])
+  const { viewport } = useThree()
+  const groupRef = useRef<THREE.Group>()
 
-  const model = useRef<any>()
+  // load some move textures to display on the splash screen
+  //@ts-ignore
+  const textures = useLoader(THREE.TextureLoader, [
+    'https://m.media-amazon.com/images/M/MV5BNGE5MzIyNTAtNWFlMC00NDA2LWJiMjItMjc4Yjg1OWM5NzhhXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg',
+    'https://m.media-amazon.com/images/M/MV5BMzkyNzQ1Mzc0NV5BMl5BanBnXkFtZTcwODg3MzUzMw@@._V1_SX300.jpg',
+    'https://m.media-amazon.com/images/M/MV5BMTY5OTU0OTc2NV5BMl5BanBnXkFtZTcwMzU4MDcyMQ@@._V1_SX300.jpg',
+    'https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg',
+    'https://m.media-amazon.com/images/M/MV5BZWFlYmY2MGEtZjVkYS00YzU4LTg0YjQtYzY1ZGE3NTA5NGQxXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg',
+    'https://m.media-amazon.com/images/M/MV5BYzVkMjRhNzctOGQxMC00OGE2LWJhN2EtNmYyODRiMDNlM2ZmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg',
+    'https://m.media-amazon.com/images/M/MV5BNTI5ODU3N2UtM2QzNS00NjM1LWExNzMtNjgzYWQ5MWNkYTJmXkEyXkFqcGdeQXVyMjA0MzYwMDY@._V1_SX300.jpg',
+  ])
 
-  const dummy = useMemo(() => new THREE.Object3D(), [])
-  const cubes = useMemo(
+  const movies = useMemo(
     () =>
-      new Array(NUMBER_OF_CUBES)
+      new Array(NUMBER_OF_MOVIES)
         .fill((v: number) => v)
         .map((_, i) => ({
           position: [
-            i < 5 ? 0 : viewport.width / 2 - Math.random() * viewport.width * 2,
+            i < 5
+              ? 0
+              : viewport.width / 2 - Math.random() * viewport.width * 4.0,
             10 - Math.random() * 10,
             -5,
           ],
-          factor: 0.2 + Math.random(),
-          direction: Math.random() < 0.5 ? -1 : 1,
-          rotation: [
-            Math.sin(Math.random()) * Math.PI,
-            Math.sin(Math.random()) * Math.PI,
-            Math.cos(Math.random()) * Math.PI,
-          ],
+          factor: 0.4 + Math.random(),
+          direction: Math.random() < 0.5 ? -1 : 1, // randomly decide if up or down
         })),
     [],
   )
 
   useFrame(() => {
-    cubes.forEach((data, i) => {
-      const t = clock.getElapsedTime()
-      data.position[1] -= (data.factor / 5) * data.direction
+    movies.forEach((data, i) => {
+      data.position[1] -= (data.factor / 20) * data.direction
       if (data.direction === 1 ? data.position[1] < -50 : data.position[1] > 50)
         data.position = [
           i < 5 ? 0 : viewport.width / 2 - Math.random() * viewport.width,
-          50 * data.direction,
+          20 * data.direction,
           data.position[2],
         ]
-      const { position, rotation, factor } = data
+      const { position, factor } = data
 
-      dummy.position.set(position[0], position[1], position[2])
-      dummy.rotation.set(
-        rotation[0] + t * factor,
-        rotation[1] + t * factor,
-        rotation[2] + t * factor,
+      groupRef?.current?.children[i].position.set(
+        position[0],
+        position[1],
+        position[2],
       )
-      dummy.scale.set(1 + factor, 1 + factor, 1 + factor)
-      dummy.updateMatrix()
-      model.current.setMatrixAt(i, dummy.matrix)
-    })
-    model.current.instanceMatrix.needsUpdate = true
-  })
 
-  const x = (
-    //@ts-ignore
-    <instancedBufferAttribute
-      attachObject={['attributes', 'color']}
-      args={[colors, 3]}
-    />
-  )
+      groupRef?.current?.children[i].scale.set(
+        1 + factor,
+        1 + factor,
+        1 + factor,
+      )
+      groupRef?.current?.children[i].updateMatrix()
+    })
+  })
 
   return (
     <>
-      <instancedMesh
-        ref={model}
-        args={[null as any, null as any, cubes.length]}
-      >
-        <boxBufferGeometry attach="geometry" args={[1, 1, 1]}>
-          {x}
-        </boxBufferGeometry>
-        <meshPhongMaterial attach="material" vertexColors={true} />
-      </instancedMesh>
-      <pointLight position={[5, 10, 1]} />
+      {/* back plane */}
+      <mesh position={[0, 0, -6]}>
+        <planeBufferGeometry attach="geometry" args={[100, 100]} />
+        <meshPhysicalMaterial
+          attach="material"
+          color={new THREE.Color('#173753')}
+        />
+      </mesh>
+
+      {/* movies */}
+      <group ref={groupRef}>
+        {movies.map((cube, i) => {
+          return (
+            <mesh key={i}>
+              <boxBufferGeometry attach="geometry" args={[1, 1.51, 0.2]} />
+              <meshPhysicalMaterial
+                reflectivity={0}
+                map={textures[Math.floor(Math.random() * textures.length)]}
+                attach="material"
+              />
+            </mesh>
+          )
+        })}
+      </group>
     </>
   )
 }

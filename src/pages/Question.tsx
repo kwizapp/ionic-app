@@ -132,12 +132,9 @@ const Question = () => {
 
   return (
     <StatsLayout>
-      <section className="p-4">
-        <div className="text-2xl text-center">Guess the Movie</div>
-        <div className="text-center font-light text-gray-800">
-          Which movie was just shown?
-        </div>
-      </section>
+      <div className="p-2  text-center text-black font-bold border border-gray-100 rounded-md shadow-lg m-2 ">
+        Make your guess!
+      </div>
       <div>
         {allMovies.map((movie: any, index: any) => {
           const color = niceColors[index]

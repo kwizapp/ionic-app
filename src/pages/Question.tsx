@@ -2,6 +2,7 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import React, { useEffect, useMemo } from 'react'
 import { useHistory } from 'react-router'
 
+import niceColors from '../colors'
 import AnswerCard from '../components/card/AnswerCard'
 import StatsLayout from '../components/layouts/StatsLayout'
 import Loading from '../components/Loading'
@@ -131,19 +132,26 @@ const Question = () => {
 
   return (
     <StatsLayout>
-      <div className="p-2  text-center text-black font-bold border border-gray-100 rounded-md shadow-lg m-2 ">
-        Make you guess!
-      </div>
+      <section className="p-4">
+        <div className="text-2xl text-center">Guess the Movie</div>
+        <div className="text-center font-light text-gray-800">
+          Which movie was just shown?
+        </div>
+      </section>
       <div>
-        {allMovies.map((movie: any, index: any) => (
-          <AnswerCard
-            key={index}
-            title={movie.title}
-            onClick={() =>
-              makeGuess(movie.title, movie.imdbId, movie.posterPath)
-            }
-          />
-        ))}
+        {allMovies.map((movie: any, index: any) => {
+          const color = niceColors[index]
+          return (
+            <AnswerCard
+              key={index}
+              title={movie.title}
+              backgroundColor={color}
+              onClick={() =>
+                makeGuess(movie.title, movie.imdbId, movie.posterPath)
+              }
+            />
+          )
+        })}
       </div>
     </StatsLayout>
   )

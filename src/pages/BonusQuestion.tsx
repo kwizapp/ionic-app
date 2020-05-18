@@ -4,6 +4,7 @@ import { insert, sortBy } from 'ramda'
 import React, { useEffect, useMemo } from 'react'
 import { useHistory } from 'react-router'
 
+import niceColors from '../colors'
 import MovieCard from '../components/card/MovieCard'
 import { InBetweenButton } from '../components/InBetweenButton'
 import useStore from '../useStore'
@@ -108,7 +109,11 @@ const BonusQuestion = () => {
         {sortedMovies.map((movie, ix) => (
           <>
             <div className={'flex justify-center relative'}>
-              <InBetweenButton ix={ix} scoreQuestion={scoreQuestion} />
+              <InBetweenButton
+                backgroundColor={niceColors[ix]}
+                ix={ix}
+                scoreQuestion={scoreQuestion}
+              />
             </div>
             <div key={movie.imdbId}>
               <MovieCard title={movie.title} posterPath={movie.posterPath} />
@@ -117,6 +122,7 @@ const BonusQuestion = () => {
         ))}
         <div className={'flex justify-center relative'}>
           <InBetweenButton
+            backgroundColor={niceColors[sortedMovies.length]}
             ix={sortedMovies.length}
             scoreQuestion={scoreQuestion}
           />

@@ -30,7 +30,7 @@ const Lights = () => {
         Math.sin(state.clock.elapsedTime * 2.0) *
         Math.cos(state.clock.elapsedTime * 0.5)
       const y = Math.sin(state.clock.elapsedTime * 2.0)
-      lightRef.current?.target.position.set(x, y, 0)
+      lightRef.current.target.position.set(x, y, 0)
     }
   })
 

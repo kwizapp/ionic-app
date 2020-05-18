@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useMemo, useRef } from 'react'
 import { useFrame, useLoader, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
@@ -12,7 +13,7 @@ export const SplashContent = () => {
   const groupRef = useRef<THREE.Group>()
 
   // load some move textures to display on the splash screen
-  //@ts-ignore
+
   const textures = useLoader(THREE.TextureLoader, [
     'https://m.media-amazon.com/images/M/MV5BNGE5MzIyNTAtNWFlMC00NDA2LWJiMjItMjc4Yjg1OWM5NzhhXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg',
     'https://m.media-amazon.com/images/M/MV5BMzkyNzQ1Mzc0NV5BMl5BanBnXkFtZTcwODg3MzUzMw@@._V1_SX300.jpg',
@@ -52,18 +53,20 @@ export const SplashContent = () => {
         ]
       const { position, factor } = data
 
-      groupRef?.current?.children[i].position.set(
-        position[0],
-        position[1],
-        position[2],
-      )
+      if (groupRef.current) {
+        groupRef.current.children[i].position.set(
+          position[0],
+          position[1],
+          position[2],
+        )
 
-      groupRef?.current?.children[i].scale.set(
-        1 + factor,
-        1 + factor,
-        1 + factor,
-      )
-      groupRef?.current?.children[i].updateMatrix()
+        groupRef.current.children[i].scale.set(
+          1 + factor,
+          1 + factor,
+          1 + factor,
+        )
+        groupRef.current.children[i].updateMatrix()
+      }
     })
   })
 

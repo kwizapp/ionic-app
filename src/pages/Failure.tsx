@@ -178,7 +178,7 @@ const Failure = () => {
             </div>
           ) : (
             <div>
-              <div>Sorry, that's wrong!</div>
+              <div>Sorry, that is wrong!</div>
               <div className="text-sm text-red-500 mb-2">
                 The movie was released in{' '}
                 <span className="font-bold">{movie.releaseYear}</span>.

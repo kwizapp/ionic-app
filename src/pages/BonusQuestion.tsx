@@ -1,10 +1,5 @@
 import { gql, useLazyQuery, useQuery } from '@apollo/client'
-import {
-  IonButton,
-  IonContent,
-  IonPage,
-  useIonViewWillEnter,
-} from '@ionic/react'
+import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react'
 import { insert, sortBy } from 'ramda'
 import React, { useEffect, useMemo } from 'react'
 import { useHistory } from 'react-router'
@@ -21,6 +16,24 @@ const GET_BONUS_SCORE = gql`
     )
   }
 `
+interface InBetweenButtonProps {
+  ix: number
+  scoreQuestion: (ix: number) => void
+}
+
+const InBetweenButton = ({ scoreQuestion, ix }: InBetweenButtonProps) => {
+  return (
+    <div className="absolute" style={{ top: '-2em' }}>
+      <button
+        className="text-xs bg-teal-500 hover:bg-teal-400 text-white font-bold py-3 px-4 border-b-4 border-teal-700 hover:border-teal-500 rounded-full shadow-sm"
+        onClick={() => scoreQuestion(ix)}
+      >
+        HERE
+      </button>
+    </div>
+  )
+}
+
 /**
  * ### The screen where the user can double his/her points.
  *
@@ -37,7 +50,7 @@ const BonusQuestion = () => {
     addPoints(pointDifference)
   })
 
-  const { loading, data } = useQuery<MovieData>(MOVIES, {
+  const { data, loading } = useQuery<MovieData>(MOVIES, {
     fetchPolicy: 'cache-only',
   })
 
@@ -86,25 +99,44 @@ const BonusQuestion = () => {
   return (
     <IonPage>
       <IonContent>
-        <MovieCard
-          title={data.movie.title}
-          posterPath={data.movie.posterPath}
-        />
+        <section className="p-4">
+          <div className="text-2xl text-center">Bonus Question</div>
+          <div className="text-center font-light text-gray-800">
+            Answer correctly to double your points
+          </div>
+          <div className="my-2 font-medium text-center">
+            When was this movie released?
+          </div>
 
-        <div className="p-1 text-sm text-center text-gray-600">
-          When was the movie released?
-        </div>
+          <div className="flex m-2 border border-gray-100 rounded-md shadow-lg">
+            <img className="w-12 rounded-md" src={data.movie.posterPath} />
+
+            <div className="flex items-center text-sm text-center font-light text-gray-800 p-2">
+              <h2 className="font-sans font-medium tracking-wide text-md">
+                {data.movie.title}
+              </h2>
+            </div>
+          </div>
+        </section>
+
+        <div className="mx-8 border border-gray-300 mb-10"></div>
 
         {sortedMovies.map((movie, ix) => (
-          <div key={movie.imdbId}>
-            <IonButton onClick={() => scoreQuestion(ix)}>HERE</IonButton>
-            <MovieCard title={movie.title} posterPath={movie.posterPath} />
-          </div>
+          <>
+            <div className={'flex justify-center relative'}>
+              <InBetweenButton ix={ix} scoreQuestion={scoreQuestion} />
+            </div>
+            <div key={movie.imdbId}>
+              <MovieCard title={movie.title} posterPath={movie.posterPath} />
+            </div>
+          </>
         ))}
-
-        <IonButton onClick={() => scoreQuestion(sortedMovies.length)}>
-          HERE
-        </IonButton>
+        <div className={'flex justify-center relative'}>
+          <InBetweenButton
+            ix={sortedMovies.length}
+            scoreQuestion={scoreQuestion}
+          />
+        </div>
       </IonContent>
     </IonPage>
   )

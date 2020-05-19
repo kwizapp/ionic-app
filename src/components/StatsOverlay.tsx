@@ -1,8 +1,7 @@
-import { IonIcon } from '@ionic/react'
-import { flash } from 'ionicons/icons'
 import React from 'react'
 
 import useStore from '../useStore'
+import Points from './3d/Points'
 import LifeDisplay from './LifeDisplay'
 
 /**
@@ -15,16 +14,12 @@ const StatsOverlay = () => {
 
   return (
     <div className="fixed bottom-0 flex items-center justify-between w-full p-4">
-      <div className="paper">
-        <div className="flex items-center px-1 text-xl font-extrabold">
-          <IonIcon icon={flash} />
-          {points}
-        </div>
+      <div className="flex items-center px-1 text-xl font-extrabold">
+        <Points points={points} />
       </div>
-      <div className="paper">
-        <div className="flex items-center px-1 text-xl text-red-600">
-          <LifeDisplay livesTotal={livesTotal} livesRemaining={lives} />
-        </div>
+
+      <div className="flex items-center px-1 text-xl text-red-600">
+        <LifeDisplay livesTotal={livesTotal} livesRemaining={lives} />
       </div>
     </div>
   )

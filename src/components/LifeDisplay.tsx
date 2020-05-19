@@ -5,11 +5,15 @@ import React from 'react'
 function generateLiveDisplay(livesTotal: number, livesRemaining: number) {
   const usedLives = Array(livesTotal - livesRemaining)
     .fill(0)
-    .map((_, ix) => <IonIcon key={ix + 'used-lives'} icon={heartOutline} />)
+    .map((_, ix) => (
+      <IonIcon size="large" key={ix + 'used-lives'} icon={heartOutline} />
+    ))
 
   const remainingLives = Array(livesRemaining)
     .fill(0)
-    .map((_, ix) => <IonIcon key={ix + 'remaining-lives'} icon={heart} />)
+    .map((_, ix) => (
+      <IonIcon size="large" key={ix + 'remaining-lives'} icon={heart} />
+    ))
 
   return [...usedLives, ...remainingLives]
 }

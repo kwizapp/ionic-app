@@ -1,5 +1,6 @@
 module.exports = {
   title: 'Kwizzapp Components',
+  styleguideDir: 'docs',
   sections: [
     {
       name: 'Pages',

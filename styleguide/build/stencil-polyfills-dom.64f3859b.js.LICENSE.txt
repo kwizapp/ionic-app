@@ -1,1 +1,0 @@
-/*! For license information please see stencil-polyfills-dom.64f3859b.js.LICENSE.txt */

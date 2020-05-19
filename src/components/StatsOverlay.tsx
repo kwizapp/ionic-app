@@ -14,11 +14,11 @@ const StatsOverlay = () => {
 
   return (
     <div className="fixed bottom-0 flex items-center justify-between w-full px-2 my-2">
-      <div className="shadow-lg rounded-lg p-2 h-16 w-32 flex items-center  px-1 text-xl font-extrabold">
+      <div className="bg-white shadow-lg rounded-lg p-2 h-16 w-32 flex items-center  px-1 text-xl font-extrabold">
         <Points points={points} />
       </div>
 
-      <div className="shadow-lg rounded-lg p-2 h-16 w-32 flex items-center justify-center px-1 text-xl text-red-600">
+      <div className="bg-white shadow-lg rounded-lg p-2 h-16 w-32 flex items-center justify-center px-1 text-xl text-red-600">
         <div className="pt-2">
           <LifeDisplay livesTotal={livesTotal} livesRemaining={lives} />
         </div>

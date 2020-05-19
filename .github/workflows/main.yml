@@ -18,9 +18,15 @@ jobs:
       - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
+<<<<<<< HEAD
           node-version: "14.x"
           registry-url: https://npm.pkg.github.com/
           scope: "@kwizapp"
+=======
+          node-version: '14.x'
+          registry-url: https://npm.pkg.github.com/
+          scope: '@kwizapp'
+>>>>>>> 57fb179c7a365b68bb61bdcfe9c91417112a4255
       - name: Cache Node.js modules
         uses: actions/cache@v1
         with:

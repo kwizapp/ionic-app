@@ -7,6 +7,7 @@ import {
 import emoji from 'node-emoji'
 import React, { useRef, useState } from 'react'
 import { useHistory } from 'react-router'
+import { useLastLocation } from 'react-router-last-location'
 import { animated, config, useChain, useSpring } from 'react-spring'
 
 import Hearts from '../components/Hearts'
@@ -22,6 +23,7 @@ import useStore from '../useStore'
  */
 const Failure = () => {
   const history = useHistory()
+  const lastLocation = useLastLocation()
 
   const {
     lives,
@@ -107,6 +109,11 @@ const Failure = () => {
 
   useChain([cardAnimRef, fadeAnimRef, appearAnimRef, pointsAnimRef])
 
+  const fromBonusQuestion =
+    lastLocation &&
+    lastLocation !== null &&
+    lastLocation?.pathname === '/bonus-question'
+
   return (
     <IonPage>
       <IonContent className="text-center">
@@ -151,17 +158,40 @@ const Failure = () => {
           style={cardAnimProps}
           className="p-4 m-8 shadow-2xl max-w-sm rounded-lg overflow-hidden relative"
         >
-          <div className="text-sm text-gray-500 ">You guessed</div>
-          <span className="text-sm text-gray-800">{guess.title}</span>
-          <div className="text-sm font-hairline text-gray-500 ">
-            but the correct answer is
-          </div>
-          <div className="px-6">
-            <div className="font-light text-2xl mb-2">{movie.title}</div>
-          </div>
-          <div className="w-32 mx-auto">
-            <img className="rounded" src={movie.posterPath} alt={movie.title} />
-          </div>
+          {!fromBonusQuestion ? (
+            <div>
+              <div className="text-sm text-gray-500">You guessed</div>
+              <span className="text-sm text-gray-800">{guess.title}</span>
+              <div className="text-sm text-gray-500">
+                but the correct answer is
+              </div>
+              <div className="px-6">
+                <div className="font-light text-2xl mb-2">{movie.title}</div>
+              </div>
+              <div className="w-32 mx-auto">
+                <img
+                  className="rounded"
+                  src={movie.posterPath}
+                  alt={movie.title}
+                />
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div>Sorry, that is wrong!</div>
+              <div className="text-sm text-red-500 mb-2">
+                The movie was released in{' '}
+                <span className="font-bold">{movie.releaseYear}</span>.
+              </div>
+              <div className="w-32 mx-auto">
+                <img
+                  className="rounded"
+                  src={movie.posterPath}
+                  alt={movie.title}
+                />
+              </div>
+            </div>
+          )}
         </animated.div>
       </IonContent>
     </IonPage>

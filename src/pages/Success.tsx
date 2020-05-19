@@ -1,5 +1,4 @@
 import {
-  IonButton,
   IonContent,
   IonPage,
   useIonViewDidEnter,
@@ -11,6 +10,7 @@ import { useHistory } from 'react-router'
 import { useLastLocation } from 'react-router-last-location'
 import { animated, config, useChain, useSpring } from 'react-spring'
 
+import KwizButton from '../components/button/KwizButton'
 import LifeDisplay from '../components/LifeDisplay'
 import useStore from '../useStore'
 
@@ -126,22 +126,23 @@ const Success = () => {
 
           <animated.div
             style={emojiAnimProps}
-            className="text-2xl font-bold text-green-600 "
+            className="text-xl font-thin text-green-600 "
           >
             + {pointDifference}
           </animated.div>
         </div>
         <animated.div style={panelAnimProps}>
-          <div className="mt-4 text-5xl text-red-600">
+          <div className="py-10 text-red-600">
             <LifeDisplay livesTotal={livesTotal} livesRemaining={lives} />
           </div>
-          <IonButton className="w-32" onClick={goToTriviaScreen}>
-            Continue
-          </IonButton>
+
+          <KwizButton width={32} onClick={goToTriviaScreen}>
+            continue
+          </KwizButton>
           {shouldDisplayGameButton() ? (
-            <IonButton className="w-32" onClick={gotToBonusQuestion}>
-              Gamble
-            </IonButton>
+            <KwizButton width={32} onClick={gotToBonusQuestion}>
+              gamble
+            </KwizButton>
           ) : null}
         </animated.div>
       </IonContent>

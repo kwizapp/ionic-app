@@ -2,6 +2,7 @@
 import React, { useMemo, useRef } from 'react'
 import { useFrame, useLoader, useThree } from 'react-three-fiber'
 import * as THREE from 'three'
+import { posterAssetLinks } from './posterLinks'
 
 /**
  * Displays floating movies on the canvas
@@ -14,15 +15,7 @@ export const SplashContent = () => {
 
   // load some move textures to display on the splash screen
 
-  const textures = useLoader(THREE.TextureLoader, [
-    'https://m.media-amazon.com/images/M/MV5BNGE5MzIyNTAtNWFlMC00NDA2LWJiMjItMjc4Yjg1OWM5NzhhXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg',
-    'https://m.media-amazon.com/images/M/MV5BMzkyNzQ1Mzc0NV5BMl5BanBnXkFtZTcwODg3MzUzMw@@._V1_SX300.jpg',
-    'https://m.media-amazon.com/images/M/MV5BMTY5OTU0OTc2NV5BMl5BanBnXkFtZTcwMzU4MDcyMQ@@._V1_SX300.jpg',
-    'https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg',
-    'https://m.media-amazon.com/images/M/MV5BZWFlYmY2MGEtZjVkYS00YzU4LTg0YjQtYzY1ZGE3NTA5NGQxXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg',
-    'https://m.media-amazon.com/images/M/MV5BYzVkMjRhNzctOGQxMC00OGE2LWJhN2EtNmYyODRiMDNlM2ZmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg',
-    'https://m.media-amazon.com/images/M/MV5BNTI5ODU3N2UtM2QzNS00NjM1LWExNzMtNjgzYWQ5MWNkYTJmXkEyXkFqcGdeQXVyMjA0MzYwMDY@._V1_SX300.jpg',
-  ])
+  const textures = useLoader(THREE.TextureLoader, posterAssetLinks)
 
   const movies = useMemo(
     () =>

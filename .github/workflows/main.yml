@@ -18,9 +18,9 @@ jobs:
       - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: "14.x"
           registry-url: https://npm.pkg.github.com/
-          scope: '@kwizapp'
+          scope: "@kwizapp"
       - name: Cache Node.js modules
         uses: actions/cache@v1
         with:
@@ -108,7 +108,7 @@ jobs:
           username: _
           password: ${{ secrets.HEROKU_API_KEY }}
       - name: Build the Docker image
-        run: docker build -f Dockerfile.prod . --cache-from kwizapp/ionic-app:latest --tag registry.heroku.com/kwiz-ionic-app-stage/web --build-arg NODE_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }} --build-arg REACT_APP_API_URL=https://kwiz-nest-api.herokuapp.com/graphql
+        run: docker build -f Dockerfile.prod . --cache-from kwizapp/ionic-app:latest --tag registry.heroku.com/kwiz-ionic-app/web --build-arg NODE_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }} --build-arg REACT_APP_API_URL=https://kwiz-nest-api.herokuapp.com/graphql
       - name: Push the Docker image to Heroku
         run: docker push registry.heroku.com/kwiz-ionic-app/web
 

@@ -14,7 +14,7 @@ import NumberFormat from 'react-number-format'
 import { useHistory } from 'react-router'
 import { animated, useChain, useSpring } from 'react-spring'
 
-import niceColors from '../colors'
+import KwizButton from '../components/button/KwizButton'
 import Loading from '../components/Loading'
 import TriviaOverlay from '../components/TriviaOverlay'
 import { MovieData } from './Question'
@@ -52,7 +52,7 @@ const Trivia = () => {
     setAnimReady(false)
   })
 
-  const { loading, data, error } = useQuery<MovieData>(MOVIES, {
+  const { loading, error, data } = useQuery<MovieData>(MOVIES, {
     fetchPolicy: 'cache-only',
   })
 
@@ -164,15 +164,9 @@ const Trivia = () => {
                       <div className="p-2"></div>
                       <animated.div style={appearAnimProps}>
                         <div className="flex items-center justify-center">
-                          <button
-                            onClick={navigateNext}
-                            style={{
-                              backgroundColor: niceColors[1],
-                            }}
-                            className="bg-teal-300 hover:bg-teal-400 text-white  py-1 px-4 border-b-4 border-teal-700 hover:border-teal-500 rounded "
-                          >
+                          <KwizButton onClick={navigateNext}>
                             next question
-                          </button>
+                          </KwizButton>
                         </div>
                       </animated.div>
                     </div>

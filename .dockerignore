@@ -9,5 +9,6 @@
 !postcss.config.js
 !serve.sh
 !tsconfig.json
+!tailwind.config.js
 
 !.npmrc.ci

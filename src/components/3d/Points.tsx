@@ -1,6 +1,10 @@
 import React, { useRef } from 'react'
+import NumberFormat from 'react-number-format'
 import { Canvas, useFrame } from 'react-three-fiber'
 
+/**
+ * 3D cone shape that represents the points "diamonds"
+ */
 function DoubleCone() {
   const mesh = useRef<any>()
 
@@ -25,9 +29,13 @@ function DoubleCone() {
 }
 
 interface Props {
+  /** The number of points to display */
   points: number
 }
 
+/**
+ * Displays the user's points next to an animated 3d shape that represents the points
+ */
 const Points = ({ points }: Props) => {
   return (
     <div className="flex items-center">
@@ -38,7 +46,13 @@ const Points = ({ points }: Props) => {
           <DoubleCone />
         </Canvas>
       </div>
-      <div className="font-light">{points}</div>
+      <div className="font-medium">
+        <NumberFormat
+          value={points}
+          displayType={'text'}
+          thousandSeparator={true}
+        />
+      </div>
     </div>
   )
 }

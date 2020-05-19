@@ -19,6 +19,7 @@ export interface Movie {
   budget: number
   revenue: number
   popularity: number
+  releaseYear: number
 }
 
 interface Store {
@@ -85,6 +86,7 @@ const initialState: Partial<Store> = {
     budget: 0,
     popularity: 0.0,
     revenue: 0,
+    releaseYear: 0,
   },
   guess: {
     imdbId: '',

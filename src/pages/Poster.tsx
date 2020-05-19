@@ -72,7 +72,16 @@ const Poster = () => {
     const budget = data?.movie.budget
     const popularity = data?.movie.popularity
     const revenue = data?.movie.revenue
-    if (imdbId && title && posterPath && budget && popularity && revenue) {
+    const releaseYear = data?.movie.releaseYear
+    if (
+      imdbId &&
+      title &&
+      posterPath &&
+      budget &&
+      popularity &&
+      revenue &&
+      releaseYear
+    ) {
       setMovie({
         imdbId,
         title,
@@ -80,6 +89,7 @@ const Poster = () => {
         budget,
         popularity,
         revenue,
+        releaseYear,
       })
     }
   }, [data])

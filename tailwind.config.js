@@ -149,7 +149,7 @@ module.exports = {
       '64': '16rem',
       '128': '32rem',
     },
-    backgroundColor: theme => theme('colors'),
+    backgroundColor: (theme) => theme('colors'),
     backgroundPosition: {
       bottom: 'bottom',
       center: 'center',
@@ -166,7 +166,7 @@ module.exports = {
       cover: 'cover',
       contain: 'contain',
     },
-    borderColor: theme => ({
+    borderColor: (theme) => ({
       ...theme('colors'),
       default: theme('colors.gray.300', 'currentColor'),
     }),
@@ -281,13 +281,13 @@ module.exports = {
       extrabold: '800',
       black: '900',
     },
-    height: theme => ({
+    height: (theme) => ({
       auto: 'auto',
       ...theme('spacing'),
       full: '100%',
       screen: '100vh',
     }),
-    inset: theme => ({
+    inset: (theme) => ({
       '0': '0',
       ...theme('spacing'),
       auto: 'auto',
@@ -345,13 +345,13 @@ module.exports = {
       full: '100%',
       ...breakpoints(theme('screens')),
     }),
-    minHeight: theme => ({
+    minHeight: (theme) => ({
       '0': '0',
       ...theme('spacing'),
       full: '100%',
       screen: '100vh',
     }),
-    minWidth: theme => ({
+    minWidth: (theme) => ({
       '0': '0',
       ...theme('spacing'),
       full: '100%',
@@ -391,8 +391,8 @@ module.exports = {
       '11': '11',
       '12': '12',
     },
-    padding: theme => theme('spacing'),
-    placeholderColor: theme => theme('colors'),
+    padding: (theme) => theme('spacing'),
+    placeholderColor: (theme) => theme('colors'),
     stroke: {
       current: 'currentColor',
     },
@@ -401,8 +401,8 @@ module.exports = {
       '1': '1',
       '2': '2',
     },
-    textColor: theme => theme('colors'),
-    width: theme => ({
+    textColor: (theme) => theme('colors'),
+    width: (theme) => ({
       auto: 'auto',
       ...theme('spacing'),
       '1/2': '50%',
@@ -443,7 +443,7 @@ module.exports = {
       '40': '40',
       '50': '50',
     },
-    gap: theme => theme('spacing'),
+    gap: (theme) => theme('spacing'),
     gridTemplateColumns: {
       none: 'none',
       '1': 'repeat(1, minmax(0, 1fr))',
@@ -712,4 +712,11 @@ module.exports = {
   },
   corePlugins: {},
   plugins: [],
+  purge: [
+    './public/**/*.html',
+    './src/**/*.ts',
+    './src/**/*.tsx',
+    // also add this index to get any styles in @apply
+    './src/theme/index.css',
+  ],
 }

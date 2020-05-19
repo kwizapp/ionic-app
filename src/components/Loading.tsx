@@ -11,8 +11,7 @@ const Loading = () => {
     <div
       className="flex items-center justify-center h-full"
       style={{
-        background:
-          'linear-gradient(0deg, rgba(173,220,244,1) 0%, rgba(235,250,248,1) 100%)',
+        background: 'linear-gradient(0deg, #173753 0%, #488286 100%)',
       }}
     >
       <IonGrid>
@@ -25,7 +24,7 @@ const Loading = () => {
             </IonRow>
             <IonRow>
               <IonCol className="pt-5">
-                <IonText className="text-center">
+                <IonText className="text-center font-medium text-white">
                   <p>Loading...</p>
                 </IonText>
               </IonCol>

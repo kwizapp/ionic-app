@@ -1,18 +1,20 @@
 import { gql, useQuery } from '@apollo/client'
 import {
-  IonButton,
   IonCard,
   IonContent,
+  IonIcon,
   IonImg,
   IonPage,
   useIonViewDidEnter,
   useIonViewWillLeave,
 } from '@ionic/react'
+import { calculatorOutline, calendarOutline, cashOutline } from 'ionicons/icons'
 import React, { useRef, useState } from 'react'
 import NumberFormat from 'react-number-format'
 import { useHistory } from 'react-router'
 import { animated, useChain, useSpring } from 'react-spring'
 
+import KwizButton from '../components/button/KwizButton'
 import Loading from '../components/Loading'
 import TriviaOverlay from '../components/TriviaOverlay'
 import { MovieData } from './Question'
@@ -50,18 +52,18 @@ const Trivia = () => {
     setAnimReady(false)
   })
 
-  const { loading, data } = useQuery<MovieData>(MOVIES, {
+  const { loading, error, data } = useQuery<MovieData>(MOVIES, {
     fetchPolicy: 'cache-only',
   })
 
   const navigateNext = () => history.push('/poster')
 
-  const overlayMargin = '3%'
+  const overlayMargin = '10%'
 
   const animationPropsRef = useRef<any>()
   const animationProps = useSpring({
     ref: animationPropsRef,
-    transform: !animReady ? 'translate(0, 1000px)' : 'translate(0, -440px)',
+    transform: !animReady ? 'translate(0, 1000px)' : 'translate(0, 100px)',
     opacity: !animReady ? 0 : 1,
   })
 
@@ -74,91 +76,105 @@ const Trivia = () => {
   // specify order of animations, will be animated one after the other
   useChain([animationPropsRef, appearAnimRef])
 
-  if (loading || !data) return <Loading />
+  if (loading || error || !data) return <Loading />
 
   return (
     <IonPage>
       <IonContent>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center h-full">
           <div className="p-2 w-full relative">
-            <IonCard className="pt-8">
+            <IonCard className="shadow-2xl shadow">
               <IonImg src={data?.movie?.posterPath} className="w-full h-full" />
             </IonCard>
-
-            <TriviaOverlay
-              className="items-center justify-center "
-              margin={overlayMargin}
-              style={{
-                top: overlayMargin,
-                height: '50px',
-                backgroundColor: 'white',
-              }}
-            >
-              <span className="text-2xl text-black font-light">
-                Did you know that...
-              </span>
-            </TriviaOverlay>
 
             <animated.div style={animationProps}>
               <TriviaOverlay
                 className="flex-col text-lg"
                 margin={overlayMargin}
                 style={{
-                  top: `calc(${overlayMargin} + 20%)`,
+                  bottom: `calc(${overlayMargin} + -25%)`,
                   color: 'black',
-                  padding: '10px',
                 }}
               >
-                <div className="font-light">
-                  <div>
-                    ...
-                    <span className="font-semibold">
-                      {data?.movie?.title}
-                    </span>{' '}
-                    was released in
-                    <span className="font-bold">
-                      {' '}
-                      {data?.movie?.releaseYear}
-                    </span>{' '}
-                    and earned around{' '}
-                    <span className="font-bold">
-                      <NumberFormat
-                        value={data?.movie?.revenue}
-                        displayType={'text'}
-                        thousandSeparator={true}
-                        prefix={'$'}
-                      />
-                    </span>{' '}
-                    at the box office with a budget of{' '}
-                    <span className="font-bold">
-                      <NumberFormat
-                        value={data?.movie?.budget}
-                        displayType={'text'}
-                        thousandSeparator={true}
-                        prefix={'$'}
-                      />
-                    </span>
-                    .
-                    <p className="mt-4">
-                      Popularity:{' '}
-                      <span className="font-bold">
-                        {data?.movie?.popularity?.toFixed(1)}
-                      </span>
-                    </p>
+                <div className="bg-white rounded overflow-hidden shadow-2xl">
+                  <div className="px-6 py-4">
+                    <div className="pb-2">
+                      <div className="flex flex-col m-auto rounded-full h-20 w-20 flex items-center justify-center bg-teal-800">
+                        <div className="text-lg font-semibold text-white">
+                          {data?.movie?.popularity?.toFixed(1)}
+                        </div>
+                        <div className="font-hairline text-xs text-gray-500">
+                          rating
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex items-center">
+                        <IonIcon icon={calendarOutline} />
+                        <div className="ml-4 pt-1">
+                          <span className="font-thin">released in</span>{' '}
+                          <span className="font-bold">
+                            {data?.movie?.releaseYear}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        <IonIcon icon={cashOutline} />
+                        <div className="ml-4 pt-1">
+                          <span className="font-thin">earnings</span>{' '}
+                          <span className="font-bold">
+                            <NumberFormat
+                              value={data?.movie?.revenue}
+                              displayType={'text'}
+                              thousandSeparator={true}
+                              prefix={'$'}
+                            />
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        <IonIcon icon={calculatorOutline} />
+                        <div className="ml-4 pt-1">
+                          <span className="font-thin">budget</span>{' '}
+                          <span className="font-bold">
+                            <NumberFormat
+                              value={data?.movie?.budget}
+                              displayType={'text'}
+                              thousandSeparator={true}
+                              prefix={'$'}
+                            />
+                          </span>
+                        </div>
+                      </div>
+                      {data.movie.budget && data.movie.revenue && (
+                        <div className="text-2xl  py-2">
+                          <span className="font-bold text-teal-700">
+                            <NumberFormat
+                              value={(
+                                data.movie.revenue / data.movie.budget
+                              ).toFixed(2)}
+                              displayType={'text'}
+                              thousandSeparator={true}
+                              prefix={'$'}
+                            />{' '}
+                          </span>
+                          per dollar spent
+                        </div>
+                      )}
+                      <div className="p-2"></div>
+                      <animated.div style={appearAnimProps}>
+                        <div className="flex items-center justify-center">
+                          <KwizButton onClick={navigateNext}>
+                            next question
+                          </KwizButton>
+                        </div>
+                      </animated.div>
+                    </div>
                   </div>
                 </div>
               </TriviaOverlay>
             </animated.div>
           </div>
-
-          <animated.div
-            style={appearAnimProps}
-            className=" w-11/12 text-center"
-          >
-            <IonButton className="w-full" onClick={navigateNext}>
-              Continue
-            </IonButton>
-          </animated.div>
         </div>
       </IonContent>
     </IonPage>

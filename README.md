@@ -4,12 +4,29 @@
   <a href="https://kwizapp.github.io" target="blank"><img src="public/assets/kwiz_logo.png" width="150" alt="Kwizapp Logo" /></a>
 </p>
 
+## Repository Structure
+
+| Directory           | Description                                                               |
+| ------------------- | ------------------------------------------------------------------------- |
+| `src/components`    | Reusable react components used at different part in the application       |
+| `src/graphql`       | [Apollo client](https://www.apollographql.com/docs/react/v3.0-beta) setup |
+| `src/pages`         | Main routes of the application                                            |
+| `src/theme`         | Customizable [tailwind.css](https://tailwindcss.com/) theme files         |
+| `src/AppRouter.tsx` | Main router of the application                                            |
+| `src/useStore.ts`   | Global state management solution                                          |
+
 ## Development
 
 install npm packages
 
 ```bash
 npm i
+```
+
+run with
+
+```bash
+npm run dev
 ```
 
 ### Styles
@@ -24,7 +41,7 @@ npm run build:style
 npm run dev:style
 ```
 
-### Start Application
+### Environment Variables
 
 :warning: You need to set the `REACT_APP_API_URL` environment variable. Either add the following to an `.env` file:
 

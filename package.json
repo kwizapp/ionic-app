@@ -96,7 +96,7 @@
     "react-styleguidist": "11.0.6",
     "react-three-fiber": "4.2.4",
     "tailwindcss": "1.4.6",
-    "three": "0.116.1",
+    "three": "0.121.1",
     "typescript": "3.8.3",
     "zustand": "2.2.3"
   }

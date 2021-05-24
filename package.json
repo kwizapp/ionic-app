@@ -42,7 +42,7 @@
     ]
   },
   "dependencies": {
-    "@apollo/client": "3.0.0-beta.49",
+    "@apollo/client": "3.3.19",
     "@capacitor/cli": "2.1.0",
     "@capacitor/core": "2.1.0",
     "@fullhuman/postcss-purgecss": "2.1.2",
